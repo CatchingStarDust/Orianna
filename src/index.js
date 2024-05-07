@@ -16,6 +16,17 @@ client.on('ready', (c) => {
     console.log('We go.')
 });
 
+//listener for when slash commands are triggered
+client.on('interactionCreate', (interaction) => {
+    if (!interaction.isChatInputCommand()) return;
+
+    // checks if the slash command's name has been mentioned
+    if (interaction.commandName === 'ping') {
+        interaction.reply('pong');
+        return;
+    }
+
+});
 
 client.on('messageCreate', (message) => {
     //if the person sending the message is a bot, DON'T DO SHIT!!!!
