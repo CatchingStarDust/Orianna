@@ -21,9 +21,9 @@ client.on('interactionCreate', (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     // checks if the slash command's name has been mentioned
-    if (interaction.commandName === 'ping') {
-        interaction.reply('pong');
-        return;
+    if (interaction.commandName === 'open') {
+        interaction.reply('Work in progress!');
+
     }
 
 });

@@ -1,10 +1,23 @@
 require('dotenv').config();
-const { REST, Routes } = require('discord.js');
+const { REST, Routes, ApplicationCommandOptionType } = require('discord.js');
 
 const commands = [
     {
         name: 'ping',
         description: 'replies with pong',
+    },
+
+    //Command that lets you open capsules
+    {
+        name: 'openCapsule',
+        description: 'lets user select which capsule they want to open',
+        options: [
+            {
+                name: 'open',
+                description: 'choose which role capsule to open.',
+                type: ApplicationCommandOptionType.String
+            }
+        ]
     },
 ];
 
