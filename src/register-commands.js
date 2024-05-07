@@ -1,9 +1,10 @@
+require('dotenv').config();
 const { REST, Routes } = require('discord.js');
 
 const commands = [
     {
-        name: '',
-        description: '',
+        name: 'ping',
+        description: 'replies with pong',
     },
 ];
 
@@ -18,9 +19,9 @@ const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
             Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
             { body: commands }
         )
-        console.log('Slash commands regisered sucsessfully.')
+        console.log('Slash commands regisered sucsessfully.');
 
     } catch (error) {
-        console.log('The Ball is angry...: ${error}');
+        console.log(`The Ball is angry... ${error}`);
     }
 })();
