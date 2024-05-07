@@ -17,25 +17,33 @@ client.on('ready', (c) => {
 });
 
 //listener for when slash commands are triggered
-client.on('interactionCreate', (interaction) => {
+client.on('interactionCreate', async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
-    // checks if the slash command's name has been mentioned
-    if (interaction.commandName === 'open') {
-        interaction.reply('Work in progress!');
-
+    if (interaction.commandName === 'inventory') {
+        const userId = interaction.user.id; // Get user ID from interaction
+        try {
+            let inventory = await UserInventory.findOne({ userId: userId });
+            if (!inventory) {
+                // Assuming UserInventory.create() is the correct method to create an inventory
+                await UserInventory.create({ userId: userId, items: [] });
+                inventory = await UserInventory.findOne({ userId: userId });
+                await interaction.reply(`Created inventory for ${interaction.user.username}!`);
+            } else {
+                await interaction.reply('Work in progress!');
+            }
+        } catch (error) {
+            console.error('Failed to fetch inventory:', error);
+            await interaction.reply(`The Bot is angry... ${error.message}`);
+        }
     }
-
 });
 
+
 client.on('messageCreate', (message) => {
-    //if the person sending the message is a bot, DON'T DO SHIT!!!!
+    //ignore messages from bots
     if (message.author.bot) {
         return;
-    }
-
-    if (message.content === 'ping') {
-        message.reply('pong');
     }
 });
 

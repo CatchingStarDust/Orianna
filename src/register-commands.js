@@ -9,15 +9,20 @@ const commands = [
 
     //Command that lets you open capsules
     {
-        name: 'openCapsule',
+        name: 'opencapsule',
         description: 'lets user select which capsule they want to open',
         options: [
             {
-                name: 'open',
-                description: 'choose which role capsule to open.',
+                name: 'capsulenamehere',
+                description: 'work in progress!',
                 type: ApplicationCommandOptionType.String
             }
         ]
+    },
+    //lets users check their inventory, and creates one if they don't have one.
+    {
+        name: 'inventory',
+        description: 'check your inventory',
     },
 ];
 
