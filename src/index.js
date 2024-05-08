@@ -43,7 +43,7 @@ client.on('interactionCreate', async (interaction) => {
             }
         } catch (error) {
             console.error('Failed to fetch inventory:', error);
-            await interaction.reply({ embeds: [errorMsgEmbed] });
+            await interaction.reply({ embeds: [errorMsgEmbed()] });
 
         }
 

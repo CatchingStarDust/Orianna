@@ -11,7 +11,7 @@ const genericEmbed = (title, description) => {
 };
 
 // Ori's error message reply embed
-const errorMsgEmbed = (title, description) => {
+function errorMsgEmbed() {
     return new EmbedBuilder()
         .setColor(0xff0000)
         .setTitle(title)
