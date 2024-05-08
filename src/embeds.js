@@ -11,7 +11,7 @@ const genericEmbed = (title, description) => {
 };
 
 // Ori's error message reply embed
-function errorMsgEmbed() {
+function errorMsgEmbed(interaction) {
 
 // server icon
 const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 });
