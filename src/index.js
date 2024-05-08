@@ -24,9 +24,6 @@ client.on('ready', (c) => {
 //----------------------------------------------------------------------
 //listener for when slash commands are triggered
 client.on('interactionCreate', async (interaction) => {
-
-    // server icon
-    const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 });
     if (!interaction.isChatInputCommand()) return;
 
     // all created commands
