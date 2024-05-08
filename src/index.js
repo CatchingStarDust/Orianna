@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { genericEmbed, errorMsgEmbed } = require('./embeds');
+const userInventory = require('./userinventoryDB.js')
 
 //--------------------------------------------------
 //  where intents go (the bot needs permissions to do things)
@@ -24,17 +25,17 @@ client.on('ready', (c) => {
 //listener for when slash commands are triggered
 client.on('interactionCreate', async (interaction) => {
 
-// server icon
-const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 });
+    // server icon
+    const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 });
     if (!interaction.isChatInputCommand()) return;
 
     // all created commands
     if (interaction.commandName === 'inventory') {
         const userId = interaction.user.id; // Get user ID from interaction
         try {
-            let inventory = await UserInventory.findOne({ userId: userId });
+            let inventory = await userInventory.findOne({ userId: userId });
             if (!inventory) {
-                await UserInventory.create({ userId: userId, items: [] });
+                await userInventory.create({ userId: userId, items: [] });
                 inventory = await UserInventory.findOne({ userId: userId });
                 await interaction.reply(`Created inventory for ${interaction.user.username}!`);
             } else {
@@ -43,6 +44,7 @@ const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 });
         } catch (error) {
             console.error('Failed to fetch inventory:', error);
             await interaction.reply({ embeds: [errorMsgEmbed] });
+
         }
 
 

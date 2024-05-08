@@ -4,20 +4,20 @@ const { EmbedBuilder } = require('discord.js');
 const genericEmbed = (title, description) => {
     return new EmbedBuilder()
         .setColor(0xff0000)
-        .setTitle(`title`)
-        .setThumbnail({guildIcon})
+        .setTitle(title)
+        .setThumbnail(guildIcon)
         .setDescription(description)
-        .addFields({value: 'Work in progress!'});
+        .addFields({ name: 'Note', value: 'Work in progress!' });
 };
 
 // Ori's error message reply embed
 const errorMsgEmbed = (title, description) => {
     return new EmbedBuilder()
         .setColor(0xff0000)
-        .setTitle(`title`)
-        .setThumbnail({guildIcon})
+        .setTitle(title)
+        .setThumbnail(guildIcon)
         .setDescription(description)
-        .addFields({value: `The Bot is angry... ${error.message}`});
+        .addFields({ name: 'Error', value: `The Bot is angry... ${error.message}` });
 };
 
-module.exports = { genericEmbed, errorMsgEmbed,};
+module.exports = { genericEmbed, errorMsgEmbed, };
