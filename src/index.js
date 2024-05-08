@@ -1,6 +1,13 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { genericEmbed, errorMsgEmbed } = require('./embeds');
 
+//----------------------------------------------------------------------
+// server icon
+const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 });
+
+//--------------------------------------------------
+//  where intents go (the bot needs permissions to do things)
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -11,15 +18,18 @@ const client = new Client({
     ],
 });
 
-//this initializes an event listener
+//----------------------------------------------------------------------
+//initializes an event listener
 client.on('ready', (c) => {
     console.log('We go.')
 });
 
+//----------------------------------------------------------------------
 //listener for when slash commands are triggered
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
+    // all created commands
     if (interaction.commandName === 'inventory') {
         const userId = interaction.user.id; // Get user ID from interaction
         try {
@@ -30,18 +40,20 @@ client.on('interactionCreate', async (interaction) => {
                 inventory = await UserInventory.findOne({ userId: userId });
                 await interaction.reply(`Created inventory for ${interaction.user.username}!`);
             } else {
-                await interaction.reply('Work in progress!');
+                await interaction.reply({ embeds: [genericEmbed] });
             }
         } catch (error) {
             console.error('Failed to fetch inventory:', error);
-            await interaction.reply(`The Bot is angry... ${error.message}`);
+            await interaction.reply({ embeds: [errorMsgEmbed] });
         }
+
+
     }
 });
 
-
+//----------------------------------------------------------------------
+//ignore messages from bots
 client.on('messageCreate', (message) => {
-    //ignore messages from bots
     if (message.author.bot) {
         return;
     }
