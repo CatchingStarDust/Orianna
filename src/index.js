@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { genericEmbed, errorMsgEmbed } = require('./embeds');
-const userInventory = require('./userinventoryDB.js')
+const { userInventory } = require('./userinventoryDB.js')
 
 //--------------------------------------------------
 //  where intents go (the bot needs permissions to do things)
