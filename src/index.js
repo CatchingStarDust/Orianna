@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('mongoose');
+const mongoose = require('mongoose');
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { genericEmbed, errorMsgEmbed } = require('./embeds');
 const { userInventory } = require('./userinventoryDB.js')
@@ -30,20 +30,29 @@ client.on('interactionCreate', async (interaction) => {
     // all created commands
     if (interaction.commandName === 'inventory') {
         const userId = interaction.user.id; // Get user ID from interaction
-        try {
-            let inventory = await userInventory.findOne({ userId: userId });
-            if (!inventory) {
-                await userInventory.create({ userId: userId, items: [] });
-                inventory = await UserInventory.findOne({ userId: userId });
-                await interaction.reply(`Created inventory for ${interaction.user.username}!`);
-            } else {
-                await interaction.reply({ embeds: [genericEmbed] });
-            }
-        } catch (error) {
-            console.error('Failed to fetch inventory:', error);
-            await interaction.reply({ embeds: [errorMsgEmbed()] });
 
-        }
+            try {
+                async function findUserInventory() {
+                    await mongoose.connect('mongodb://localhost:27017/discordBotDB');
+                    mongoose.model('userinventoryDB', userInventorySchema);
+
+                    await mongoose.model('userinventoryDB').findOne();
+                };
+
+                if (!findUserInventory) {
+                    await userInventory.create({ userId: userId, items: [] });
+                    inventory = await UserInventory.findOne({ userId: userId });
+                    await interaction.reply(`Created inventory for ${interaction.user.username}!`);
+                } else {
+                    await interaction.reply({ embeds: [genericEmbed] });
+                };
+            }
+
+            catch (error) {
+                console.error( error);
+                await interaction.reply({ embeds: [errorMsgEmbed()] });
+
+            };
 
 
     }

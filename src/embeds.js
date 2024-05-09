@@ -1,7 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
 
+
 // generic embed for  responses
 const genericEmbed = (title, description) => {
+    const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 }); // server icon
     return new EmbedBuilder()
         .setColor(0xff0000)
         .setTitle('Note')
@@ -12,9 +14,7 @@ const genericEmbed = (title, description) => {
 
 // Ori's error message reply embed
 function errorMsgEmbed(interaction) {
-
-// server icon
-const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 });
+    const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 }); // server icon
 
     return new EmbedBuilder()
         .setColor(0xff0000)
