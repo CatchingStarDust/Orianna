@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('mongoose');
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { genericEmbed, errorMsgEmbed } = require('./embeds');
 const { userInventory } = require('./userinventoryDB.js')
