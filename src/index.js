@@ -31,27 +31,30 @@ client.on('interactionCreate', async (interaction) => {
     if (interaction.commandName === 'inventory') {
         const userId = interaction.user.id; // Get user ID from interaction
 
-            try {
-                async function findUserInventory() {
-                    await mongoose.connect('mongodb://localhost:27017/discordBotDB');
-                    mongoose.model('userinventoryDB', userInventorySchema);
+        async function connectToDB() {
+            await mongoose.connect('mongodb://localhost:27017/discordBotDB');
+            mongoose.model('userinventoryDB', userInventorySchema);
+            await mongoose.model('userinventoryDB').findOne();
 
-                    await mongoose.model('userinventoryDB').findOne();
-                };
+        };
+
+        try {
+            async function findUserInventory() {
+                inventory = await UserInventory.findOne({ userId: userId })
 
                 if (!findUserInventory) {
-                    await userInventory.create({ userId: userId, items: [] });
-                    inventory = await UserInventory.findOne({ userId: userId });
-                    await interaction.reply(`Created inventory for ${interaction.user.username}!`);
-                } else {
-                    await interaction.reply({ embeds: [genericEmbed] });
-                };
-            }
 
-            catch (error) {
-                console.error('Error in inventory command:', error);
-                await interaction.reply({ embeds: [errorMsgEmbed(interaction, error)] });
-              }
+                } else {
+                    await interaction.reply(`You don't have anything!`);
+                };
+            };
+
+        }
+
+        catch (error) {
+            console.error('Error in inventory command:', error);
+            await interaction.reply({ embeds: [errorMsgEmbed(interaction, error)] });
+        }
 
 
 
