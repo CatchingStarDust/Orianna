@@ -49,10 +49,10 @@ client.on('interactionCreate', async (interaction) => {
             }
 
             catch (error) {
-                console.error( error);
-                await interaction.reply({ embeds: [errorMsgEmbed()] });
+                console.error('Error in inventory command:', error);
+                await interaction.reply({ embeds: [errorMsgEmbed(interaction, error)] });
+              }
 
-            };
 
 
     }
