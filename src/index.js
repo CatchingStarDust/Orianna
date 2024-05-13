@@ -2,7 +2,8 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { genericEmbed, errorMsgEmbed } = require('./embeds');
-const { userInventory } = require('./userinventoryDB.js')
+const { userInventory } = require('./userinventoryDB.js');
+const eventHandler = require('./handlers/eventHandlers.js');
 
 //--------------------------------------------------
 //  where intents go (the bot needs permissions to do things)
@@ -17,14 +18,16 @@ const client = new Client({
 });
 
 //----------------------------------------------------------------------
-//initializes an event listener
-client.on('ready', (c) => {
-    console.log('We go.')
-});
+/* initializes an event listener
+  client.on('ready', (c) => {
+     console.log('We go.')
+  }); */
 
+eventHandler(client);
 //----------------------------------------------------------------------
 //listener for when slash commands are triggered
-client.on('interactionCreate', async (interaction) => {
+/*
+    client.on('interactionCreate', async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     // all created commands
@@ -61,12 +64,15 @@ client.on('interactionCreate', async (interaction) => {
     }
 });
 
+*/
+
 //----------------------------------------------------------------------
 //ignore messages from bots
-client.on('messageCreate', (message) => {
-    if (message.author.bot) {
-        return;
-    }
-});
+
+/* client.on('messageCreate', (message) => {
+     if (message.author.bot) {
+         return;
+     }
+  }); */
 
 client.login(process.env.TOKEN);
