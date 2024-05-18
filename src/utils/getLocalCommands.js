@@ -10,7 +10,7 @@ module.exports = (exceptions) => {
     );
 
     for (const commandCategory of commandCategories) {
-        const commandFiles = getAllFiles(commandCategories)
+        const commandFiles = getAllFiles(commandCategory)
         console.log(commandFiles);
     }
 
