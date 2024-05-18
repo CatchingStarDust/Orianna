@@ -9,6 +9,10 @@ module.exports = (exceptions) => {
         true
     );
 
-    console.log(commandCategories);
+    for (const commandCategory of commandCategories) {
+        const commandFiles = getAllFiles(commandCategories)
+        console.log(commandFiles);
+    }
+
     return localCommands;
 };
