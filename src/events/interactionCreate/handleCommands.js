@@ -33,19 +33,20 @@ module.exports = (client, interaction) => {
 
             if (commandObject.permissionsRequired?.length) {
                 for (const permission of commandObject.permissionsRequired) {
-                    if(!interaction.member.permissions.has(permission)) {
+                    if (!interaction.member.permissions.has(permission)) {
                         interaction.reply({
                             content: `You don't have enough permissions to use this command.`,
                             ephemeral: true,
                         });
-                        break;
+                        return;
+                    }
                 }
             }
+
         }
-
-
     } catch (error) {
         interaction.reply(`There was an error: ${error}`)
-    }
 
     }
+
+};
