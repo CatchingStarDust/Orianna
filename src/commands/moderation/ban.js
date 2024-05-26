@@ -20,4 +20,11 @@ module.exports = {
         },
     ],
 
+    permissionsRequired: [PermissionFlagBits.Administrator],
+    botPermissions: [PermissionFlagBits.Bots],
+
+    callback: (client, interaction) => {
+        interaction.reply('ban...');
+    },
+
 };
