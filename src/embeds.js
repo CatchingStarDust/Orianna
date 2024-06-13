@@ -29,7 +29,7 @@ function needServerEmbed(interaction, error) {
   return new EmbedBuilder()
     .setColor(0xff0000)
     .setTitle('The Ball is angry...')
-    .setDescription(`This can only be ran inside of a server.`);
+    .setDescription(`This can only be ran inside of the ZedKayn server.`);
 };
 
 

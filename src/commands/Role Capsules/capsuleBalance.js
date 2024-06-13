@@ -5,7 +5,7 @@ module.exports = {
     run: async ({ interaction }) => {
         if (!interaction.inGuild()) {
             interaction.reply({
-               content: needServerEmbed,
+               content: {needServerEmbed},
                ephemeral: true,
             })
             return;
