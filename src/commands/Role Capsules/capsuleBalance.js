@@ -17,10 +17,10 @@ module.exports = {
             let userProfile = await userProfile.findOne({userId: targetUserId});
             if (!userProfile) {
                 userProfile = new UserProfile({userId: targetUserId})
+                    interaction.editReply(
+                        targetUserId === interaction.user.id `You have ${userProfile.balance} capsule(s)`
+                    )
 
-                interaction.editReply(
-                    targetUserId === interaction.user.id ? `You have ${userProfile.balance} capsule(s)`
-                )
             }
 
         } catch (error) {
