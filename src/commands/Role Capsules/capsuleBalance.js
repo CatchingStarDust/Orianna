@@ -1,12 +1,13 @@
-const {ApplicationCommandOptionType } = require('discord.js');
-const UserProfile = require('../../schemas/UserProfile')
+const { ApplicationCommandOptionType } = require('discord.js');
+const UserProfile = require('../../commands/schemas/UserProfile');
+const getLocalCommands = require('../../utils/getLocalCommands');
 
 module.exports = {
     run: async ({ interaction }) => {
         if (!interaction.inGuild()) {
             interaction.reply({
-               content: {needServerEmbed},
-               ephemeral: true,
+                content: { needServerEmbed },
+                ephemeral: true,
             })
             return;
         }
@@ -14,12 +15,12 @@ module.exports = {
         await interaction.deferReply();
 
         try {
-            let userProfile = await userProfile.findOne({userId: targetUserId});
+            let userProfile = await userProfile.findOne({ userId: targetUserId });
             if (!userProfile) {
-                userProfile = new UserProfile({userId: targetUserId})
-                    interaction.editReply(
-                        targetUserId === interaction.user.id `You have ${userProfile.balance} capsule(s)`
-                    )
+                userProfile = new UserProfile({ userId: targetUserId })
+                interaction.editReply(
+                    targetUserId === interaction.user.id`You have ${userProfile.balance} capsule(s)`
+                )
 
             }
 
