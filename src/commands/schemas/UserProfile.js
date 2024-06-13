@@ -11,4 +11,6 @@ const userProfileSchema = new Schema({
  {timestamps: true },
 );
 
+
+
 module.exports = model('UserProfile', userProfileSchema, );
