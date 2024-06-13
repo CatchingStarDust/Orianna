@@ -18,11 +18,11 @@ const client = new Client({
 });
 
 //making an IFIE for the database
-(async ( => {
+(async () => {
     await mongoose.connect(process.env.MONGODB_URI)
     console.log("Connected to the database");
     client.login(process.env.TOKEN);
-}))();
+})();
 
 eventHandler(client);
 
