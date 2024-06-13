@@ -34,4 +34,4 @@ function needServerEmbed(interaction, error) {
 
 
 
-module.exports = { genericEmbed, errorMsgEmbed, };
+module.exports = { genericEmbed, errorMsgEmbed, needServerEmbed, };
