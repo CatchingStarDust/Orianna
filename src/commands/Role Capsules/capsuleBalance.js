@@ -6,21 +6,25 @@ module.exports = {
         if (!interaction.inGuild()) {
             interaction.reply({
                content: needServerEmbed,
-                ephemral: true,
+               ephemeral: true,
             })
             return;
         }
         const targetUserId = interaction.options.getUser('target-user')?.id || interaction.user.id;
-        await interaction.DeferReply();
+        await interaction.deferReply();
 
         try {
-            let userProfile = await userProfile.fineOne({userId: targetUserId});
+            let userProfile = await userProfile.findOne({userId: targetUserId});
             if (!userProfile) {
-                userProfile = new userProfile({userId: targetUserId});
+                userProfile = new UserProfile({userId: targetUserId})
+
+                interaction.editReply(
+                    targetUserId === interaction.user.id ? `You have ${userProfile.balance} capsule(s)`
+                )
             }
 
         } catch (error) {
-            console.log((`There was an error: ${error}`))
+            console.log(`There was an error: ${error}`)
 
         }
     },
