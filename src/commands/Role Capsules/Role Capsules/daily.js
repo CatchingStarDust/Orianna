@@ -1,5 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const UserProfile = require('../../../schemas/UserProfile');
+const BasicCapsule = require('../../../schemas/BasicCapsule.js');
 
 
 const dailyAmmount = 1;
@@ -35,20 +36,30 @@ module.exports = {
                 });
             }
 
-            
+
 
             userProfile.balance += dailyAmmount;
             userProfile.lastDailyCollected = new Date();
 
             // function that gives members their capsule
+            bot.on('message', async (message) => {
+                if (message.content === '/daily') {
 
-            await userProfile.save();
+                    const userId = message.author.id;
 
-            interaction.reply(
-                `${dailyAmmount} was added to your inventory!\nYou have ${userProfile.balance} capsule(s)`);
+                    await giveDailyCapsule(userId);
+
+                    await userProfile.save();
+
+                    interaction.reply(
+                        `${dailyAmmount} was added to your inventory!\nYou have ${userProfile.balance} capsule(s)`);
+                }
+            });
 
         } catch (error) {
             console.log(`Error handling / daily: ${error}`);
+            
+            interaction.reply(`There was an error: ${error}`);
         }
     },
 
