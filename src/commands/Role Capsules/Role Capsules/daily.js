@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType } = require('discord.js')
-const UserProfile = require('../../schemas/UserProfile');
+const UserProfile = require('../../../schemas/UserProfile');
 
 
 const dailyAmmount = 1;
@@ -35,8 +35,12 @@ module.exports = {
                 });
             }
 
+            
+
             userProfile.balance += dailyAmmount;
             userProfile.lastDailyCollected = new Date();
+
+            // function that gives members their capsule
 
             await userProfile.save();
 

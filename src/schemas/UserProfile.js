@@ -5,7 +5,7 @@ const userProfileSchema = new Schema({
 
     balance: { type: Number, default: 0, },
 
-    LastDailyCapsuleCollected: { type: Date, },
+    LastDailyCapsuleCollected: { type: String, Date, },
 
 },
     { timestamps: true },
