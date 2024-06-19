@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType } = require('discord.js')
-const UserProfile = require('../../../schemas/UserProfile');
+const UserProfile = require('../../../schemas/UserProfile.js');
 const BasicCapsule = require('../../../schemas/BasicCapsule.js');
 
 
