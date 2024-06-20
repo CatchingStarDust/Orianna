@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { REST, Routes, SlashCommandBuilder } = require('discord.js');
 const UserProfile = require('../../../schemas/UserProfile.js');
 const basicCapsuleItem = require('../../../schemas/BasicCapsule.js');
 
@@ -66,10 +66,7 @@ module.exports = {
         }
     },
 
-    data: {
-        name: 'daily',
-        description: 'Gives you a capsule',
-    },
+  
 };
         
         await interaction.reply(
