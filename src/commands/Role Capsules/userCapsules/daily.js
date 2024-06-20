@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const UserProfile = require('../../../schemas/UserProfile.js');
-const BasicCapsule = require('../../../schemas/BasicCapsule.js');
+const basicCapsuleItem = require('../../../schemas/BasicCapsule.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -48,7 +48,7 @@ module.exports = {
 
             // function that gives members their capsule
             bot.on('message', async (message) => {
-                if (message.content === '/daily') {
+                if (message.content === 'daily') {
 
                     const userId = message.author.id;
 
@@ -56,8 +56,6 @@ module.exports = {
 
                     await userProfile.save();
 
-                    interaction.reply(
-                        `${dailyAmmount} was added to your inventory!\nYou have ${userProfile.balance} capsule(s)`);
                 }
             });
 
@@ -74,7 +72,8 @@ module.exports = {
     },
 };
         
-        await interaction.reply('You have received your daily capsule!');
+        await interaction.reply(
+            `${dailyAmmount} was added to your inventory!\nYou have ${userProfile.balance} capsule(s)`);
     },
 };
 
