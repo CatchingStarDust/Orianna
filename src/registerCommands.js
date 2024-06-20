@@ -23,4 +23,4 @@ const rest = new REST ().setToken(process.env.TOKEN);
 	} catch (error) {
 		console.log(`there was an error: ${error}`);
 	}
-})
+});
