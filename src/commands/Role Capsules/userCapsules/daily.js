@@ -1,9 +1,14 @@
-const { ApplicationCommandOptionType } = require('discord.js')
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const UserProfile = require('../../../schemas/UserProfile.js');
 const BasicCapsule = require('../../../schemas/BasicCapsule.js');
 
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('daily')
+        .setDescription('Gives you a capsule'),
+    async execute(interaction) {
 
-const dailyAmmount = 1;
+        const dailyAmmount = 1;
 
 module.exports = {
     run: async ({ interaction }) => {
@@ -68,3 +73,8 @@ module.exports = {
         description: 'Gives you a capsule',
     },
 };
+        
+        await interaction.reply('You have received your daily capsule!');
+    },
+};
+
