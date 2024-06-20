@@ -1,53 +1,46 @@
-const { zedKaynHeavenServer } = require('../config.json');
-const areCommandsDifferent = require('../../utils/areCommandsDifferent');
-const getApplicationCommands = require('./utils/getApplicationCommands');
-const getLocalCommands = require('./utils/getLocalCommands');
+const { REST, Routes } = require('discord.js');
+const { clientId, guildId, token } = require('./config.json');
+const fs = require('node:fs');
+const path = require('node:path');
 
-module.exports = async (client) => {
-    try {
-        const localCommands = getLocalCommands();
-        const applicationCommands = await getApplicationCommands(client, zedKaynHeavenServer);
+const commands = [];
+// Grab all the command folders from the commands directory you created earlier
+const foldersPath = path.join(__dirname, 'commands');
+const commandFolders = fs.readdirSync(foldersPath);
 
-        for (const localCommand of localCommands) {
-            const { name, description, options } = localCommand;
+for (const folder of commandFolders) {
+	// Grab all the command files from the commands directory you created earlier
+	const commandsPath = path.join(foldersPath, folder);
+	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	// Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
+	for (const file of commandFiles) {
+		const filePath = path.join(commandsPath, file);
+		const command = require(filePath);
+		if ('data' in command && 'execute' in command) {
+			commands.push(command.data.toJSON());
+		} else {
+			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		}
+	}
+}
 
-            const existingCommand = await applicationCommands.cache.find(
-                (cmd) => cmd.name === name
-            );
+// Construct and prepare an instance of the REST module
+const rest = new REST().setToken(token);
 
-            if (existingCommand) {
-                if (localCommand.deleted) {
-                    await applicationCommands.delete(existingCommand.id)
-                    console.log('Command deleted.');
-                    continue;
-                }
+// and deploy your commands!
+(async () => {
+	try {
+		console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
-                if (areCommandsDifferent(existingCommand, localCommand)) {
-                    await applicationCommands.edit(existingCommand.id, {
-                        description,
-                        options,
-                    });
-                    console.log(`edited command ${name}.`)
-                } else {
-                    if (localCommand.deleted) {
-                        console.log(`"${name}" is set to to delete. Skipping.`)
-                        continue;
-                    }
+		// The put method is used to fully refresh all commands in the guild with the current set
+		const data = await rest.put(
+			Routes.applicationGuildCommands(clientId, guildId),
+			{ body: commands },
+		);
 
-                    await applicationCommands.create({
-                        name,
-                        description,
-                        options,
-                    })
-
-                    console.log(`sucsessfuly registered "${name}" as a command.`)
-                }
-            }
-        }
-
-    } catch (error) {
-        console.log(`There was an error: ${error}`)
-
-    }
-
-};
+		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+	} catch (error) {
+		// And of course, make sure you catch and log any errors!
+		console.error(error);
+	}
+})();

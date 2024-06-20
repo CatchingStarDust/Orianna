@@ -1,10 +1,8 @@
 const { devs, zedKaynHeavenServer } = require('../../../config.js');
-const getLocalCommands = require('./utils/getLocalCommands.js');
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand) return;
-    const localCommand = getLocalCommands();
-
+    
     try {
         const commandObject = localCommands.find(
             (cmd) => cmd.name === interaction.commandName

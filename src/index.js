@@ -2,7 +2,6 @@ require('dotenv').config();
 //libraries the bot needs access to
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { genericEmbed, errorMsgEmbed, needServerEmbed } = require('./embeds');
-const eventHandler = require('./handlers/eventHandlers.js');
 const mongoose = require('mongoose');
 
 //--------------------------------------------------
@@ -24,6 +23,5 @@ const client = new Client({
     client.login(process.env.TOKEN);
 })();
 
-eventHandler(client);
 
 client.login(process.env.TOKEN);
