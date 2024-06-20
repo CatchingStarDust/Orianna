@@ -1,5 +1,5 @@
 const { devs, zedKaynHeavenServer } = require('../../../config.js');
-const getLocalCommands = require('../../utils/getLocalCommands.js');
+const getLocalCommands = require('./utils/getLocalCommands.js');
 
 module.exports = (client, interaction) => {
     if (!interaction.isChatInputCommand) return;
