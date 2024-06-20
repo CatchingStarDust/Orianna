@@ -16,6 +16,11 @@ const client = new Client({
     ],
 });
 
+// signaling that Ori is online
+client.on('ready', (c) => {
+    console.log(`${client.user.tag} has arrived. We go.`)
+});
+
 //making an IFIE for the database
 (async () => {
     await mongoose.connect(process.env.MONGODB_URI)

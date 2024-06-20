@@ -15,7 +15,7 @@ const rest = new REST ().setToken(process.env.TOKEN);
 		console.log('registering slash commands...');
 
 		await rest.put(
-			Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+			Routes.applicationGuildCommands(process.env.clientId, process.env.zedKaynHeavenServer),
 			{body: commands}
 		)
 
