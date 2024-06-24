@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js');
 const UserProfile = require('../../commands/schemas/UserProfile');
-const getLocalCommands = require('../../../utils/getLocalCommands');
+const capsuleData = require('../../commands/schemas/capsuleData');
 
 module.exports = {
     run: async ({ interaction }) => {

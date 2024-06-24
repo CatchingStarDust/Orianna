@@ -1,76 +1,55 @@
-const { REST, Routes, SlashCommandBuilder } = require('discord.js');
-const UserProfile = require('../../../schemas/UserProfile.js');
-const basicCapsuleItem = require('../../../schemas/BasicCapsule.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { UserProfile } = require('./schemas/UserProfile'); 
+const basicCapsuleItem = require('../../commands/schemas/capsuleData');
+
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('daily')
         .setDescription('Gives you a capsule'),
-    async execute(interaction) {
 
+
+    async execute(interaction) {
         const dailyAmmount = 1;
 
-module.exports = {
-    run: async ({ interaction }) => {
-        // make sure people can only use this in the server
+// Ensure the command is used in a server
         if (!interaction.inGuild()) {
-            interaction.reply({ content: `${needServerEmbed}`, ephemeral: true });
+            await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true });
             return;
         }
 
-        interaction.reply(`collecting dalies.`)
+        await interaction.deferReply(); 
 
         try {
-            await interaction.deferReply();
+            let commandUser = await UserProfile.findOne({ userId: interaction.member.id });
 
-            let userProfile = await UserProfile.findOne({ userId: interaction.member.id, });
-
-            // Check to see if member already collected their Capsule for the day
-            if (userProfile) {
+ // Check if the user has already collected their daily capsule
+            if (commandUser) {
                 const lastDailyDate = userProfile.lastDailyCollected?.toDateString();
                 const currentDate = new Date().toDateString();
 
                 if (lastDailyDate === currentDate) {
-                    interaction.reply(`You have already collected your reward for the day. Come back tomorrow.`);
+                    await interaction.editReply('You have already collected your reward for the day. Come back tomorrow.');
                     return;
                 }
-
             } else {
-                userProfile = new UserProfile({
+                createNewUserProfile = new UserProfile({
                     userId: interaction.member.id,
+                    capsules: 0, 
                 });
             }
 
+            userProfile[userId].capsules += dailyAmount;
 
+ // This makes sure the bot knows that the user has offically collected their capsule for the day. It updates the date to the current day.           
+            userProfile[userId].lastDailyCollected = new Date();
+//Update the user's balance.
+            await userProfile[userId].save();
 
-            userProfile.balance += dailyAmmount;
-            userProfile.lastDailyCollected = new Date();
-
-            // function that gives members their capsule
-            bot.on('message', async (message) => {
-                if (message.content === 'daily') {
-
-                    const userId = message.author.id;
-
-                    await giveDailyCapsule(userId);
-
-                    await userProfile.save();
-
-                }
-            });
-
+            await interaction.editReply(`${dailyAmmount} capsule(s) were added to your inventory!\nYou now have ${userProfile.balance} capsule(s).`);
         } catch (error) {
-            console.log(`Error handling / daily: ${error}`);
-            
-            interaction.reply(`There was an error: ${error}`);
+            console.error(`Error handling /daily: ${error}`);
+            await interaction.editReply('There was an error while processing your request.');
         }
     },
-
-  
 };
-        
-        await interaction.reply(
-            `${dailyAmmount} was added to your inventory!\nYou have ${userProfile.balance} capsule(s)`);
-    },
-};
-

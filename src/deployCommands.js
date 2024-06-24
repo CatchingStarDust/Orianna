@@ -1,4 +1,6 @@
 require('dotenv').config();
+console.log(process.env.TOKEN); 
+
 const { REST, Routes} = require('discord.js');
 
 const commands = [
