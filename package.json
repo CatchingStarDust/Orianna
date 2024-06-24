@@ -18,6 +18,7 @@
     "homepage": "https://github.com/CatchingStarDust/Orianna#readme",
     "dependencies": {
         "cheerio": "^1.0.0-rc.12",
+        "discord.js": "^14.15.3",
         "dotenv": "^16.4.5",
         "mongoose": "^8.3.4",
         "op.gg-api": "^2.0.5-alpha"
