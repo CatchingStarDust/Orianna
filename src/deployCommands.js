@@ -1,28 +1,28 @@
 require('dotenv').config();
-console.log(process.env.TOKEN); 
+console.log(process.env.TOKEN);
 
-const { REST, Routes} = require('discord.js');
+const { REST, Routes } = require('discord.js');
 
 const commands = [
 	{
 		name: 'daily',
-		description: 'gives you your daily capsule',
+		description: 'Gives you your daily capsule',
 	}
 ];
 
-const rest = new REST ().setToken(process.env.TOKEN);
+const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
 (async () => {
 	try {
-		console.log('registering slash commands...');
+		console.log('Registering slash commands...');
 
 		await rest.put(
-			Routes.applicationGuildCommands(process.env.clientId, process.env.zedKaynHeavenServer),
-			{body: commands}
-		)
+			Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+			{ body: commands }
+		);
 
-		console.log('slash commands registered.')
+		console.log('Slash commands registered.');
 	} catch (error) {
-		console.log(`there was an error: ${error}`);
+		console.error(`There was an error: ${error}`);
 	}
-});
+})();
