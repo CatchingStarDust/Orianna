@@ -32,6 +32,12 @@ function needServerEmbed(interaction, error) {
     .setDescription(`This can only be ran inside of the ZedKayn server.`);
 };
 
+const openCapsuleResults = new MessageEmbed()
+.setTitle('You opened a capsule...')
+.setDescription(isJackpot ? '🎉 You win!' : 'Try again next time.')
+.addField('Your Rolls', userPulls[userId].toString(), true)
+.addField('Jackpot Roll', roll.toString(), true)
+.setColor(isJackpot ? 'GREEN' : 'RED');
 
 
-module.exports = { genericEmbed, errorMsgEmbed, needServerEmbed, };
+module.exports = { genericEmbed, errorMsgEmbed, needServerEmbed, openCapsuleResults, };
