@@ -5,6 +5,11 @@ const { REST, Routes } = require('discord.js');
 
 const commands = [
     {
+        name: 'open-capsule',
+        description: 'Open an capsules you have',
+    },
+
+    {
         name: 'daily',
         description: 'Gives you your daily capsule',
     }
@@ -19,7 +24,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
             Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
             { body: commands }
         );
-        console.log('Slash commands registered:', data);
+        console.log('Slash command registered:', data);
     } catch (error) {
         console.error('There was an error:', error);
     }
