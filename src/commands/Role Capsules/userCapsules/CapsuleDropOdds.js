@@ -4,10 +4,12 @@ const { userId, message } = require('discord.js');
 
 async function dropCapsule() {
     try {
-        const jackpot = 10.0;
 
         const n = Math.random();
+        
         const result = n * 100;
+
+        const jackpot = 10.0;
 
         // Check if the result is less than the jackpot
         if (result < jackpot) {

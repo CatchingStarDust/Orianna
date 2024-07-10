@@ -6,7 +6,7 @@ module.exports = {
         .setName('daily')
         .setDescription('Gives you a capsule'),
 
-    async execute(interaction) { // Change message and args to interaction
+    async execute(interaction) { 
         const dailyAmount = 1;
 
         // Ensure the command is used in a server
@@ -40,6 +40,7 @@ module.exports = {
 
             // This makes sure the bot knows that the user has officially collected their capsule for the day. It updates the date to the current day.           
             userProfile.lastDailyCollected = new Date();
+            
             // Update the user's balance.
             await userProfile.save();
 
@@ -50,3 +51,6 @@ module.exports = {
         }
     },
 };
+
+// Make sure to export the model or else it will not register as a slash command
+module.exports = { daily };
