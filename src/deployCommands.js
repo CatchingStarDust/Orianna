@@ -5,7 +5,7 @@ const { REST, Routes } = require('discord.js');
 
 const commands = [
     {
-        name: 'open-capsule',
+        name: 'opencapsule',
         description: 'Open an capsules you have',
     },
 

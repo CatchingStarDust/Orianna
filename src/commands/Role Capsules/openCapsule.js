@@ -42,4 +42,4 @@ module.exports = {
     }
 };
 
-module.exports = { openCapsule };
+module.exports = { opencapsule };

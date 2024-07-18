@@ -38,10 +38,10 @@ module.exports = {
 
             userProfile.capsules += dailyAmount;
 
-            // This makes sure the bot knows that the user has officially collected their capsule for the day. It updates the date to the current day.           
+            // Update the last daily collection date to today
             userProfile.lastDailyCollected = new Date();
             
-            // Update the user's balance.
+            // Save the updated user profile
             await userProfile.save();
 
             await interaction.editReply(`${dailyAmount} capsule(s) were added to your inventory!\nYou now have ${userProfile.capsules} capsule(s).`);
@@ -51,6 +51,3 @@ module.exports = {
         }
     },
 };
-
-// Make sure to export the model or else it will not register as a slash command
-module.exports = { daily };
