@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js');
-const UserProfile = require('../../commands/schemas/UserProfile');
-const capsuleData = require('../../commands/schemas/capsuleData');
+const UserProfile = require('../commands/schemas/UserProfile');
+const capsuleData = require('../commands/schemas/capsuleData');
 
 module.exports = {
     run: async ({ interaction }) => {
