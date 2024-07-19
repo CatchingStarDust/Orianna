@@ -18,19 +18,21 @@ module.exports = {
         await interaction.deferReply(); 
 
         try {
-            console.log('Fetching user profile for user ID:', interaction.member.id); // Debug log
+            console.log('Fetching user profile for user ID:', interaction.member.id); 
 
             let userProfile = await UserProfile.findOne({ userId: interaction.member.id });
 
             let twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-            //calculates the time since the function was ran
+            // Function to calculate remaining time until next collection
             function getRemainingTime(lastCollected) {
+                if (!lastCollected) return null;
+
                 const now = new Date();
                 const nextCollectionTime = new Date(lastCollected.getTime() + twentyFourHours);
                 const remainingTime = nextCollectionTime - now;
 
-            if (remainingTime <= 0) {
+                if (remainingTime <= 0) {
                     return null;
                 }
 
@@ -38,21 +40,21 @@ module.exports = {
                 const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
                 const seconds = Math.floor((remainingTime / 1000) % 60);
 
-                    return { hours, minutes, seconds };
-}
+                return { hours, minutes, seconds }; // Return an object with hours, minutes, and seconds
+            }
 
             // Check if the user has already collected their daily capsule
             if (userProfile) {
-                const lastDailyDate = userProfile.lastDailyCollected?.toDateString();
-                const currentDate = new Date().toDateString();
+                const remainingTime = getRemainingTime(userProfile.lastDailyCollected); // Calculate remaining time
 
-                if (lastDailyDate === currentDate) {
-                    console.log('User has already collected their daily reward.'); 
+                if (remainingTime) {
+                    const { hours, minutes, seconds } = remainingTime; 
+                    console.log('User has already collected their daily reward.');
                     await interaction.editReply(`You have already collected your reward for the day. You can collect another in ${hours}h ${minutes}m ${seconds}s.`);
                     return;
                 }
             } else {
-                console.log('No existing user profile found. Creating a new one.'); 
+                console.log('No existing user profile found. Creating a new one.');
                 userProfile = new UserProfile({
                     userId: interaction.member.id,
                     capsules: 0, 
@@ -64,12 +66,12 @@ module.exports = {
 
             await userProfile.save();
 
-            console.log('User profile updated and saved.'); // Debug log
+            console.log('User profile updated and saved.'); 
 
             await interaction.editReply(`${dailyAmount} capsule(s) were added to your inventory!\nYou now have ${userProfile.capsules} capsule(s).`);
         } catch (error) {
             console.error(`Error handling /daily: ${error}`);
-            await interaction.editReply('There was an error while processing your request.');
+            await interaction.editReply('There was an error while processing your request.'); 
         }
     },
 };
