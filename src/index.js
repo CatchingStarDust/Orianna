@@ -20,11 +20,15 @@ const client = new Client({
 
 client.commands = new Map();
 
-// Load all of the command files
+// Load command files
 const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
     const command = require(path.join(__dirname, 'commands', file));
+    if (!command.data || !command.data.name) {
+        console.error(`The command at ${file} is missing a 'data' property or 'name'.`);
+        continue;
+    }
     client.commands.set(command.data.name, command);
 }
 

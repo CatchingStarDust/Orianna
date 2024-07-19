@@ -18,6 +18,8 @@ module.exports = {
         await interaction.deferReply(); 
 
         try {
+            console.log('Fetching user profile for user ID:', interaction.member.id); // Debug log
+
             let userProfile = await UserProfile.findOne({ userId: interaction.member.id });
 
             // Check if the user has already collected their daily capsule
@@ -26,10 +28,12 @@ module.exports = {
                 const currentDate = new Date().toDateString();
 
                 if (lastDailyDate === currentDate) {
+                    console.log('User has already collected their daily reward.'); // Debug log
                     await interaction.editReply('You have already collected your reward for the day. Come back tomorrow.');
                     return;
                 }
             } else {
+                console.log('No existing user profile found. Creating a new one.'); // Debug log
                 userProfile = new UserProfile({
                     userId: interaction.member.id,
                     capsules: 0, 
@@ -37,12 +41,11 @@ module.exports = {
             }
 
             userProfile.capsules += dailyAmount;
-
-            // Update the last daily collection date to today
             userProfile.lastDailyCollected = new Date();
-            
-            // Save the updated user profile
+
             await userProfile.save();
+
+            console.log('User profile updated and saved.'); // Debug log
 
             await interaction.editReply(`${dailyAmount} capsule(s) were added to your inventory!\nYou now have ${userProfile.capsules} capsule(s).`);
         } catch (error) {
