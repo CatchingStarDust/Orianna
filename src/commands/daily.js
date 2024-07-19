@@ -22,18 +22,37 @@ module.exports = {
 
             let userProfile = await UserProfile.findOne({ userId: interaction.member.id });
 
+            let twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+            //calculates the time since the function was ran
+            function getRemainingTime(lastCollected) {
+                const now = new Date();
+                const nextCollectionTime = new Date(lastCollected.getTime() + twentyFourHours);
+                const remainingTime = nextCollectionTime - now;
+
+            if (remainingTime <= 0) {
+                    return null;
+                }
+
+                const hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
+                const seconds = Math.floor((remainingTime / 1000) % 60);
+
+                    return { hours, minutes, seconds };
+}
+
             // Check if the user has already collected their daily capsule
             if (userProfile) {
                 const lastDailyDate = userProfile.lastDailyCollected?.toDateString();
                 const currentDate = new Date().toDateString();
 
                 if (lastDailyDate === currentDate) {
-                    console.log('User has already collected their daily reward.'); // Debug log
-                    await interaction.editReply('You have already collected your reward for the day. Come back tomorrow.');
+                    console.log('User has already collected their daily reward.'); 
+                    await interaction.editReply(`You have already collected your reward for the day. You can collect another in ${hours}h ${minutes}m ${seconds}s.`);
                     return;
                 }
             } else {
-                console.log('No existing user profile found. Creating a new one.'); // Debug log
+                console.log('No existing user profile found. Creating a new one.'); 
                 userProfile = new UserProfile({
                     userId: interaction.member.id,
                     capsules: 0, 
