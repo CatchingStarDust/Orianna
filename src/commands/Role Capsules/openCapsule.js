@@ -36,7 +36,7 @@ module.exports = {
             await interaction.reply({ embeds: [openCapsuleResults] });  
 
         } catch (error) {
-            console.log(`OOPS: "${error}"`);
+            console.error(`OOPS: "${error}"`);
             await interaction.editReply('There was an error trying to open the capsule.');
         }
     }

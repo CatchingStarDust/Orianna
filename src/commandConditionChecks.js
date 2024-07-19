@@ -13,7 +13,7 @@ module.exports = (client, interaction) => {
         if (commandObject.devOnly) {
             if (!devs.includes(interaction.member.id)) {
                 interaction.reply({
-                    content: 'Sorry, only admins can run this command.',
+                    content: `Sorry, only admins can run this command.`,
                     ephemeral: true,
                 });
                 return;
@@ -22,7 +22,7 @@ module.exports = (client, interaction) => {
             if (commandObject.testOnly) {
                 if (!(interaction.guild === zedKaynHeavenServer)) {
                     interaction.reply({
-                        content: 'Sorry, this command cannot be ran.',
+                        content: `Sorry, this command cannot be ran.`,
                         ephemeral: true,
                     });
                     return;
