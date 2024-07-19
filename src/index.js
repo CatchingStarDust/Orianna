@@ -1,12 +1,11 @@
 require('dotenv').config();
 
 // libraries the bot needs access to
-const fs = require('node:fs');
-const path = require('node:path');
-
-const { Client, GatewayIntentBits, EmbedBuilder, Events, InteractionResponseType, } = require('discord.js');
+const { Client, GatewayIntentBits, Events } = require('discord.js');
 const { genericEmbed, errorMsgEmbed, needServerEmbed } = require('./embeds');
 const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 
 // where intents go (the bot needs permissions to do things)
 const client = new Client({
@@ -19,29 +18,36 @@ const client = new Client({
     ],
 });
 
+client.commands = new Map();
+
+// Makes sure that all the .js files are loaded in
+const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const command = require(path.join(__dirname, 'commands', file));
+    client.commands.set(command.data.name, command);
+}
+
 // signals that Ori is online
 client.once(Events.ClientReady, () => {
     console.log(`${client.user.tag} has arrived. We go.`);
 });
 
-//retreive command files
-const foldersPath = path.join(__dirname, 'commands');
-const commandFolders = fs.readdirSync(foldersPath);
+// handles command interactions
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isChatInputCommand()) return;
 
-for (const folder of commandFolders) {
-	const commandsPath = path.join(foldersPath, folder);
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-	for (const file of commandFiles) {
-		const filePath = path.join(commandsPath, file);
-		const command = require(filePath);
-		// Set a new item in the Collection with the key as the command name and the value as the exported module
-		if ('data' in command && 'execute' in command) {
-			client.commands.set(command.data.name, command);
-		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-		}
-	}
-}
+    const command = client.commands.get(interaction.commandName);
+
+    if (!command) return;
+
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(`Error executing command: ${error}`);
+        await interaction.reply({ content: 'There was an error executing this command.', ephemeral: true });
+    }
+});
 
 // signals that Ori is connected to the Mongoose database
 (async () => {

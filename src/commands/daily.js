@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const UserProfile = require('../../commands/schemas/UserProfile');
+const UserProfile = require('../schemas/UserProfile');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -51,5 +51,3 @@ module.exports = {
         }
     },
 };
-
-module.exports = { daily };
