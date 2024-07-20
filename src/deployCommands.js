@@ -8,10 +8,15 @@ const commands = [
         name: 'opencapsule',
         description: 'Open an capsules you have',
     },
-
+//---------
     {
         name: 'daily',
         description: 'Gives you your daily capsule',
+    },
+//---------
+    {
+        name: 'inventory',
+        description: "Check your inventory",
     }
 ];
 

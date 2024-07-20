@@ -1,6 +1,5 @@
 const { ApplicationCommandOptionType } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const capsuleData = require('../schemas/capsuleData');
 
 module.exports = {
     run: async ({ interaction }) => {
@@ -19,26 +18,20 @@ module.exports = {
             if (!userProfile) {
                 userProfile = new UserProfile({ userId: targetUserId })
                 interaction.editReply(
-                    targetUserId === interaction.user.id`You have ${userProfile.balance} capsule(s)`
+                    interaction.user.id`You have ${userProfile.balance} capsule(s)`
                 )
 
             }
 
         } catch (error) {
-            console.log(`There was an error: ${error}`)
+            console.log(`OOPS: ${error}`)
 
         }
     },
 
     data: {
-        name: 'Inventory',
+        name: 'inventory',
         description: "Check your inventory",
-        options: [
-            {
-                name: 'target-user',
-                description: "The user who's inventory you want to see",
-                type: ApplicationCommandOptionType.User,
-            },
-        ],
+        
     },
 };
