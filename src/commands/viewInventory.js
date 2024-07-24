@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
+const needServerEmbed = require('embeds.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,15 +9,9 @@ module.exports = {
 
     async execute(interaction) {
         if (!interaction.inGuild()) {
-            const needServerEmbed = {
-                title: "This command can only be used in a server",
-                description: "Please use this command in a server.",
-                color: 0xff0000
-            };
-            interaction.reply({
-                embeds: [needServerEmbed],
-                ephemeral: true,
-            });
+
+            interaction.reply({needServerEmbed});
+            
             return;
         }
         await interaction.deferReply();
