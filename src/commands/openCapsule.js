@@ -23,6 +23,8 @@ module.exports = {
 
             if(!userProfile) {
                 interaction.editReply(noCapsuleEmbed);
+
+                await userProfile.save();
             }
             
         } catch (error) {

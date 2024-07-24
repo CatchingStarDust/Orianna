@@ -1,14 +1,9 @@
 require('dotenv').config();
 console.log(process.env.TOKEN);
 
-const { REST, Routes } = require('discord.js');
+const { REST, Routes, ApplicationCommandOptionType } = require('discord.js');
 
 const commands = [
-    {
-        name: 'opencapsule',
-        description: 'Open an capsules you have',
-    },
-//---------
     {
         name: 'daily',
         description: 'Gives you your daily capsule',
@@ -23,6 +18,14 @@ const commands = [
     {
         name: 'opencapsule',
         description: "open a capsule",
+        options: [
+            {
+                name: 'basic-capsule',
+                description: k,
+                type: ApplicationCommandOptionType.Number,
+                required: true,
+            },
+        ]
     },
     
 ];
