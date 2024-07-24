@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 
 
-// generic embed for  responses
+// EMBED TEMPLATE!!!
 const genericEmbed = (interaction, title, description) => {
   const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 });
   return new EmbedBuilder()
@@ -19,18 +19,18 @@ function errorMsgEmbed(interaction, error) {
   return new EmbedBuilder()
     .setColor(0xff0000)
     .setTitle('The Ball is angry...')
-    .setDescription(`An error occurred: ${error.message}`);
+    .addField(`An error occurred: ${error.message}`);
 };
 
 // Cannot be run here embed
-function needServerEmbed(interaction, error) {
+function needServerEmbed(interaction,) {
   const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 });
 
   return new EmbedBuilder()
     .setThumbnail(guildIcon)
     .setColor(0xff0000)
     .setTitle('The Ball is angry...')
-    .setDescription(`This can only be ran inside of the ZedKayn server.`);
+    .addField(`This can only be ran inside of the ZedKayn server.`);
 };
 
 // results for opening a capsule
@@ -47,6 +47,16 @@ function openCapsuleResults(interaction, title, description) {
       .setColor(isJackpot ? 'GREEN' : 'RED');
 };
 
+//if the user has no capsules to open
+function noCapsuleEmbed(interaction) {
 
+  const guildIcon = interaction.guild.iconURL({ dynamic: true, size: 512 });
 
-module.exports = { genericEmbed, errorMsgEmbed, needServerEmbed, openCapsuleResults, };
+  return new EmbedBuilder()
+    .setThumbnail(guildIcon)
+    .setColor(0xff0000)
+    .setTitle('The Ball is angry...')
+    .addField({ name: `You have no capsules to open! :(`});
+};
+
+module.exports = { errorMsgEmbed, needServerEmbed, openCapsuleResults, noCapsuleEmbed, };

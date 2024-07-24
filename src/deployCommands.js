@@ -17,7 +17,14 @@ const commands = [
     {
         name: 'inventory',
         description: "Check your inventory",
-    }
+    },
+
+//---------
+    {
+        name: 'opencapsule',
+        description: "open a capsule",
+    },
+    
 ];
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);

@@ -1,6 +1,7 @@
-const { ApplicationCommandOptionType } = require('discord.js');
+const { SlashCommandBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const capsuleData = require('../schemas/capsuleData');
+const noCapsuleEmbed = require('embeds.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -18,11 +19,14 @@ module.exports = {
 
         try {
             
-            interaction.editReply();
+            let userProfile = await UserProfile.findOne({ userId: interaction.member.id });
+
+            if(!userProfile) {
+                interaction.editReply(noCapsuleEmbed);
+            }
             
         } catch (error) {
             console.log(`OOPS: ${error}`);
-            interaction.editReply('An error occurred while fetching your inventory.');
         }
     },
 };
