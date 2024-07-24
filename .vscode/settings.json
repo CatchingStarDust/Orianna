@@ -11,5 +11,9 @@
     "blockman.n08CustomColorOfDepth3": "",
     "blockman.n19CustomColorOfBlockBorder": "#5210EB",
     "blockman.n18CustomColorOfFocusedBlockBorder": "#9468F8",
-    "blockman.n20CustomColorOfDepth0Border": "#33079A"
+    "blockman.n20CustomColorOfDepth0Border": "#33079A",
+    "cSpell.words": [
+        "Kayn",
+        "Ori's"
+    ]
 }
