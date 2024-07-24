@@ -21,6 +21,21 @@ module.exports = {
             
             let userProfile = await UserProfile.findOne({ userId: interaction.member.id });
 
+            userProfile.capsulesOpened = (userProfile.capsulesOpened || 0) + 1;
+
+            if (userProfile.capsulesOpened >= 100) {
+
+                // Put role colour gacha function here, since the user has reached max pity
+
+                await interaction.editReply(`CAPSULE OPENING EMBED`);
+                userProfile.capsulesOpened = 0; 
+
+            } else {
+
+                // Proceed with gacha as normal
+                await interaction.editReply(`NORMAL GACHA FUNCTION`);
+            }
+
             if(!userProfile) {
                 interaction.editReply(noCapsuleEmbed);
 
