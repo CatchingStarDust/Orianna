@@ -1,0 +1,15 @@
+{
+    "highlight-matching-tag.highlightSelfClosing": true,
+    "highlight-matching-tag.styles": null,
+    "blockman.n04Sub01ColorComboPresetForDarkTheme": "Classic Dark 1 (Solid colors)",
+    "blockman.n04ColorComboPreset": "Small Galaxy (Gradients)",
+    "blockman.n04Sub02ColorComboPresetForLightTheme": "Satura (Gradients)",
+    "blockman.n04Sub04RightSideBaseOfBlocks": "Rightmost Edge Of Inner Content",
+    "blockman.n06CustomColorOfDepth1": "",
+    "blockman.n05CustomColorOfDepth0": "",
+    "blockman.n07CustomColorOfDepth2": "",
+    "blockman.n08CustomColorOfDepth3": "",
+    "blockman.n19CustomColorOfBlockBorder": "#5210EB",
+    "blockman.n18CustomColorOfFocusedBlockBorder": "#9468F8",
+    "blockman.n20CustomColorOfDepth0Border": "#33079A"
+}
