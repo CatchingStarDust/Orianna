@@ -20,7 +20,7 @@ const client = new Client({
 
 client.commands = new Map();
 
-// Load command files
+// Imports command files 
 const commandFiles = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
