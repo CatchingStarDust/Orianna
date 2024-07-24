@@ -1,9 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const capsuleData = require('../schemas/capsuleData');
-const noCapsuleEmbed = require('embeds.js');
-const noCapsuleEmbed = require('embeds.js');
-const odds = require('basicCapsuleGacha.js');
+const noCapsuleEmbed = require('../embeds.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -34,7 +32,7 @@ module.exports = {
 
 
             // if the user is max pity
-            if (userProfile.capsulesOpened >= 100) {
+            if (userProfile.capsulesOpened >= 50) {
 
                 // Put role colour gacha function here, since the user has reached max pity
 
