@@ -13,8 +13,13 @@ const commands = [
         name: 'inventory',
         description: "Check your inventory",
     },
+//------
+    {
+        name: 'openCapsule',
+        description: "Open a capsule that you own",
+    },
 
-//---------
+
     
 ];
 

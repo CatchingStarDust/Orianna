@@ -1,6 +1,6 @@
 {
     "highlight-matching-tag.highlightSelfClosing": true,
-    "highlight-matching-tag.styles": null,
+    "highlight-matching-tag.styles": object,
     "blockman.n04Sub01ColorComboPresetForDarkTheme": "Classic Dark 1 (Solid colors)",
     "blockman.n04ColorComboPreset": "Small Galaxy (Gradients)",
     "blockman.n04Sub02ColorComboPresetForLightTheme": "Satura (Gradients)",
@@ -17,7 +17,12 @@
         "colours",
         "gacha",
         "Kayn",
+        "lmaoo",
         "Ori's",
         "usercapsules"
-    ]
+    ],
+    "highlight-matching-tag.highlightFromContent": true,
+    "highlight-matching-tag.customEmptyElements": array,
+
+    
 }
