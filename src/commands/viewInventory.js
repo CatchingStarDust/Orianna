@@ -21,17 +21,15 @@ module.exports = {
             
             let userProfile = await UserProfile.findOne({ userId: interaction.member.id });
 
-            let userCapsules = await UserProfile.findOne({ capsules: Number });
+            if (!userProfile) {
 
-            if (userCapsules.Number = 0) {
-                await interaction.editReply(`You don't have any capsules to open.`);
-                return;
+                userProfile = new UserProfile({ userId: interaction.member.id });
+                await userProfile.save();
+
             }
 
             interaction.editReply(`You have ${userProfile.capsules || 0} capsule(s)`);
 
-            
-            
             
         }catch (error) {
             console.log(`OOPS: ${error}`);

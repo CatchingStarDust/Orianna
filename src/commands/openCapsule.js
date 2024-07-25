@@ -18,12 +18,14 @@ module.exports = {
 
         try {
             let userProfile = await UserProfile.findOne({ userId: interaction.member.id });
-            if (!userProfile) {
+            let userCapsules = await UserProfile.findOne({ capsules: Number });
 
-                userProfile = new UserProfile({ userId: interaction.member.id });
-                await userProfile.save();
 
+            if (userCapsules.Number = 0) {
+                await interaction.editReply(`You don't have any capsules to open.`);
+                return;
             }
+
 
             userProfile.capsulesOpened = (userProfile.capsulesOpened || 0) + 1;
 
