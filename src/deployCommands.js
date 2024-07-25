@@ -15,26 +15,6 @@ const commands = [
     },
 
 //---------
-    {
-        name: 'opencapsule',
-        description: "open a capsule",
-        options: [
-            {
-                name: 'select-capsule',
-                description: 'which capsule do you want to open?',
-                type: ApplicationCommandOptionType.Number,
-                required: true,
-                choices: [
-                    {
-                        name: 'Basic Capsule',
-                        value: 1,
-                    }
-                ],
-        
-                //add additional capsules here
-            },
-        ]
-    },
     
 ];
 

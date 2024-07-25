@@ -1,12 +1,11 @@
 const { SlashCommandBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const capsuleData = require('../schemas/capsuleData');
-const noCapsuleEmbed = require('../embeds.js');
+const needServerEmbed = require('../embeds.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('inventory')
-        .setDescription('Check your inventory'),
+        .setName('opencapsule')
+        .setDescription('open a capsule'),
 
     async execute(interaction) {
         if (!interaction.inGuild()) {
@@ -18,14 +17,12 @@ module.exports = {
         await interaction.deferReply();
 
         try {
-            
             let userProfile = await UserProfile.findOne({ userId: interaction.member.id });
+            if (!userProfile) {
 
-            let userCapsules = await UserProfile.findOne({ capsules: Number });
+                userProfile = new UserProfile({ userId: interaction.member.id });
+                await userProfile.save();
 
-            if (userCapsules.Number = 0) {
-                await interaction.editReply(`You don't have any capsules to open.`);
-                return;
             }
 
             userProfile.capsulesOpened = (userProfile.capsulesOpened || 0) + 1;
@@ -44,19 +41,17 @@ module.exports = {
                 
             } else {
 
-                // Proceed with gacha as normal
+                // Proceed with gacha as normal2
                 
 
                 await userProfile.save();
-            }
-
-            if(!userProfile) {
-                interaction.editReply(noCapsuleEmbed);
-            }
             
+
+
+
+
         } catch (error) {
             console.log(`OOPS: ${error}`);
         }
     },
 };
-

@@ -1,11 +1,12 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, InteractionResponseType } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const needServerEmbed = require('embeds.js');
+const capsuleData = require('../schemas/capsuleData');
+const noCapsuleEmbed = require('../embeds.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('opencapsule')
-        .setDescription('open a capsule'),
+        .setName('inventory')
+        .setDescription('Check your inventory'),
 
     async execute(interaction) {
         if (!interaction.inGuild()) {
@@ -17,17 +18,28 @@ module.exports = {
         await interaction.deferReply();
 
         try {
+            
             let userProfile = await UserProfile.findOne({ userId: interaction.member.id });
-            if (!userProfile) {
 
-                userProfile = new UserProfile({ userId: interaction.member.id });
-                await userProfile.save();
+            let userCapsules = await UserProfile.findOne({ capsules: Number });
+
+            if (userCapsules.Number = 0) {
+                await interaction.editReply(`You don't have any capsules to open.`);
+                return;
+            }
+
+            interaction.editReply(`You have ${userProfile.capsules || 0} capsule(s)`);
 
             }
-            interaction.editReply(`You have ${userProfile.capsules || 0} capsule(s)`);
+
+            if(!userProfile) {
+                interaction.editReply(noCapsuleEmbed);
+            }
+            
         } catch (error) {
             console.log(`OOPS: ${error}`);
         }
     },
 };
+
 
