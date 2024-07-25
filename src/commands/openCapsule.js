@@ -36,22 +36,18 @@ module.exports = {
                 await interaction.editReply(`ROLE COLOUR GACHA`);
                 userProfile.capsulesOpened = 0; 
 
-                await userProfile.save();
-
+                await userProfile.save();     
+            }
                 
-            } else {
-
-                // Proceed with gacha as normal2
-                
-
-                await userProfile.save();
             
+            // Proceed with gacha as normal2
+                
 
-
-
-
+            await userProfile.save();
+            
         } catch (error) {
             console.log(`OOPS: ${error}`);
+            
         }
     },
 };

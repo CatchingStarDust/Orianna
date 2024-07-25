@@ -30,13 +30,10 @@ module.exports = {
 
             interaction.editReply(`You have ${userProfile.capsules || 0} capsule(s)`);
 
-            }
-
-            if(!userProfile) {
-                interaction.editReply(noCapsuleEmbed);
-            }
             
-        } catch (error) {
+            
+            
+        }catch (error) {
             console.log(`OOPS: ${error}`);
         }
     },
