@@ -17,10 +17,10 @@ const basicCapsuleSchema = new Schema({
 });
 
 // The whole capsule as an item
-const basicCapsuleItem = new Schema({
+const basicCapsule = new Schema({
     username: { type: String, required: true },
     quantity: { type: Number, required: true, default: 0 },
     capsule: [basicCapsuleSchema]
 });
 
-module.exports = model('capsuleData', basicCapsuleSchema, basicCapsuleItem);
+module.exports = model('capsuleData', basicCapsuleSchema, basicCapsule);

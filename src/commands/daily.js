@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const UserProfile = require('../schemas/UserProfile');
+const capsuleData = require('../schemas/capsuleData');
+
 
 module.exports = {
     data: new SlashCommandBuilder()
