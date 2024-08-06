@@ -1,7 +1,7 @@
 require('dotenv').config();
 console.log(process.env.TOKEN);
 
-const { REST, Routes, ApplicationCommandOptionType } = require('discord.js');
+const { REST, Routes,} = require('discord.js');
 
 const commands = [
     {
@@ -15,7 +15,7 @@ const commands = [
     },
 //------
     {
-        name: 'openCapsule',
+        name: 'opencapsule',
         description: "Open a capsule that you own",
     },
 
