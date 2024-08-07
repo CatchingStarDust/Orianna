@@ -1,26 +1,59 @@
 const { Schema, model } = require('mongoose');
 
-// These are the colours that are included in the capsule
-const roleColours = [
-    '#FF5733', // colour1
-    '#FF5733', // colour2
-    '#FF5733', // colour3
-    '#FF5733', // colour4
-    '#FF5733', // colour5
-    '#FF5733', // colour6
-    '#FF5733', // colour7
+// These are the colours that are included in the capsules
+const basicCapsuleRoleColours = [
+    '#FF5733', 
+    '#FF5733', 
+    '#FF5733', 
 ];
 
-// This is the schema that sets the attributes of what's inside the capsule
+// Basic Capsule Schema
 const basicCapsuleSchema = new Schema({
-    color: { type: String, enum: roleColours, required: true },
+    color: { type: String, enum: basicCapsuleRoleColours, required: true },
 });
 
-// The whole capsule as an item
 const basicCapsule = new Schema({
     username: { type: String, required: true },
     quantity: { type: Number, required: true, default: 0 },
     capsule: [basicCapsuleSchema]
 });
 
-module.exports = model('capsuleData', basicCapsuleSchema, basicCapsule);
+// Holiday Capsule Schema
+
+const holidayCapsuleRoleColours = [
+    '#FF5733', 
+    '#FF5733', 
+    '#FF5733', 
+];
+
+const holidayCapsuleSchema = new Schema({
+    color: { type: String, enum: holidayCapsuleRoleColours, required: true },
+});
+
+const holidayCapsule = new Schema({
+    username: { type: String, required: true },
+    quantity: { type: Number, required: true, default: 0 },
+    capsule: [holidayCapsuleSchema]
+});
+
+// Autumn Capsule Schema
+const autumnCapsuleRoleColours = [
+    '#FF5733', 
+    '#FF5733', 
+    '#FF5733', 
+];
+
+
+const autumnCapsuleSchema = new Schema({
+    color: { type: String, enum: autumnCapsuleRoleColours, required: true },
+});
+
+const autumnCapsule = new Schema({
+    username: { type: String, required: true },
+    quantity: { type: Number, required: true, default: 0 },
+    capsule: [autumnCapsuleSchema]
+});
+
+module.exports = model('basicCapsule', basicCapsuleSchema);
+module.exports = model('holidayCapsule', holidayCapsuleSchema);
+module.exports = model('autumnCapsule', autumnCapsuleSchema);
