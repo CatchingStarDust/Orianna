@@ -7,7 +7,7 @@ const userProfileSchema = new Schema({
     roleColor: { type: String, required: true },
     basicCapsules: [{ type: Schema.Types.ObjectId, ref: 'BasicCapsule' }],
     holidayCapsules: [{ type: Schema.Types.ObjectId, ref: 'HolidayCapsule' }],
-    AutumnCapsules: [{ type: Schema.Types.ObjectId, ref: 'AutumnCapsule' }],
+    autumnCapsules: [{ type: Schema.Types.ObjectId, ref: 'AutumnCapsule' }],
 }, {
     timestamps: true
 });

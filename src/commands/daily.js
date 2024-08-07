@@ -56,7 +56,7 @@ module.exports = {
         let newCapsule;
         switch (selectedCapsuleType) {
             case 'BasicCapsule':
-                newCapsule = new basicCapsule({
+                newCapsule = new BasicCapsule({
                     username: interaction.user.username,
                     quantity: 1,
    
@@ -65,7 +65,7 @@ module.exports = {
                 userProfile.basicCapsules.push(newCapsule._id);
                 break;
             case 'HolidayCapsule':
-                newCapsule = new holidayCapsule({
+                newCapsule = new HolidayCapsule({
                     username: interaction.user.username,
                     quantity: 1,
 
@@ -74,7 +74,7 @@ module.exports = {
                 userProfile.holidayCapsules.push(newCapsule._id);
                 break;
             case 'AutumnCapsule':
-                newCapsule = new autumnCapsule({
+                newCapsule = new AutumnCapsule({
                     username: interaction.user.username,
                     quantity: 1,
 
