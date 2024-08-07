@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { UserProfile } = require('../schemas/UserProfile');
-const { basicCapsule, holidayCapsule, autumnCapsule } = require('../schemas/capsuleData');
+const { BasicCapsule, HolidayCapsule, AutumnCapsule } = require('../schemas/capsuleData');
 
 // function to select a weighted random capsule type
 function weightedRandomSelect(weights) {
