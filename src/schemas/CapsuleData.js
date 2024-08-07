@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, models } = require('mongoose');
 
 // These are the colours that are included in the capsules
 const basicCapsuleRoleColours = [
@@ -19,7 +19,6 @@ const basicCapsule = new Schema({
 });
 
 // Holiday Capsule Schema
-
 const holidayCapsuleRoleColours = [
     '#FF5733', 
     '#FF5733', 
@@ -43,7 +42,6 @@ const autumnCapsuleRoleColours = [
     '#FF5733', 
 ];
 
-
 const autumnCapsuleSchema = new Schema({
     color: { type: String, enum: autumnCapsuleRoleColours, required: true },
 });
@@ -54,6 +52,13 @@ const autumnCapsule = new Schema({
     capsule: [autumnCapsuleSchema]
 });
 
-module.exports = model('basicCapsule', basicCapsuleSchema);
-module.exports = model('holidayCapsule', holidayCapsuleSchema);
-module.exports = model('autumnCapsule', autumnCapsuleSchema);
+// Check if the models are already defined
+const BasicCapsule = models.BasicCapsule || model('BasicCapsule', basicCapsule);
+const HolidayCapsule = models.HolidayCapsule || model('HolidayCapsule', holidayCapsule);
+const AutumnCapsule = models.AutumnCapsule || model('AutumnCapsule', autumnCapsule);
+
+module.exports = {
+    BasicCapsule,
+    HolidayCapsule,
+    AutumnCapsule
+};
