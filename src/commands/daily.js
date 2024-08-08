@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { UserProfile } = require('../schemas/UserProfile');
+const UserProfile = require('../schemas/UserProfile');
 const { BasicCapsule, HolidayCapsule, AutumnCapsule } = require('../schemas/capsuleData');
 
 // function to select a weighted random capsule type
@@ -20,29 +20,32 @@ module.exports = {
         .setName('daily')
         .setDescription('Gives you your daily reward, including a random capsule!'),
 
-
     async execute(interaction) {
+        const userId = interaction.user.id;
 
-        const userId = interaction.member.id;
-        
+        // Retrieve the user profile
         let userProfile = await UserProfile.findOne({ userId });
 
+        // If no user profile, create a new one
         if (!userProfile) {
-            userProfile = new UserProfile({ userId,}); 
+            userProfile = new UserProfile({ userId, lastDailyCollected: new Date(0), capsules: 0, basicCapsules: [], holidayCapsules: [], autumnCapsules: [] });
+            await userProfile.save();
         }
+
+        await interaction.deferReply();
 
         const now = new Date();
         const lastDailyCollected = userProfile.lastDailyCollected || new Date(0);
-        
+
         const oneDay = 24 * 60 * 60 * 1000; // One day in milliseconds
         if (now - lastDailyCollected < oneDay) {
-            await interaction.reply({ content: 'You have already collected your daily reward today!', ephemeral: true });
+            await interaction.editReply({ content: 'You have already collected your daily reward today!', ephemeral: true });
             return;
         }
 
         userProfile.lastDailyCollected = now;
         userProfile.capsules += 1;
-        
+
         // Define the probabilities for each capsule type
         const capsuleWeights = [
             { type: 'BasicCapsule', weight: 0.50 },
@@ -56,36 +59,24 @@ module.exports = {
         let newCapsule;
         switch (selectedCapsuleType) {
             case 'BasicCapsule':
-                newCapsule = new BasicCapsule({
-                    username: interaction.user.username,
-                    quantity: 1,
-   
-                });
+                newCapsule = new BasicCapsule({ quantity: 1 });
                 await newCapsule.save();
                 userProfile.basicCapsules.push(newCapsule._id);
                 break;
             case 'HolidayCapsule':
-                newCapsule = new HolidayCapsule({
-                    username: interaction.user.username,
-                    quantity: 1,
-
-                });
+                newCapsule = new HolidayCapsule({ quantity: 1 });
                 await newCapsule.save();
                 userProfile.holidayCapsules.push(newCapsule._id);
                 break;
             case 'AutumnCapsule':
-                newCapsule = new AutumnCapsule({
-                    username: interaction.user.username,
-                    quantity: 1,
-
-                });
+                newCapsule = new AutumnCapsule({ quantity: 1 });
                 await newCapsule.save();
                 userProfile.autumnCapsules.push(newCapsule._id);
                 break;
         }
-
+        // save the result
         await userProfile.save();
 
-        await interaction.reply({ content: `You have collected your daily reward and received a ${selectedCapsuleType}!`, ephemeral: true });
+        await interaction.editReply({ content: `You have collected your daily reward and received a ${selectedCapsuleType}!`, ephemeral: true });
     },
 };

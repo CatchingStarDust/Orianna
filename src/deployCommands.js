@@ -1,8 +1,12 @@
+//For registering commands. RUN "node src\deployCommands.js" whenever you update the code of the command.
+
 require('dotenv').config();
 console.log(process.env.TOKEN);
 
 const { REST, Routes,} = require('discord.js');
 
+
+// put in name and description for the command that you will see in Discord
 const commands = [
     {
         name: 'daily',
@@ -22,6 +26,8 @@ const commands = [
 
     
 ];
+
+//this bit is what actually registers the command
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
