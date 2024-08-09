@@ -12,69 +12,70 @@ module.exports = {
 
         await interaction.deferReply();
 
-            try {
-                const serverMember = UserProfile.findOne({userId: interaction.user.id});
+        try {
+            // Find the user's profile in the database
+            let serverMember = await UserProfile.findOne({ userId: interaction.user.id });
 
-                if (!serverMember) {
-                    createNewProfile();
-                } 
-                
+            // If the profile does not exist, create a new one
+            if (!serverMember) {
+                serverMember = await createNewProfile(interaction.user.id, interaction.guild.id);
+            } 
+
             const now = new Date();
-            const lastDailyCollected = UserProfile.lastDailyCollected || new Date(0);
+            const lastDailyCollected = serverMember.lastDailyCollected || new Date(0);
             const twentyFourHours = 24 * 60 * 60 * 1000;
 
-                if (now - lastDailyCollected < twentyFourHours) {
-                    await interaction.editReply({ content: 'You have already collected your daily reward today!', ephemeral: true });
-                    return;
-                }
-                    
+            // Check if the user has already collected their daily reward
+            if (now - lastDailyCollected < twentyFourHours) {
+                await interaction.editReply({ content: 'You have already collected your daily reward today!', ephemeral: true });
+                return;
+            }
+            
+            // Update the last daily collection time
+            serverMember.lastDailyCollected = now;
+
             // Define the probabilities for each capsule type
             const capsuleWeights = [
-                { type: 'basicCapsule', weight: 0.50 },
-                { type: 'holidayCapsule', weight: 0.30 },
-                { type: 'autumnCapsule', weight: 0.20 }
-    
-                ];
-    
-            // give the user the capsule they pulled
+                { type: 'Basic Capsule', weight: 0.50 },
+                { type: 'Holiday Capsule', weight: 0.30 },
+                { type: 'Autumn Capsule', weight: 0.20 }
+            ];
+
+            // Select a capsule type based on the defined weights
             const selectedCapsuleType = weightedRandomSelect(capsuleWeights);     
-    
+
+            // Update the appropriate capsule count in the user's profile
             switch(selectedCapsuleType){
-            case 'BasicCapsule': {
-                UserProfile.findOneAndUpdate(
-                    { userId: userId },
-                    { $inc: { basicCapsules: 1 } },
-                    { new: true }
-                )}
-            case 'HolidayCapsule': {
-                UserProfile.findOneAndUpdate(
-                    { userId: userId },
-                    { $inc: { holidayCapsule: 1 } },
-                    { new: true }    
-                )}
-            case 'AutumnCapsule': {
-                UserProfile.findOneAndUpdate(
-                    { userId: userId },
-                    { $inc: { autumnCapsule: 1 } },
-                    { new: true }    
-                )}
-                break;
-    
-                } 
-
-
-                    await interaction.editReply({ content: `You have collected your daily reward and received a ${selectedCapsuleType}!`});
-                    await UserProfile.save();
-    
+                case 'BasicCapsule': {
+                    UserProfile.findOneAndUpdate(
+                        { userId: userId },
+                        { $inc: { basicCapsules: 1 } },
+                        { new: true }
+                    )}
+                case 'HolidayCapsule': {
+                    UserProfile.findOneAndUpdate(
+                        { userId: userId },
+                        { $inc: { holidayCapsule: 1 } },
+                        { new: true }    
+                    )}
+                case 'AutumnCapsule': {
+                    UserProfile.findOneAndUpdate(
+                        { userId: userId },
+                        { $inc: { autumnCapsule: 1 } },
+                        { new: true }    
+                    )}
+                    break;
         
-    
-                }   catch (error) {
-                        console.error(`OOPS: ${error}`)
-                    await interaction.editReply({ content:`The Ball is angry... : ${error}`, ephemeral: true });
-         }
-        
-            
-    
-             
+                    }
+
+            // Save the updated user profile
+            await serverMember.save();
+
+            await interaction.editReply({ content: `You have collected your daily reward and received a ${selectedCapsuleType}!` });
+
+        } catch (error) {
+            console.error(`Error: ${error}`);
+            await interaction.editReply({ content: `There was an error: ${error.message}`, ephemeral: true });
+        }
     }
 };
