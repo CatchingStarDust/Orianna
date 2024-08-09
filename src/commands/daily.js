@@ -18,10 +18,10 @@ module.exports = {
 
             // If the profile does not exist, create a new one
             if (!serverMember) {
-                serverMember = await createNewProfile(interaction.user.id, interaction.guild.id);
+                createNewProfile();
             } 
 
-            const now = new Date();
+            /* const now = new Date();
             const lastDailyCollected = serverMember.lastDailyCollected || new Date(0);
             const twentyFourHours = 24 * 60 * 60 * 1000;
 
@@ -32,7 +32,7 @@ module.exports = {
             }
             
             // Update the last daily collection time
-            serverMember.lastDailyCollected = now;
+            serverMember.lastDailyCollected = now; */
 
             // Define the probabilities for each capsule type
             const capsuleWeights = [
