@@ -18,7 +18,7 @@ module.exports = {
 
             // If the profile does not exist, create a new one
             if (!serverMember) {
-                createNewProfile();
+                createNewProfile(interaction.user.id);
             } 
 
             /* const now = new Date();
@@ -48,19 +48,21 @@ module.exports = {
             switch(selectedCapsuleType){
                 case 'BasicCapsule': {
                     UserProfile.findOneAndUpdate(
-                        { userId: userId },
+                        { userId: serverMember.userId },
                         { $inc: { basicCapsules: 1 } },
                         { new: true }
                     )}
+                    break;
                 case 'HolidayCapsule': {
                     UserProfile.findOneAndUpdate(
-                        { userId: userId },
+                        { userId: serverMember.userId },
                         { $inc: { holidayCapsule: 1 } },
                         { new: true }    
                     )}
+                    break;
                 case 'AutumnCapsule': {
                     UserProfile.findOneAndUpdate(
-                        { userId: userId },
+                        { userId: serverMember.userId },
                         { $inc: { autumnCapsule: 1 } },
                         { new: true }    
                     )}
