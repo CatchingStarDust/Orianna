@@ -5,9 +5,9 @@ const userProfileSchema = new Schema({
     lastDailyCollected: { type: Date },
     capsulesOpened: { type: Number, default: 0 },
     roleColor: { type: String, required: true },
-    basicCapsules: [{ type: Schema.Types.ObjectId, ref: 'BasicCapsule' }],
-    holidayCapsules: [{ type: Schema.Types.ObjectId, ref: 'HolidayCapsule' }],
-    autumnCapsules: [{ type: Schema.Types.ObjectId, ref: 'AutumnCapsule' }],
+    basicCapsules: { type: Number, default: 0  },
+    holidayCapsules: { type: Number, default: 0  },
+    autumnCapsules: { type:  Number, default: 0  },
 }, {
     timestamps: true
 });

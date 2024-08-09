@@ -8,8 +8,6 @@ const basicCapsuleRoleColours = [
 ];
 
 const basicCapsule = new Schema({
-    username: { type: String, required: true },
-    quantity: { type: Number, required: true, default: 0 },
     color: { type: String, enum: basicCapsuleRoleColours, required: true },
 });
 
@@ -21,8 +19,6 @@ const holidayCapsuleRoleColours = [
 ];
 
 const holidayCapsule = new Schema({
-    username: { type: String, required: true },
-    quantity: { type: Number, required: true, default: 0 },
     color: { type: String, enum: holidayCapsuleRoleColours, required: true }
 });
 
@@ -34,8 +30,6 @@ const autumnCapsuleRoleColours = [
 ];
 
 const autumnCapsule = new Schema({
-    username: { type: String, required: true },
-    quantity: { type: Number, required: true, default: 0 },
     color: { type: String, enum: autumnCapsuleRoleColours, required: true }
 });
 
