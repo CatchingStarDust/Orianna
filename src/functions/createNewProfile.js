@@ -1,15 +1,15 @@
-
 const UserProfile = require('../schemas/UserProfile');
 
-function createNewProfile() {
-    newServerMember = new UserProfile({ 
-        userId, 
+function createNewProfile(userId) {
+    const newServerMember = new UserProfile({ 
+        userId: userId, 
         lastDailyCollected: new Date(0), 
-        capsules: 0, 
-        basicCapsules: [], 
-        holidayCapsules: [], 
-        autumnCapsules: [] });
+        capsulesOpened: 0, 
+        basicCapsules: 0, 
+        holidayCapsules: 0, 
+        autumnCapsules: 0 
+    });
     return newServerMember.save();
-
 };
+
 module.exports = createNewProfile;
