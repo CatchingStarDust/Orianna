@@ -37,18 +37,17 @@ module.exports = {
             { type: 'grey', weight: 0.10},
             { type: 'slate', weight: 0.10},
         ];
-
-            if(serverMember.basicCapsules === 0) {
-
-        await interaction.reply({ content: `You don't have any capsules to open!`, ephemeral: true });
-
+        
+//check if user has capsules to open
+        if (serverMember.basicCapsules <= 0) {
+            await interaction.editReply({ content: `You don't have any capsules to open!`, ephemeral: true });
+            return;
         }
-
 
         try {
 
      //removes a capsule from the user inventory
-            UserProfile.findOneAndUpdate(
+            await UserProfile.findOneAndUpdate(
             { userId: interaction.user.id },
             { $inc: { basicCapsules: -1 } }, 
             { new: true, upsert: true },
