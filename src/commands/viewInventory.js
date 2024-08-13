@@ -30,9 +30,9 @@ module.exports = {
                 } 
 
         const currentInventoryMessage = ` You have the following capsules in your inventory:
-            - **Basic Capsules**: ${serverMember.basicCapsules || 0}
-            - **Holiday Capsules**: ${serverMember.holidayCapsules || 0}
-            - **Autumn Capsules**: ${serverMember.autumnCapsules || 0} `;
+            - **Basic Capsules**: ${serverMember.basicCapsules }
+            - **Holiday Capsules**: ${serverMember.holidayCapsules }
+            - **Autumn Capsules**: ${serverMember.autumnCapsules } `;
 
             await interaction.editReply(currentInventoryMessage);
 

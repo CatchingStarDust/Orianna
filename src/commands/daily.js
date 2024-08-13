@@ -46,25 +46,25 @@ module.exports = {
 
             // Update the appropriate capsule count in the user's profile
             switch(selectedCapsuleType){
-                case 'BasicCapsule': {
-                    UserProfile.findOneAndUpdate(
+                case 'Basic Capsule': {
+                    await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
                         { $inc: { basicCapsules: 1 } },
-                        { new: true }
+                        { new: true, upsert: true }
                     )}
                     break;
-                case 'HolidayCapsule': {
-                    UserProfile.findOneAndUpdate(
+                case 'Holiday Capsule': {
+                    await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { holidayCapsule: 1 } },
-                        { new: true }    
+                        { $inc: { holidayCapsules: 1 } },
+                        { new: true, upsert: true }    
                     )}
                     break;
-                case 'AutumnCapsule': {
-                    UserProfile.findOneAndUpdate(
+                case 'Autumn Capsule': {
+                    await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { autumnCapsule: 1 } },
-                        { new: true }    
+                        { $inc: { autumnCapsules: 1 } },
+                        { new: true, upsert: true }    
                     )}
                     break;
         
