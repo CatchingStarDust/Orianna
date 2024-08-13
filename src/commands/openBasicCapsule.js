@@ -13,15 +13,15 @@ module.exports = {
         await interaction.deferReply(); 
 
             if (!interaction.inGuild()) {
-            await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true });
-            return;
+                await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true });
+                return;
         }
 
         let serverMember = await UserProfile.findOne({ userId: interaction.user.id });
 
             if (!serverMember) {
-                    createNewProfile();
-                    await interaction.editReply(`New Profile created.`);
+                createNewProfile();
+                await interaction.editReply(`New Profile created.`);
         }
 
         
@@ -58,21 +58,21 @@ module.exports = {
 
      // Update the appropriate capsule count in the user's profile
      switch(selectedColourType){
-         case 'Red': {
+         case 'red': {
              await UserProfile.findOneAndUpdate(
                  { userId: serverMember.userId },
                  { $push: { coloursOwned: 'red' }},
                  { new: true, upsert: true }
              )}
              break;
-         case 'Yellow': {
+         case 'yellow': {
              await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'yellow' }},
                 { new: true, upsert: true }    
              )}
              break;
-         case 'Orange': {
+         case 'orange': {
              await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'orange' }},
@@ -80,7 +80,7 @@ module.exports = {
              )}
              break;
 
-            case 'Green': {
+            case 'green': {
             await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'green' }},
@@ -88,7 +88,7 @@ module.exports = {
             )}
             break;
             
-        case 'Blue': {
+        case 'blue': {
             await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'blue' }},
@@ -96,7 +96,7 @@ module.exports = {
             )}
             break;    
     
-         case 'Purple': {
+         case 'purple': {
              await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'purple' }},
@@ -104,7 +104,7 @@ module.exports = {
              )}
              break;
 
-            case 'Pink': {
+            case 'pink': {
             await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'pink' }},
@@ -112,7 +112,7 @@ module.exports = {
             )}
             break;
             
-        case 'Seafoam': {
+        case 'seafoam': {
             await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'seafoam' }},
@@ -120,7 +120,7 @@ module.exports = {
             )}
             break;
 
-        case 'Grey': {
+        case 'grey': {
             await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'grey' }},
@@ -128,7 +128,7 @@ module.exports = {
             )}
             break;
    
-        case 'Slate': {
+        case 'slate': {
             await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'slate' }},

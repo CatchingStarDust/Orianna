@@ -30,7 +30,7 @@ module.exports = {
                 } 
 
         const currentInventoryMessage = ` You have the following capsules in your inventory:
-            - **Role Colours**: ${serverMember.coloursOwned || 0 }
+            - **Role Colours**: ${serverMember.coloursOwned.join(', ').replace(/, /g, ', ') || 0 }
             - **Basic Capsules**: ${serverMember.basicCapsules }
             - **Holiday Capsules**: ${serverMember.holidayCapsules}
             - **Autumn Capsules**: ${serverMember.autumnCapsules} `;
