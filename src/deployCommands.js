@@ -19,8 +19,8 @@ const commands = [
     },
 //------
     {
-        name: 'opencapsule',
-        description: "Open a capsule that you own",
+        name: 'open-basic-capsule',
+        description: "Open for a chance at one of the basic colours!",
     },
 
 

@@ -30,9 +30,10 @@ module.exports = {
                 } 
 
         const currentInventoryMessage = ` You have the following capsules in your inventory:
+            - **Role Colours**: ${serverMember.coloursOwned || 0 }
             - **Basic Capsules**: ${serverMember.basicCapsules }
-            - **Holiday Capsules**: ${serverMember.holidayCapsules }
-            - **Autumn Capsules**: ${serverMember.autumnCapsules } `;
+            - **Holiday Capsules**: ${serverMember.holidayCapsules}
+            - **Autumn Capsules**: ${serverMember.autumnCapsules} `;
 
             await interaction.editReply(currentInventoryMessage);
 

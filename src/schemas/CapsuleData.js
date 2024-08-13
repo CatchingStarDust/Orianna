@@ -1,41 +1,40 @@
 const { Schema, model, models } = require('mongoose');
 
 // Basic Capsule Schema
-const basicCapsuleRoleColours = [
-    '#FF5733', 
-    '#FF5733', 
-    '#FF5733', 
-];
-
-const basicCapsule = new Schema({
-    color: { type: String, enum: basicCapsuleRoleColours, required: true },
+const basicCapsuleSchema = new Schema({
+    colors: [{ type: String, required: true, 
+        enum: [
+            'red', 
+            'orange', 
+            'yellow', 
+            'green', 
+            'blue', 
+            'purple', 
+            'pink',
+            'seafoam', 
+            'grey', 
+            'slate',  
+        ] }]
 });
 
 // Holiday Capsule Schema
-const holidayCapsuleRoleColours = [
-    '#FF5733', 
-    '#FF5733', 
-    '#FF5733', 
-];
-
-const holidayCapsule = new Schema({
-    color: { type: String, enum: holidayCapsuleRoleColours, required: true }
+const holidayCapsuleSchema = new Schema({
+    colors: [{ type: String, required: true, 
+        enum: [
+            'ribbonRed', 
+            'snowflakeWhite',
+            'nerotBlue',
+            'mistletoeGreen',
+        ] }]
 });
 
 // Autumn Capsule Schema
-const autumnCapsuleRoleColours = [
-    '#FF5733', 
-    '#FF5733', 
-    '#FF5733', 
-];
-
-const autumnCapsule = new Schema({
-    color: { type: String, enum: autumnCapsuleRoleColours, required: true }
+const autumnCapsuleSchema = new Schema({
+    colors: [{ type: String, required: true, enum: ['#FF5733', '#FFFF00', '#00FF00'] }]
 });
 
+const openBasicCapsule = models.BasicCapsuleSchema || model('BasicCapsuleSchema', basicCapsuleSchema);
+const openHolidayCapsule = models.HolidayCapsuleSchema || model('HolidayCapsuleSchema', holidayCapsuleSchema);
+const openAutumnCapsule = models.AutumnCapsuleSchema || model('AutumnCapsuleSchema', autumnCapsuleSchema);
 
-const BasicCapsule = models.BasicCapsule || model('BasicCapsule', basicCapsule);
-const HolidayCapsule = models.HolidayCapsule || model('HolidayCapsule', holidayCapsule);
-const AutumnCapsule = models.AutumnCapsule || model('AutumnCapsule', autumnCapsule);
-
-module.exports = { BasicCapsule, HolidayCapsule, AutumnCapsule };
+module.exports = { openBasicCapsule, openHolidayCapsule, openAutumnCapsule };
