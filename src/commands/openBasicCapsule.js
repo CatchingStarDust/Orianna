@@ -25,20 +25,21 @@ module.exports = {
         }
 
         
-        const basicColourWeights = [
-            { type: 'red', weight: 0.10 },
-            { type: 'orange', weight: 0.10 },
-            { type: 'yellow', weight: 0.10 },
-            { type: 'green', weight: 0.10 },
-            { type: 'blue', weight: 0.10 },
-            { type: 'purple', weight: 0.10 },
-            { type: 'pink', weight: 0.10 },
-            { type: 'seafoam', weight: 0.10} ,
-            { type: 'grey', weight: 0.10},
-            { type: 'slate', weight: 0.10},
+    const basicColourWeights = [
+        { type: 'red', weight: 0.10 },
+        { type: 'orange', weight: 0.10 },
+        { type: 'yellow', weight: 0.10 },
+        { type: 'green', weight: 0.10 },
+        { type: 'blue', weight: 0.10 },
+        { type: 'purple', weight: 0.10 },
+        { type: 'pink', weight: 0.10 },
+        { type: 'seafoam', weight: 0.10} ,
+        { type: 'grey', weight: 0.10},
+        { type: 'slate', weight: 0.10},
+
         ];
         
-//check if user has capsules to open
+    //check if user has capsules to open
         if (serverMember.basicCapsules <= 0) {
             await interaction.editReply({ content: `You don't have any capsules to open!`, ephemeral: true });
             return;
@@ -58,21 +59,21 @@ module.exports = {
 
      // Update the appropriate capsule count in the user's profile
      switch(selectedColourType){
-         case 'red': {
+        case 'red': {
              await UserProfile.findOneAndUpdate(
                  { userId: serverMember.userId },
                  { $push: { coloursOwned: 'red' }},
                  { new: true, upsert: true }
              )}
              break;
-         case 'yellow': {
+        case 'yellow': {
              await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'yellow' }},
                 { new: true, upsert: true }    
              )}
              break;
-         case 'orange': {
+        case 'orange': {
              await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'orange' }},
@@ -80,7 +81,7 @@ module.exports = {
              )}
              break;
 
-            case 'green': {
+        case 'green': {
             await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'green' }},
@@ -96,7 +97,7 @@ module.exports = {
             )}
             break;    
     
-         case 'purple': {
+        case 'purple': {
              await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'purple' }},
@@ -104,7 +105,7 @@ module.exports = {
              )}
              break;
 
-            case 'pink': {
+        case 'pink': {
             await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
                 { $push: { coloursOwned: 'pink' }},
@@ -138,15 +139,15 @@ module.exports = {
              }
 
      // Save the updated user profile
-     await serverMember.save();
+            await serverMember.save();
 
-     await interaction.editReply({ content: `You open the capsule and receive... ${selectedColourType}!` });
-
-            
+            await interaction.editReply({ content: `You open the capsule and receive... ${selectedColourType}!` });
 
             
-        } catch (error) {
-            console.error(`Error handling /daily: ${error}`);
+
+            
+            } catch (error) {
+                console.error(`Error handling /daily: ${error}`);
             await interaction.editReply('There was an error while processing your request.'); 
         }
 
