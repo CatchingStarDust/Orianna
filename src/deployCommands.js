@@ -23,6 +23,12 @@ const commands = [
         description: "Open for a chance at one of the basic colours!",
     },
 
+//------
+    {
+        name: 'equip',
+        description: "Equip any of the role colours that you own",
+    },
+
 
     
 ];
