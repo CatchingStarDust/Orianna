@@ -1,5 +1,6 @@
 //Main hub that connects command creation.
 
+//hello from laptop
 require('dotenv').config();
 
 // libraries the bot needs access to
