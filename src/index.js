@@ -4,12 +4,12 @@
 require('dotenv').config();
 
 // libraries the bot needs access to
-const { Client, GatewayIntentBits, Events } = require('discord.js');
+const { Client, GatewayIntentBits, Events, } = require('discord.js');
 const { genericEmbed, errorMsgEmbed, needServerEmbed } = require('./embeds');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
-const reactions = require('../schemas/roleColourData.js');
+const reactions = require('./schemas/roleColourData.js');
 
 
 
@@ -20,6 +20,9 @@ const client = new Client({
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildInvites,
+        GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.GuildMessageReactions,
         // Add other intents here
     ],
 });
@@ -72,7 +75,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 })();
 
 // adding roles
-Client.on(Events.MessageReactionAdd, async (reaction, user) => {
+client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
     if (!reactions.message.guildId)
         return;
@@ -100,7 +103,7 @@ try {
 });
 
 //removing roles
-Client.on(Events.MessageReactionRemove, async (reaction, user) => {
+client.on(Events.MessageReactionRemove, async (reaction, user) => {
 
     if (!reactions.message.guildId)
         return;
