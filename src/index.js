@@ -96,7 +96,8 @@ try {
     await member.roles.add(data.role);
     
 } catch (error) {
-    `${error}` 
+    console.error(`OOPS: ${error}`); 
+    await interaction.editReply({ content: `There was an error: ${error.message}`, ephemeral: true });
     return;
 }
 
@@ -124,7 +125,8 @@ try {
     await member.roles.remove(data.role);
     
 } catch (error) {
-    `${error}` 
+    console.error(`OOPS: ${error}`);
+    await interaction.editReply({ content: `There was an error: ${error.message}`, ephemeral: true });
     return;
 }
 

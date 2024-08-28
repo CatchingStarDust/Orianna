@@ -27,24 +27,24 @@ const commands = [
             {
                 name: 'add',
                 description: 'Add a reaction role to a message',
-                type: 1, // Type 1 for subcommands
+                type: 1, // for subcommands
                 options: [
                     {
                         name: 'message-id',
                         description: 'The message to react to',
-                        type: 3, // Type 3 is for strings
+                        type: 3, // for strings
                         required: true,
                     },
                     {
                         name: 'emoji',
                         description: 'The emoji to react with',
-                        type: 3, // Type 3 is for strings
+                        type: 3, 
                         required: true,
                     },
                     {
                         name: 'role',
                         description: 'The role you want to give',
-                        type: 8, // Type 8 is for roles
+                        type: 8, //  for roles
                         required: true,
                     }
                 ]

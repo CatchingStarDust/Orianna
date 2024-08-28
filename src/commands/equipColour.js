@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile.js');
-const reaction = require('../schemas/roleColourData.js');
+const reactions = require('../schemas/roleColourData.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -41,7 +41,7 @@ module.exports = {
                                 .setDescription('the emoji to react with')
                                 .setRequired(true))
         ),
-
+        
     async execute(interaction) {
         const options = interaction.options;
         const guild = interaction.guild;
@@ -53,7 +53,7 @@ module.exports = {
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))
             return await interaction.reply({ content: `You don't have permission to run that!`, ephemeral: true });
 
-        const data = await reaction.findOne({ Guild: guild.id, Message: message.id, Emoji: emoji });
+        const data = await reactions.findOne({ Guild: guild.id, Message: message.id, Emoji: emoji });
 
         let embed;  
 
