@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose'); 
 
-let reactionSchema = new Schema({
+const reactionSchema = new Schema({
+
     Guild: String,
     Message: String,
     Emoji: String,
