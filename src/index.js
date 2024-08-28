@@ -9,7 +9,7 @@ const { genericEmbed, errorMsgEmbed, needServerEmbed } = require('./embeds');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
-const reactions = require('./schemas/roleColourData.js');
+const reactionSchema = require('./schemas/roleColourData.js');
 
 
 
@@ -106,7 +106,7 @@ try {
 //removing roles
 client.on(Events.MessageReactionRemove, async (reaction, user) => {
 
-    if (!reactions.message.guildId)
+    if (!reactionSchema.message.guildId)
         return;
 
     if (user.bot)
@@ -115,7 +115,7 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
 let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
     if(!reaction.emoji.id) ciD = reaction.emoji.name;
 
-const data = await reactions.findOne({Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID});
+const data = await reactionSchema.findOne({Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID});
     if (!data) return;
 
 const guild = await client.guilds.cache.get(reaction.message.guild.id);
