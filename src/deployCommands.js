@@ -12,26 +12,66 @@ const commands = [
         name: 'daily',
         description: 'Gives you your daily capsule',
     },
-//---------
     {
         name: 'inventory',
         description: "Check your inventory",
     },
-//------
     {
         name: 'open-basic-capsule',
         description: "Open for a chance at one of the basic colours!",
     },
-
-//------
     {
         name: 'react-role',
         description: "Create reaction messages to assign roles.",
-    },
-
-
-    
+        options: [
+            {
+                name: 'add',
+                description: 'Add a reaction role to a message',
+                type: 1, // Type 1 for subcommands
+                options: [
+                    {
+                        name: 'message-id',
+                        description: 'The message to react to',
+                        type: 3, // Type 3 is for strings
+                        required: true,
+                    },
+                    {
+                        name: 'emoji',
+                        description: 'The emoji to react with',
+                        type: 3, // Type 3 is for strings
+                        required: true,
+                    },
+                    {
+                        name: 'role',
+                        description: 'The role you want to give',
+                        type: 8, // Type 8 is for roles
+                        required: true,
+                    }
+                ]
+            },
+            {
+                name: 'remove',
+                description: 'Remove a reaction role from a message',
+                type: 1,
+                options: [
+                    {
+                        name: 'message-id',
+                        description: 'The message to react to',
+                        type: 3,
+                        required: true,
+                    },
+                    {
+                        name: 'emoji',
+                        description: 'The emoji to remove',
+                        type: 3,
+                        required: true,
+                    }
+                ]
+            }
+        ]
+    }
 ];
+
 
 //this bit is what actually registers the command
 
