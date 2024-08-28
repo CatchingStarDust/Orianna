@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const createNewProfile = require('../functions/createNewProfile');
 const weightedRandomSelect = require('../functions/weightedRandomSelect');

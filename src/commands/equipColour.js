@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField } = require('@discordjs/builders');
+const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile.js');
 const reaction = require('../schemas/roleColourData.js');
 
@@ -11,32 +11,35 @@ module.exports = {
             .setName('add')
             .setDescription('add a reaction role to a message')
             .addStringOption(option => 
-                option
-                .setName('message-id')
-                .setDescription('the message to react to')
-                .setRequired(true))
-            .addStringOption(option => 
-                option
-                .setName('emoji')
-                .setDescription('the emoji to react with')
-                .setRequired(true))
-            .addRoleOption(option => 
-                option
-                .setName('role')
-                .setDescription('the role you want to give')
-                .setRequired(true))
+                    option
+                        .setName('message-id')
+                        .setDescription('the message to react to')
+                        .setRequired(true))
+                            .addStringOption(option => 
+                                option
+                                    .setName('emoji')
+                                    .setDescription('the emoji to react with')
+                                    .setRequired(true))
+                                    .addRoleOption(option => 
+                                        option
+                                            .setName('role')
+                                            .setDescription('the role you want to give')
+                                            .setRequired(true))
         )
         .addSubcommand(command => 
-            command.setName('remove')
+            command
+            .setName('remove')
             .setDescription('remove a reaction role to a message')
             .addStringOption(option => 
-                option.setName('message-id')
-                .setDescription('the message to react to')
-                .setRequired(true))
-            .addStringOption(option => 
-                option.setName('emoji')
-                .setDescription('the emoji to react with')
-                .setRequired(true))
+                option
+                    .setName('message-id')
+                    .setDescription('the message to react to')
+                    .setRequired(true))
+                        .addStringOption(option => 
+                            option
+                                .setName('emoji')
+                                .setDescription('the emoji to react with')
+                                .setRequired(true))
         ),
 
     async execute(interaction) {
