@@ -25,8 +25,8 @@ const commands = [
 
 //------
     {
-        name: 'equip',
-        description: "Equip any of the role colours that you own",
+        name: 'react-role',
+        description: "Create reaction messages to assign roles.",
     },
 
 

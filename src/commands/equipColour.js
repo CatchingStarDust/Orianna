@@ -4,21 +4,25 @@ const reaction = require('../schemas/roleColourData.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('equip-role')
+        .setName('react-role')
         .setDescription('Members use this to choose colours')
         .addSubcommand(command => 
-            command.setName('add')
+            command
+            .setName('add')
             .setDescription('add a reaction role to a message')
             .addStringOption(option => 
-                option.setName('message-id')
+                option
+                .setName('message-id')
                 .setDescription('the message to react to')
                 .setRequired(true))
             .addStringOption(option => 
-                option.setName('emoji')
+                option
+                .setName('emoji')
                 .setDescription('the emoji to react with')
                 .setRequired(true))
             .addRoleOption(option => 
-                option.setName('role')
+                option
+                .setName('role')
                 .setDescription('the role you want to give')
                 .setRequired(true))
         )
@@ -48,7 +52,7 @@ module.exports = {
 
         const data = await reaction.findOne({ Guild: guild.id, Message: message.id, Emoji: emoji });
 
-        let embed;  //embed variable to be used elsewhere
+        let embed;  
 
         switch (sub) {
             case 'add':
