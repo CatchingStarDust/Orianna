@@ -1,13 +1,13 @@
+const { Schema, model } = require('mongoose'); 
 
-
-let reaction = new Schema ({
+let reactionSchema = new Schema({
     Guild: String,
     Message: String,
     Emoji: String,
     Role: String
 });
 
-module.exports = model(reaction);
+module.exports = model( 'reactions', reactionSchema,);
 
 // Basic Roles
 const basicColourRoles = [

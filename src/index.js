@@ -9,6 +9,7 @@ const { genericEmbed, errorMsgEmbed, needServerEmbed } = require('./embeds');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
+const reactions = require('../schemas/roleColourData.js');
 
 // where intents go (the bot needs permissions to do things)
 const client = new Client({
@@ -67,3 +68,60 @@ client.on(Events.InteractionCreate, async (interaction) => {
         console.error(`Failed to connect to the database or login to Discord: ${error}`);
     }
 })();
+
+// adding roles
+Client.on(Events.MessageReactionAdd, async (reaction, user) => {
+
+    if (!reactions.message.guildId)
+        return;
+
+    if (user.bot)
+        return;
+
+let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
+    if(!reaction.emoji.id) ciD = reaction.emoji.name;
+
+const data = await reactions.findOne({Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID});
+    if (!data) return;
+
+const guild = await client.guilds.cache.get(reaction.message.guild.id);
+const member = guild.members.cache.get(user.id);
+
+try {
+    await member.roles.add(data.role);
+    
+} catch (error) {
+    `${error}` 
+    return;
+}
+
+});
+
+//removing roles
+Client.on(Events.MessageReactionRemove, async (reaction, user) => {
+
+    if (!reactions.message.guildId)
+        return;
+
+    if (user.bot)
+        return;
+
+let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
+    if(!reaction.emoji.id) ciD = reaction.emoji.name;
+
+const data = await reactions.findOne({Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID});
+    if (!data) return;
+
+const guild = await client.guilds.cache.get(reaction.message.guild.id);
+const member = guild.members.cache.get(user.id);
+
+try {
+    await member.roles.remove(data.role);
+    
+} catch (error) {
+    `${error}` 
+    return;
+}
+
+});
+

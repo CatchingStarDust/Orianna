@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField } = require('@discordjs/builders');
-const UserProfile = require('../schemas/UserProfile');
-const reaction = require ('../schemas/roleColourData');
+const UserProfile = require('../schemas/UserProfile.js');
+const reaction = require('../schemas/roleColourData.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
