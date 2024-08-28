@@ -11,6 +11,8 @@ const fs = require('fs');
 const path = require('path');
 const reactions = require('../schemas/roleColourData.js');
 
+
+
 // where intents go (the bot needs permissions to do things)
 const client = new Client({
     intents: [

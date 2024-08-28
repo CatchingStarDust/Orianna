@@ -8,7 +8,7 @@ const reactionSchema = new Schema({
     Role: String
 });
 
-module.exports = model( 'reactions', reactionSchema,);
+module.exports = model( 'reactions', reactionSchema);
 
 // Basic Roles
 const basicColourRoles = [
