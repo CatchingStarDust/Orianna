@@ -3,7 +3,7 @@
 require('dotenv').config();
 
 // libraries the bot needs access to
-const { Client, GatewayIntentBits, Events } = require('discord.js');
+const { Client, GatewayIntentBits, Events, EmbedBuilder  } = require('discord.js');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
@@ -71,6 +71,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
 })();
 
 // adding roles
+const targetChannelId = '1145845796005236916';
+
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
     if (!reaction.message.guildId) 
@@ -89,6 +91,21 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
     try {
         await member.roles.add(data.Role);
+
+    const colourEquipEmbed = new EmbedBuilder()
+        .setColor("Blurple")
+        .setDescription(`<@${user.id}> has quipped <@&${data.Role}>! looking good!`);
+
+    //sends the message to the bot commands channel
+        const targetChannel = guild.channels.cache.get(targetChannelId);
+
+        
+        if (targetChannel) {
+            await targetChannel.send({ embeds: [colourEquipEmbed] });
+        } else {
+            console.error(`Target channel with ID ${targetChannelId} not found.`);
+        }
+        
     } catch (error) {
         console.error(`OOPS: ${error}`);
     }
@@ -113,6 +130,23 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
 
     try {
         await member.roles.remove(data.Role);
+
+    const colourRemovalEmbed = new EmbedBuilder()
+        .setColor("Blurple")
+        .setDescription(`<@${user.id}> has removed <@&${data.Role}>!`);
+
+        
+    //sends the message to the bot commands channel
+        const targetChannel = guild.channels.cache.get(targetChannelId);
+
+        
+        if (targetChannel) {
+            await targetChannel.send({ embeds: [colourRemovalEmbed] });
+        } else {
+            console.error(`Target channel with ID ${targetChannelId} not found.`);
+        }
+
+
     } catch (error) {
         console.error(`OOPS: ${error}`);
     }

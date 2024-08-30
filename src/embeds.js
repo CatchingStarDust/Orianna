@@ -56,7 +56,7 @@ function noCapsuleEmbed(interaction) {
     .setThumbnail(guildIcon)
     .setColor(0xff0000)
     .setTitle('The Ball is angry...')
-    .addField({ name: `You have no capsules to open! :(`});
+    .setDescription({ name: `You have no capsules to open! :(`});
 };
 
-module.exports = { errorMsgEmbed, needServerEmbed, openCapsuleResults, noCapsuleEmbed, };
+module.exports = { errorMsgEmbed, needServerEmbed, openCapsuleResults, noCapsuleEmbed,  };
