@@ -93,7 +93,6 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
     //check if the user owns the colour they are trying to equip
     const userProfile = await UserProfile.findOne({ userId: user.id });
-
     const noColourUnlocked = new EmbedBuilder()
         .setColor("Blurple")
         .setDescription(`<@${user.id}>, cannot equip <@&${data.Role}> because they have not unlocked the colour!`);
