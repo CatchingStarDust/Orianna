@@ -1,17 +1,13 @@
 //Main hub that connects command creation.
 
-
 require('dotenv').config();
 
 // libraries the bot needs access to
-const { Client, GatewayIntentBits, Events, } = require('discord.js');
-const { genericEmbed, errorMsgEmbed, needServerEmbed } = require('./embeds');
+const { Client, GatewayIntentBits, Events } = require('discord.js');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const reactionSchema = require('./schemas/roleColourData.js');
-
-
 
 // where intents go (the bot needs permissions to do things)
 const client = new Client({
@@ -77,58 +73,47 @@ client.on(Events.InteractionCreate, async (interaction) => {
 // adding roles
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
-    if (!reactions.message.guildId)
+    if (!reaction.message.guildId) 
         return;
 
-    if (user.bot)
+    if (user.bot) 
         return;
 
-let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
-    if(!reaction.emoji.id) ciD = reaction.emoji.name;
+    let cID = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
 
-const data = await reactions.findOne({Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID});
+    const data = await reactionSchema.findOne({ Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID });
     if (!data) return;
 
-const guild = await client.guilds.cache.get(reaction.message.guild.id);
-const member = guild.members.cache.get(user.id);
+    const guild = reaction.message.guild;
+    const member = guild.members.cache.get(user.id);
 
-try {
-    await member.roles.add(data.role);
-    
-} catch (error) {
-    console.error(`OOPS: ${error}`); 
-    await interaction.editReply({ content: `There was an error: ${error.message}`, ephemeral: true });
-    return;
-}
-
+    try {
+        await member.roles.add(data.Role);
+    } catch (error) {
+        console.error(`OOPS: ${error}`);
+    }
 });
 
-//removing roles
+// removing roles
 client.on(Events.MessageReactionRemove, async (reaction, user) => {
 
-    if (!reactionSchema.message.guildId)
+    if (!reaction.message.guildId) 
         return;
 
-    if (user.bot)
+    if (user.bot) 
         return;
 
-let cID = `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
-    if(!reaction.emoji.id) ciD = reaction.emoji.name;
+    let cID = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
 
-const data = await reactionSchema.findOne({Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID});
+    const data = await reactionSchema.findOne({ Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID });
     if (!data) return;
 
-const guild = await client.guilds.cache.get(reaction.message.guild.id);
-const member = guild.members.cache.get(user.id);
+    const guild = reaction.message.guild;
+    const member = guild.members.cache.get(user.id);
 
-try {
-    await member.roles.remove(data.role);
-    
-} catch (error) {
-    console.error(`OOPS: ${error}`);
-    await interaction.editReply({ content: `There was an error: ${error.message}`, ephemeral: true });
-    return;
-}
-
+    try {
+        await member.roles.remove(data.Role);
+    } catch (error) {
+        console.error(`OOPS: ${error}`);
+    }
 });
-
