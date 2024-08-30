@@ -1,5 +1,4 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField } = require('discord.js');
-const UserProfile = require('../schemas/UserProfile.js');
 const reactionSchema = require('../schemas/roleColourData.js');
 
 module.exports = {
@@ -25,6 +24,11 @@ module.exports = {
                                             .setName('role')
                                             .setDescription('the role you want to give')
                                             .setRequired(true))
+                                                .addStringOption(option => 
+                                                    option
+                                                        .setName('color-name')
+                                                        .setDescription('the color name associated with the role (Names are lower-case with no spaces)')
+                                                        .setRequired(true))  
         )
         .addSubcommand(command => 
             command
@@ -49,6 +53,7 @@ module.exports = {
         const sub = options.getSubcommand();
         const emoji = options.getString('emoji');
         const message = await channel.messages.fetch(options.getString('message-id'));
+        const colorName = options.getString('color-name'); 
 
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))
             return await interaction.reply({ content: `You don't have permission to run that!`, ephemeral: true });
@@ -69,7 +74,8 @@ module.exports = {
                     Guild: guild.id,
                     Message: message.id,
                     Emoji: emoji,
-                    Role: role.id
+                    Role: role.id,
+                    ColourName: colorName,
                 });
 
                 embed = new EmbedBuilder()

@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const reactionSchema = require('./schemas/roleColourData.js');
+const UserProfile = require('./schemas/UserProfile.js');
 
 // where intents go (the bot needs permissions to do things)
 const client = new Client({
@@ -70,7 +71,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 })();
 
-// adding roles
+// equipping roles
 const targetChannelId = '1145845796005236916';
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
@@ -81,13 +82,32 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     if (user.bot) 
         return;
 
+    const guild = reaction.message.guild;
+    const member = guild.members.cache.get(user.id);
+
+
     let cID = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
 
     const data = await reactionSchema.findOne({ Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID });
     if (!data) return;
 
-    const guild = reaction.message.guild;
-    const member = guild.members.cache.get(user.id);
+    //check if the user owns the colour they are trying to equip
+    const userProfile = await UserProfile.findOne({ userId: user.id });
+
+    const noColourUnlocked = new EmbedBuilder()
+        .setColor("Blurple")
+        .setDescription(`<@${user.id}>, cannot equip <@&${data.Role}> because they have not unlocked the colour!`);
+
+    if (!userProfile || !userProfile.coloursOwned.includes(data.ColourName)) {
+
+        const targetChannel = guild.channels.cache.get(targetChannelId);
+
+        if (targetChannel) {
+            await targetChannel.send({ embeds: [noColourUnlocked] });
+            return;
+        }
+    }
+
 
     try {
         await member.roles.add(data.Role);
@@ -95,6 +115,10 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     const colourEquipEmbed = new EmbedBuilder()
         .setColor("Blurple")
         .setDescription(`<@${user.id}> has quipped <@&${data.Role}>! looking good!`);
+
+        if (!userProfile || !userProfile.coloursOwned.includes(data.ColourName)) {
+                return;   
+        }
 
     //sends the message to the bot commands channel
         const targetChannel = guild.channels.cache.get(targetChannelId);
