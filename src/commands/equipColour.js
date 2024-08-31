@@ -54,6 +54,9 @@ module.exports = {
         const emoji = options.getString('emoji');
         const message = await channel.messages.fetch(options.getString('message-id'));
         const colourName = options.getString('colour-name'); 
+        //debugging code
+        console.log(`Retrieved colourName: ${colourName}`);
+        //debugging code
 
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))
             return await interaction.reply({ content: `You don't have permission to run that!`, ephemeral: true });
@@ -77,11 +80,11 @@ module.exports = {
                     Role: role.id,
                     ColourName: colourName,
                 });
-                await reactionSchema.bulkSave();
+                
 
                 embed = new EmbedBuilder()
                     .setColor("Blurple")
-                    .setDescription(`Added reaction role to [this message](${message.url}) with ${emoji}, the name ${colourName} and the role ${role}`);
+                    .setDescription(`Added reaction role to [this message](${message.url}) with ${emoji}, the name "${colourName}", and the role ${role}`);
 
                 await message.react(emoji);
 
@@ -99,7 +102,7 @@ module.exports = {
                     Emoji: emoji,
                 });
 
-                await reactionSchema.bulkSave();
+            
                 
                 embed = new EmbedBuilder()
                     .setColor("Blurple")

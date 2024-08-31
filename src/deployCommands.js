@@ -48,7 +48,7 @@ const commands = [
                         required: true,
                     },
                     {
-                        name: 'color-name',
+                        name: 'colour-name',
                         description: 'the color name associated with the role (Names are lower-case with no spaces)',
                         type: 3, // this option accepts string inputs
                         required: true,
