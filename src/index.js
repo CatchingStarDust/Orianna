@@ -88,7 +88,7 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
     let cID = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
 
-    const data = await reactionSchema.findOne({ Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID });
+    const data = await reactionSchema.findOne({ Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID, });
     if (!data) return;
 
     //check if the user owns the colour they are trying to equip
@@ -96,7 +96,7 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
     // Debugging line
     const userProfile = await UserProfile.findOne({ userId: user.id });
-    console.log(`User ID: ${user.Id}, Colors Owned: ${userProfile.coloursOwned}`); 
+    console.log(`User ID: ${user.id}, Colors Owned: ${userProfile.coloursOwned}`); 
     // Debugging line
     
 
@@ -104,7 +104,7 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
         .setColor("Blurple")
         .setDescription(`<@${user.id}>, cannot equip <@&${data.Role}> because they have not unlocked the colour!`);
 
-    if (!userProfile.coloursOwned.includes(reactionSchema.ColourName)) {
+    if (!userProfile.coloursOwned.includes(data.ColourName)) {
 
         const targetChannel = guild.channels.cache.get(targetChannelId);
 

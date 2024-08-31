@@ -26,8 +26,8 @@ module.exports = {
                                             .setRequired(true))
                                                 .addStringOption(option => 
                                                     option
-                                                        .setName('color-name')
-                                                        .setDescription('the color name associated with the role (Names are lower-case with no spaces)')
+                                                        .setName('colour-name')
+                                                        .setDescription('the colour name associated with the role (Names are lower-case with no spaces)')
                                                         .setRequired(true))  
         )
         .addSubcommand(command => 
@@ -53,12 +53,12 @@ module.exports = {
         const sub = options.getSubcommand();
         const emoji = options.getString('emoji');
         const message = await channel.messages.fetch(options.getString('message-id'));
-        const colorName = options.getString('color-name'); 
+        const colourName = options.getString('colour-name'); 
 
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))
             return await interaction.reply({ content: `You don't have permission to run that!`, ephemeral: true });
 
-        const data = await reactionSchema.findOne({ Guild: guild.id, Message: message.id, Emoji: emoji });
+        const data = await reactionSchema.findOne({ Guild: guild.id, Message: message.id, Emoji: emoji, ColourName: colourName });
 
         let embed;  
 
@@ -75,12 +75,13 @@ module.exports = {
                     Message: message.id,
                     Emoji: emoji,
                     Role: role.id,
-                    ColourName: colorName,
+                    ColourName: colourName,
                 });
+                await reactionSchema.bulkSave();
 
                 embed = new EmbedBuilder()
                     .setColor("Blurple")
-                    .setDescription(`Added reaction role to [this message](${message.url}) with ${emoji} and the role ${role}`);
+                    .setDescription(`Added reaction role to [this message](${message.url}) with ${emoji}, the name ${colourName} and the role ${role}`);
 
                 await message.react(emoji);
 
@@ -98,6 +99,8 @@ module.exports = {
                     Emoji: emoji,
                 });
 
+                await reactionSchema.bulkSave();
+                
                 embed = new EmbedBuilder()
                     .setColor("Blurple")
                     .setDescription(`Removed reaction role to [this message](${message.url}) with ${emoji}`);
