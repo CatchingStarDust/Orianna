@@ -92,12 +92,19 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     if (!data) return;
 
     //check if the user owns the colour they are trying to equip
+
+
+    // Debugging line
     const userProfile = await UserProfile.findOne({ userId: user.id });
+    console.log(`User ID: ${user.Id}, Colors Owned: ${userProfile.coloursOwned}`); 
+    // Debugging line
+    
+
     const noColourUnlocked = new EmbedBuilder()
         .setColor("Blurple")
         .setDescription(`<@${user.id}>, cannot equip <@&${data.Role}> because they have not unlocked the colour!`);
 
-    if (!userProfile || !userProfile.coloursOwned.includes(data.ColourName)) {
+    if (!userProfile.coloursOwned.includes(reactionSchema.ColourName)) {
 
         const targetChannel = guild.channels.cache.get(targetChannelId);
 
