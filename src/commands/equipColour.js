@@ -44,6 +44,11 @@ module.exports = {
                                 .setName('emoji')
                                 .setDescription('the emoji to react with')
                                 .setRequired(true))
+                                .addStringOption(option => 
+                                    option
+                                        .setName('colour-name')
+                                        .setDescription('the colour name associated with the role (Names are lower-case with no spaces)')
+                                        .setRequired(true)) 
         ),
 
     async execute(interaction) {
@@ -100,6 +105,7 @@ module.exports = {
                     Guild: guild.id,
                     Message: message.id,
                     Emoji: emoji,
+                    ColourName: colourName,
                 });
 
             

@@ -157,6 +157,7 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
 
     const guild = reaction.message.guild;
     const member = guild.members.cache.get(user.id);
+    const userProfile = await UserProfile.findOne({ userId: user.id });
 
     try {
         await member.roles.remove(data.Role);

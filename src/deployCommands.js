@@ -71,7 +71,13 @@ const commands = [
                         description: 'The emoji to remove',
                         type: 3,
                         required: true,
-                    }
+                    },
+                    {
+                        name: 'colour-name',
+                        description: 'the color name associated with the role (Names are lower-case with no spaces)',
+                        type: 3,
+                        required: true,
+                    },
                 ]
             }
         ]
