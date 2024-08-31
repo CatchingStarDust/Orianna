@@ -161,6 +161,10 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
     try {
         await member.roles.remove(data.Role);
 
+        if (!userProfile || !userProfile.coloursOwned.includes(data.ColourName)) {
+            return;   
+    }
+
     const colourRemovalEmbed = new EmbedBuilder()
         .setColor("Blurple")
         .setDescription(`<@${user.id}> has removed <@&${data.Role}>!`);

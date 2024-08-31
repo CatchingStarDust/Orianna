@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const needServerEmbed = require('../embeds.js'); 
 const createNewProfile = require('../functions/createNewProfile');
@@ -14,28 +14,43 @@ module.exports = {
 
         try {
 
-            //check if the user is in the guild
+        //check if the user is in the guild
         if (!interaction.inGuild()) {
                 interaction.editReply({ content: {needServerEmbed} });
                 return;
             }
             
-            // Find the user's profile in the database
-            // If the profile does not exist, create a new one
+        // Find the user's profile in the database
+        // If the profile does not exist, create a new one
         let serverMember = await UserProfile.findOne({ userId: interaction.user.id });
 
             if (!serverMember) {
                     createNewProfile();
                     await interaction.editReply(`New Profile created.`);
                 } 
+                
+        // matches the colour name string to existing roles in the server
+        // if it finds a match, it auto converts it into it's role id
+        const roles = serverMember.coloursOwned.map(colorName => {
+        const role = interaction.guild.roles.cache.find(r => r.name.toLowerCase() === colorName.toLowerCase());
+            return role ? `<@&${role.id}>` : colorName;
+        });
 
-        const currentInventoryMessage = ` You have the following capsules in your inventory:
-            - **Role Colours**: ${serverMember.coloursOwned.join(', ').replace(/, /g, ', ') || 0 }
+        //the inventory menu contents
+        const currentInventoryMessage = ` You have the following in your inventory:
+            - **Colours owned**: ${roles.join(', ') || 'None'}
             - **Basic Capsules**: ${serverMember.basicCapsules }
             - **Holiday Capsules**: ${serverMember.holidayCapsules}
             - **Autumn Capsules**: ${serverMember.autumnCapsules} `;
 
-            await interaction.editReply(currentInventoryMessage);
+        // turn the contents into an embed and display the resulting embed
+            currentInventoryMessageEmbed = new EmbedBuilder()
+            .setColor("Blurple")
+            .setTitle("Your Inventory")
+            .setDescription(currentInventoryMessage);
+
+            await interaction.editReply({embeds: [currentInventoryMessageEmbed] });
+
 
             
         }catch (error) {
