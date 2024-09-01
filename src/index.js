@@ -72,8 +72,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
 })();
 
 // equipping roles
+
+//the id of the "bot commands" channel in the server
 const targetChannelId = '1145845796005236916';
 
+// when someone reacts to a post with the assigned emojis
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
     if (!reaction.message.guildId) 
@@ -85,13 +88,17 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     const guild = reaction.message.guild;
     const member = guild.members.cache.get(user.id);
 
-
+    // checks to see if the emoji assigned is a custom or default emoji
+    // custom emoji: ori will get the emoji's name as well as its custom id
+    // default emoji: ori just gets the name
+    // properly formats customs and leaves defaults alone
     let cID = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
 
+    // variable represents looking in the reaction schema for specific attributes as well as checking for custom emojis
     const data = await reactionSchema.findOne({ Guild: reaction.message.guild.id, Message: reaction.message.id, Emoji: cID, });
-    if (!data) return;
 
-    //check if the user owns the colour they are trying to equip
+    // if the user reacts with an emoji that doesn't exist in the reaction database, ori stops
+    if (!data) return;
 
 
     // Debugging line
@@ -104,6 +111,8 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
         .setColor("Blurple")
         .setDescription(`<@${user.id}>, cannot equip <@&${data.Role}> because they have not unlocked the colour!`);
 
+    // if the user reacts to an emoji that contains the name of a colour that is not in their user profile database
+    // ori tells them that they do not own the colour and stops the script
     if (!userProfile.coloursOwned.includes(data.ColourName)) {
 
         const targetChannel = guild.channels.cache.get(targetChannelId);
@@ -116,20 +125,23 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
 
     try {
+    // ori gives the user the role assigned to the emoji they reacted to
         await member.roles.add(data.Role);
 
+    //confirmation that they were given the role   
     const colourEquipEmbed = new EmbedBuilder()
         .setColor("Blurple")
         .setDescription(`<@${user.id}> has quipped <@&${data.Role}>! looking good!`);
 
+    // if the "colours owned" category in the user's profile does not contain the name(string) of the reaction attached to the post
+    // ori will tell them that they don't own the role and stop
         if (!userProfile || !userProfile.coloursOwned.includes(data.ColourName)) {
                 return;   
         }
 
     //sends the message to the bot commands channel
         const targetChannel = guild.channels.cache.get(targetChannelId);
-
-        
+   
         if (targetChannel) {
             await targetChannel.send({ embeds: [colourEquipEmbed] });
         } else {
