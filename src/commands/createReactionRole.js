@@ -59,11 +59,8 @@ module.exports = {
         const channel = interaction.channel;
         const sub = options.getSubcommand();
         const emoji = options.getString('emoji');
-        const message = await channel.messages.fetch(options.getString('message-id'));
+        const message = await channel.messages.fetch(options.getString('message-id'), true);
         const colourName = options.getString('colour-name'); 
-        //debugging code
-        console.log(`Retrieved colourName: ${colourName}`);
-        //debugging code
 
         //makes sure that only people who have the administrator tag can run this command
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))
@@ -83,19 +80,48 @@ module.exports = {
             // this variable represents the option in the command that tells ori to get the role that was created in the server
                 const role = options.getRole('role');
 
-            //the attributes of the reaction post the admin created using the command. they must have:
-            //the posts id number, 
-            //be assigned an emoiji, 
-            //attached to a role that exists in the server, 
-            //and has to be assigned a unique name
-                await reactionSchema.create({
-                    Guild: guild.id, // the discord server this command is in
-                    Message: message.id, // the id of any individual post on discord
-                    Emoji: emoji, // the emoji the admin assigned the post
-                    Role: role.id, // grabs a specific role from discord itself
-                    ColourName: colourName, // the name(string) assigned to the post
-                });
-                
+            /* the attributes of the reaction post the admin created using the command. they must have:
+            the posts id number, 
+            be assigned an emoiji, 
+            attached to a role that exists in the server, 
+            and has to be assigned a unique name */
+
+            // -----------
+               /* await reactionSchema.create({
+                    Guild: guild.id, 
+                    Message: message.id, 
+                    Emoji: emoji, 
+                    Role: role.id, 
+                    ColourName: colourName,
+                }); */
+
+                // pushes updates to each category in the reaction roles database
+
+
+
+            
+            const ReactionPost = new reactionSchema({
+                Guild: guild.id,
+                Message: message.id,
+                Emoji: emoji,
+                Role: role.id,
+                ColourName: colourName,
+            });
+                await ReactionPost.save();
+
+
+
+                await reactionSchema.findOneAndUpdate(
+                    { Guild: guild.id, Message: message.id,},
+                    { $push: {
+                        Emoji: emoji, 
+                        Role: role.id, 
+                        ColourName: colourName, }},
+                    { new: true, upsert: true}
+                );
+                await ReactionPost.save();
+                    
+             // ----------   
                 //the embed message that confirms the post has been assigned a reaction role
                 embed = new EmbedBuilder()
                     .setColor("Blurple")
