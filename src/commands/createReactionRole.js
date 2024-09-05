@@ -80,26 +80,14 @@ module.exports = {
             // this variable represents the option in the command that tells ori to get the role that was created in the server
                 const role = options.getRole('role');
 
-            /* the attributes of the reaction post the admin created using the command. they must have:
-            the posts id number, 
-            be assigned an emoiji, 
-            attached to a role that exists in the server, 
-            and has to be assigned a unique name */
+            /* the attributes of the reaction post 
+            the admin created using the command.
+            they must have:
+            - the posts id number, 
+            - be assigned an emoiji, 
+            - attached to a role that exists in the server, 
+            - and has to be assigned a unique name */
 
-            // -----------
-               /* await reactionSchema.create({
-                    Guild: guild.id, 
-                    Message: message.id, 
-                    Emoji: emoji, 
-                    Role: role.id, 
-                    ColourName: colourName,
-                }); */
-
-                // pushes updates to each category in the reaction roles database
-
-
-
-            
             const ReactionPost = new reactionSchema({
                 Guild: guild.id,
                 Message: message.id,
