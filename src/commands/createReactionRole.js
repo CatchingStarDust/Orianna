@@ -101,7 +101,7 @@ module.exports = {
 
                 await reactionSchema.findOneAndUpdate(
                     { Guild: guild.id, Message: message.id,},
-                    { $push: {
+                    { $addToSet: {
                         Emoji: emoji, 
                         Role: role.id, 
                         ColourName: colourName, }},
