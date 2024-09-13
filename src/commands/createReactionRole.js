@@ -107,7 +107,12 @@ module.exports = {
                         ColourName: colourName, }},
                     { new: true, upsert: true}
                 );
-                await ReactionPost.save();
+                await ReactionPost.save(); 
+
+            //DEBUGGING
+                const data = await reactionSchema.findOne({ Guild: guild.id, Message: message.id });
+                    console.log(data); 
+            //DEBUGGING
                     
              // ----------   
                 //the embed message that confirms the post has been assigned a reaction role

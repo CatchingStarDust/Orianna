@@ -3,10 +3,11 @@
 require('dotenv').config();
 
 // libraries the bot needs access to
-const { Client, GatewayIntentBits, Events, } = require('discord.js');
+const { Client, GatewayIntentBits, Events, Partials, } = require('discord.js');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
+const reactionSchema = require('./schemas/roleColourData.js');
 
 // if there is a new instance of the client being used (such as for events) it must be given intents
 // (the bot needs permissions to do things)
@@ -19,6 +20,11 @@ const client = new Client({
         GatewayIntentBits.GuildInvites,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildMessageReactions,
+    ],
+    partials: 
+            [Partials.Message,  
+            Partials.Reaction,
+            Partials.User,
     ],
 });
 

@@ -1,27 +1,33 @@
 // where the bot gives users their colours
 module.exports = (client) => {
-    const { Client, GatewayIntentBits, Events, EmbedBuilder } = require('discord.js');
+    const {Events, EmbedBuilder } = require('discord.js');
     const ReactionPost = require('../schemas/roleColourData.js');
     const UserProfile = require('../schemas/UserProfile.js');
-
-    const targetChannelId = '1145845796005236916';
-    
-
 
     /* when someone reacts 
     to a post with 
     the assigned emojis*/
-    client.on(Events.MessageReactionAdd, async (reaction, user,) => {
+    client.on(Events.MessageReactionAdd, async (reaction, user) => {
+
+        /* tries fetch the partial 
+        message in case the user 
+        reacts to an old post */
+        if (reaction.partial) {
+            try {
+                await reaction.fetch();
+                
+            } catch (error) {
+                console.error('Something went wrong when trying to fetch the message:', error);
+                return;
+            }
+        }
 
         /* DEBUGGING to see if the event 
         is being triggered at all*/
-        console.log('Reaction has been triggered');  
+        console.log('REACTION HAS BEEN TRIGGERED');  
 
             if (!reaction.message.guildId) return;
             if (user.bot) return;
-
-        console.log('Reaction passed initial checks');
-        // DEBUGGING
 
             if (!reaction.message.guildId) 
                 return;
@@ -62,19 +68,15 @@ module.exports = (client) => {
         console.log(`Reaction data found: ${JSON.stringify(data)}`);
         // DEBUGGING
 
-        /* checks the user profile to see if 
-        the string associated with the role exists
-        in the user's profile*/
-
+        /* assigns the colour name to the 
+        corresponding emoji it's attached to, 
+        and checks to see if 
+        that colour(string) 
+        is in the user profile*/
         const emojiIndex = data.Emoji.indexOf(emojiId);
         const requiredColour = data.ColourName[emojiIndex];
         const userOwnsColour = userProfile.coloursOwned.includes(requiredColour);
-        
-        /* if the user reacts to an emoji 
-        that of a colour that is not 
-        in their user profile database,
-        ori tells them that they do not own 
-        the colour and stops the script */
+
             if (!userOwnsColour) {
                 console.log(`User ${user.tag} does not own any of the colours: ${data.ColourName.join(", ")}`);
 
@@ -90,10 +92,6 @@ module.exports = (client) => {
             return;
         }
 
-        /* if the user reacts with 
-        an emoji that doesn't exist 
-        in the reaction database, 
-        ori stops */
             if (!data) return;
 
         try {
@@ -112,12 +110,14 @@ module.exports = (client) => {
 
         for (const roleId of RolesAssignedToReactionPost) {
             if (member.roles.cache.has(roleId)) {
+
                 await member.roles.remove(roleId);
                 console.log(`Removed role ${roleId} from user ${user.tag}`);
             }         
         }
 
-        /* the replacement role */
+        /* and then applies 
+        the replacement role */
         const newRole = data.Role[emojiIndex];
 
                 await member.roles.add(newRole);
