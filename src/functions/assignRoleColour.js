@@ -3,6 +3,7 @@ module.exports = (client) => {
     const {Events, EmbedBuilder } = require('discord.js');
     const ReactionPost = require('../schemas/roleColourData.js');
     const UserProfile = require('../schemas/UserProfile.js');
+    
 
     /* when someone reacts 
     to a post with 
@@ -11,7 +12,7 @@ module.exports = (client) => {
 
         /* tries fetch the partial 
         message in case the user 
-        reacts to an old post */
+        reacts to an old post 
         if (reaction.partial) {
             try {
                 await reaction.fetch();
@@ -20,9 +21,10 @@ module.exports = (client) => {
                 console.error('Something went wrong when trying to fetch the message:', error);
                 return;
             }
-        }
+        }*/
 
         /* DEBUGGING to see if the event 
+
         is being triggered at all*/
         console.log('REACTION HAS BEEN TRIGGERED');  
 
@@ -49,7 +51,7 @@ module.exports = (client) => {
         /* checks to see if 
         the emoji assigned is a custom 
         or default emoji*/
-        const emojiId = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id.toString()}>` : reaction.emoji.name;
+        const emojiId = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
 
         /* variable represents looking in 
         the reaction schema for 
@@ -62,8 +64,15 @@ module.exports = (client) => {
 
         // DEBUGGING
             if (!data) {
-                console.log(`No reaction data found for guild: ${guildId}, message: ${messageId}, emoji: ${emojiId}`);
-                return;
+
+                try {
+                    
+                } catch (error) {
+                    console.error('Something went wrong when trying to fetch the message:', error);
+                    console.log(`No reaction data found for guild: ${guildId}, message: ${messageId}, emoji: ${emojiId}`);
+                    return; 
+                }
+                
             }
         console.log(`Reaction data found: ${JSON.stringify(data)}`);
         // DEBUGGING
@@ -73,12 +82,13 @@ module.exports = (client) => {
         and checks to see if 
         that colour(string) 
         is in the user profile*/
-        const emojiIndex = data.Emoji.indexOf(emojiId);
-        const requiredColour = data.ColourName[emojiIndex];
+        const emoji = data.Emoji;
+        const requiredColour = data.ColourName;
         const userOwnsColour = userProfile.coloursOwned.includes(requiredColour);
+        const targetChannelId = '1145845796005236916'
 
             if (!userOwnsColour) {
-                console.log(`User ${user.tag} does not own any of the colours: ${data.ColourName.join(", ")}`);
+                console.log(`User ${user.tag} does not have: ${data.ColourName} in their inventory`);
 
         const targetChannel = guild.channels.cache.get(targetChannelId);
         const noColourUnlocked = new EmbedBuilder()
@@ -96,7 +106,7 @@ module.exports = (client) => {
 
         try {
 
-            if (emojiIndex === -1) {
+            if (emoji=== -1) {
                 console.log(`Emoji ${emojiId} not found in the data`);
                 return;
             }
@@ -108,20 +118,17 @@ module.exports = (client) => {
         if they already have it equipped */
         const RolesAssignedToReactionPost = data.Role;
 
-        for (const roleId of RolesAssignedToReactionPost) {
-            if (member.roles.cache.has(roleId)) {
-
-                await member.roles.remove(roleId);
-                console.log(`Removed role ${roleId} from user ${user.tag}`);
+        for (const currentRole of RolesAssignedToReactionPost) {
+            if (member.roles.cache.has(currentRole)) {
+                await member.roles.remove(currentRole);
+                console.log(`Removed role ${currentRole} from user ${user.tag}`);
             }         
         }
 
-        /* and then applies 
-        the replacement role */
-        const newRole = data.Role[emojiIndex];
+        const newRole = data.Role;
 
                 await member.roles.add(newRole);
-                console.log(`Role ${data.Role[emojiIndex]} added to user ${user.tag}`);
+                console.log(`Role ${data.Role} added to user ${user.tag}`);
 
         /*confirmation*/
         const targetChannel = guild.channels.cache.get(targetChannelId);
@@ -136,12 +143,13 @@ module.exports = (client) => {
                 return;
 
         } catch (error) {
-            console.error(`OOPS: ${error}`);
+            console.error(`TROUBLE ADDING ROLE: ${error}`);
         }
     });
 
     // REMOVE REACTIONS
     client.on(Events.MessageReactionRemove, async (reaction, user) => {
+    const targetChannelId = '1145845796005236916'
 
             if (!reaction.message.guildId) 
                 return;
@@ -149,7 +157,7 @@ module.exports = (client) => {
             if (user.bot) 
                 return;
 
-        const emojiId = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id.toString()}>` : reaction.emoji.name;
+        const emojiId = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji}>` : reaction.emoji.name;
 
         const data = await ReactionPost.findOne({ 
             Guild: reaction.message.guild.id, 
@@ -177,7 +185,6 @@ module.exports = (client) => {
             .setDescription(`<@${user.id}> has removed <@&${data.Role}>!`);
 
             
-        //sends the message to the bot commands channel
             const targetChannel = guild.channels.cache.get(targetChannelId);
 
             
@@ -189,7 +196,7 @@ module.exports = (client) => {
 
 
         } catch (error) {
-            console.error(`OOPS: ${error}`);
+            console.error(`TROUBLE REMOVING ROLE: ${error}`);
         }
     });
 

@@ -7,7 +7,6 @@ const { Client, GatewayIntentBits, Events, Partials, } = require('discord.js');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
-const reactionSchema = require('./schemas/roleColourData.js');
 
 // if there is a new instance of the client being used (such as for events) it must be given intents
 // (the bot needs permissions to do things)

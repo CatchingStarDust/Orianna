@@ -67,7 +67,11 @@ module.exports = {
             return await interaction.reply({ content: `You don't have permission to run that!`, ephemeral: true });
 
         // looks in "reactionSchema" database and searches for a single value in each category that the admin is assigning to the message
-        const data = await reactionSchema.findOne({ Guild: guild.id, Message: message.id, Emoji: emoji, ColourName: colourName });
+        const data = await reactionSchema.findOne({ 
+            Guild: guild.id, 
+            Message: message.id, 
+            Emoji: emoji, 
+            ColourName: colourName, });
 
         let embed;  
 
@@ -90,6 +94,7 @@ module.exports = {
 
             const ReactionPost = new reactionSchema({
                 Guild: guild.id,
+                MessageChannel: channel.id,
                 Message: message.id,
                 Emoji: emoji,
                 Role: role.id,
@@ -101,7 +106,9 @@ module.exports = {
 
                 await reactionSchema.findOneAndUpdate(
                     { Guild: guild.id, Message: message.id,},
-                    { $addToSet: {
+                    { $set: {
+                        MessageChannel: channel.id,
+                        Message: message.id,
                         Emoji: emoji, 
                         Role: role.id, 
                         ColourName: colourName, }},
@@ -110,7 +117,6 @@ module.exports = {
                 await ReactionPost.save(); 
 
             //DEBUGGING
-                const data = await reactionSchema.findOne({ Guild: guild.id, Message: message.id });
                     console.log(data); 
             //DEBUGGING
                     
