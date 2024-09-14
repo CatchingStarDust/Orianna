@@ -12,20 +12,21 @@ module.exports = (client) => {
 
         /* tries fetch the partial 
         message in case the user 
-        reacts to an old post 
+        reacts to an old post*/
         if (reaction.partial) {
             try {
                 await reaction.fetch();
                 
             } catch (error) {
-                console.error('Something went wrong when trying to fetch the message:', error);
+                console.error('ERROR FETCHING MESSAGE:', error);
                 return;
             }
-        }*/
+        }
 
         /* DEBUGGING to see if the event 
 
         is being triggered at all*/
+
         console.log('REACTION HAS BEEN TRIGGERED');  
 
             if (!reaction.message.guildId) return;
@@ -45,12 +46,12 @@ module.exports = (client) => {
         console.log(`Reaction by ${user.tag} on message ${reaction.message.id} in guild ${guild.id}`);
         // DEBUGGING
         
-        const messageId = reaction.message.id.toString();
-        const guildId = guild.id.toString();
 
         /* checks to see if 
         the emoji assigned is a custom 
         or default emoji*/
+        const guildId = guild.id.toString();
+        const messageId = reaction.message.id.toString();
         const emojiId = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
 
         /* variable represents looking in 
@@ -60,7 +61,8 @@ module.exports = (client) => {
         const data = await ReactionPost.findOne({ 
             Guild: guildId,  
             Message: messageId, 
-            Emoji: emojiId,});
+            Emoji: emojiId,
+        });
 
         // DEBUGGING
             if (!data) {
@@ -93,7 +95,7 @@ module.exports = (client) => {
         const targetChannel = guild.channels.cache.get(targetChannelId);
         const noColourUnlocked = new EmbedBuilder()
             .setColor("Blurple")
-            .setDescription(`<@${user.id}>, cannot equip <@&${data.Role[emojiIndex]}> because they have not unlocked the colour!`);
+            .setDescription(`<@${user.id}>, cannot equip <@&${data.Role}> because they have not unlocked the colour!`);
 
             if (targetChannel) {
                 await targetChannel.send({ embeds: [noColourUnlocked] });
