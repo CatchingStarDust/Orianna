@@ -1,7 +1,8 @@
 // where the bot gives users their colours
 module.exports = (client) => {
     const {Events, EmbedBuilder } = require('discord.js');
-    const ReactionPost = require('../schemas/roleColourData.js');
+    const data = require('../commands/createReactionRole.js');
+    const reactionSchema = require('../schemas/roleColourData.js');
     const UserProfile = require('../schemas/UserProfile.js');
     
 
@@ -10,23 +11,33 @@ module.exports = (client) => {
     the assigned emojis*/
     client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
-        /* tries fetch the partial 
-        message in case the user 
-        reacts to an old post*/
-        if (reaction.partial) {
+    const guild = reaction.message.guild;
+    const emojiId = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
+
+    
+
+    /* bot tries to fetch 
+    any old reaction posts */
+    const oldReactions = reaction.message.reactions.cache
+
+                oldReactions.forEach(async(cachedReactionData) => {
+            
+            const oldReactionEmojis = cachedReactionData.emoji.id ? `<:${cachedReactionData.emoji.name}:${cachedReactionData.emoji.id}>` : cachedReactionData.emoji.name;
+            const roleColours = reactionSchema.ColourName.cache.get();
+
             try {
-                await reaction.fetch();
+                await cachedReactionData.fetch(oldReactionEmojis, roleColours);
                 
             } catch (error) {
-                console.error('ERROR FETCHING MESSAGE:', error);
+                console.error('ERROR FETCHING OLD MESSAGES:', error);
                 return;
             }
-        }
+        
+        });
+
 
         /* DEBUGGING to see if the event 
-
-        is being triggered at all*/
-
+        is being triggered*/
         console.log('REACTION HAS BEEN TRIGGERED');  
 
             if (!reaction.message.guildId) return;
@@ -38,45 +49,12 @@ module.exports = (client) => {
             if (user.bot) 
                 return;
 
-        const guild = reaction.message.guild;
+        
         const member = guild.members.cache.get(user.id);
         const userProfile = await UserProfile.findOne({ userId: user.id })
 
         // DEBUGGING
-        console.log(`Reaction by ${user.tag} on message ${reaction.message.id} in guild ${guild.id}`);
-        // DEBUGGING
-        
-
-        /* checks to see if 
-        the emoji assigned is a custom 
-        or default emoji*/
-        const guildId = guild.id.toString();
-        const messageId = reaction.message.id.toString();
-        const emojiId = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
-
-        /* variable represents looking in 
-        the reaction schema for 
-        specific attributes as well as 
-        checking for custom emojis*/
-        const data = await ReactionPost.findOne({ 
-            Guild: guildId,  
-            Message: messageId, 
-            Emoji: emojiId,
-        });
-
-        // DEBUGGING
-            if (!data) {
-
-                try {
-                    
-                } catch (error) {
-                    console.error('Something went wrong when trying to fetch the message:', error);
-                    console.log(`No reaction data found for guild: ${guildId}, message: ${messageId}, emoji: ${emojiId}`);
-                    return; 
-                }
-                
-            }
-        console.log(`Reaction data found: ${JSON.stringify(data)}`);
+        console.log(`REACTION DATA FOUND by ${user.tag} on message ${reaction.message.id} in guild ${guild.id}: ${JSON.stringify(data)}`);
         // DEBUGGING
 
         /* assigns the colour name to the 
@@ -161,13 +139,14 @@ module.exports = (client) => {
 
         const emojiId = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji}>` : reaction.emoji.name;
 
-        const data = await ReactionPost.findOne({ 
+        const colourData = await reactionSchema.findOne({ 
             Guild: reaction.message.guild.id, 
             Message: reaction.message.id, 
-            Emoji: emojiId });
+            Emoji: emojiId 
+        });
 
 
-            if (!data) return;
+            if (!colourData) return;
 
         const guild = reaction.message.guild;
         const member = guild.members.cache.get(user.id);
@@ -176,15 +155,15 @@ module.exports = (client) => {
         
 
         try {
-            await member.roles.remove(data.Role);
+            await member.roles.remove(colourData.Role);
 
-            if (!userProfile || !userProfile.coloursOwned.includes(data.ColourName)) {
+            if (!userProfile || !userProfile.coloursOwned.includes(colourData.ColourName)) {
                 return;   
         }
 
         const colourRemovalEmbed = new EmbedBuilder()
             .setColor("Blurple")
-            .setDescription(`<@${user.id}> has removed <@&${data.Role}>!`);
+            .setDescription(`<@${user.id}> has removed <@&${colourData.Role}>!`);
 
             
             const targetChannel = guild.channels.cache.get(targetChannelId);

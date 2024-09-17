@@ -92,7 +92,7 @@ module.exports = {
             - attached to a role that exists in the server, 
             - and has to be assigned a unique name */
 
-            const ReactionPost = new reactionSchema({
+            const reactionPost = new reactionSchema({
                 Guild: guild.id,
                 MessageChannel: channel.id,
                 Message: message.id,
@@ -100,7 +100,7 @@ module.exports = {
                 Role: role.id,
                 ColourName: colourName,
             });
-                await ReactionPost.save();
+                await reactionPost.save();
 
 
 
