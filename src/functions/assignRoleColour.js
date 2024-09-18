@@ -5,22 +5,18 @@ module.exports = (client) => {
     const reactionSchema = require('../schemas/roleColourData.js');
     const UserProfile = require('../schemas/UserProfile.js');
     
+    /* DEBUG */
+    console.log(`Emoji ID: ${emojiId}`);
+    console.log(`Message ID: ${reaction.message.id}`);
+    console.log(`Guild ID: ${guild.id}`);
+    /*END */
+
 
     /* when someone reacts 
     to a post with 
     the assigned emojis*/
     client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
-        /* tries to fetch any cached posts */
-    if (!reaction.message.partial) {
-        
-        try {
-            await reaction.message.fetch();
-        } catch (error) {
-            console.error('ERROR FETCHING MESSAGE:', error);
-            return;
-        }
-    }
 
     const guild = reaction.message.guild;
     const emojiId = reaction.emoji.id ? 
@@ -32,6 +28,9 @@ module.exports = (client) => {
             Message: reaction.message.id, 
             Emoji: emojiId,
             });
+            /**DEBUG */
+            console.log('Retrieved Data:', data);  // Add this line to see the fetched data
+            /**END */
 
         if (!data) {
             console.log(`NO REACTION ROLE DATA FOUND FOR EMOJI: ${emojiId}`);
@@ -39,16 +38,12 @@ module.exports = (client) => {
             }
     
     /* bot tries to fetch 
-    any old reaction posts */
+    any old post data */
     const oldReactions = reaction.message.reactions.cache;
 
         oldReactions.forEach(async(cachedReactionData) => {
             
-            const oldReactionEmojis = cachedReactionData.emoji.id ? 
-            `<:${cachedReactionData.emoji.name}
-                :${cachedReactionData.emoji.id}>` : cachedReactionData.emoji.name;
-
-           
+            const oldReactionEmojis = cachedReactionData.emoji.id ? `<:${cachedReactionData.emoji.name}:${cachedReactionData.emoji.id}>` : cachedReactionData.emoji.name;
 
             try {
                 await cachedReactionData.fetch(oldReactionEmojis);
@@ -59,6 +54,17 @@ module.exports = (client) => {
             }
     
     });
+
+           /* tries to fetch any cached posts */
+           if (!reaction.message.partial) {
+        
+            try {
+                await reaction.message.fetch();
+            } catch (error) {
+                console.error('ERROR FETCHING MESSAGE:', error);
+                return;
+            }
+        }
 
 
         /* DEBUGGING to see if the event 
@@ -73,6 +79,7 @@ module.exports = (client) => {
 
             if (user.bot) 
                 return;
+        /*DEBUG */
 
         
         const member = guild.members.cache.get(user.id);
