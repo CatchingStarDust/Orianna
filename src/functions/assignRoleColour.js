@@ -11,29 +11,54 @@ module.exports = (client) => {
     the assigned emojis*/
     client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
+        /* tries to fetch any cached posts */
+    if (!reaction.message.partial) {
+        
+        try {
+            await reaction.message.fetch();
+        } catch (error) {
+            console.error('ERROR FETCHING MESSAGE:', error);
+            return;
+        }
+    }
+
     const guild = reaction.message.guild;
-    const emojiId = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
+    const emojiId = reaction.emoji.id ? 
+    `<:${reaction.emoji.name}
+        :${reaction.emoji.id}>` : reaction.emoji.name;   
+        
+        const data = await reactionSchema.findOne({ 
+            Guild: guild.id, 
+            Message: reaction.message.id, 
+            Emoji: emojiId,
+            });
 
+        if (!data) {
+            console.log(`NO REACTION ROLE DATA FOUND FOR EMOJI: ${emojiId}`);
+            return;
+            }
     
-
     /* bot tries to fetch 
     any old reaction posts */
-    const oldReactions = reaction.message.reactions.cache
+    const oldReactions = reaction.message.reactions.cache;
 
-                oldReactions.forEach(async(cachedReactionData) => {
+        oldReactions.forEach(async(cachedReactionData) => {
             
-            const oldReactionEmojis = cachedReactionData.emoji.id ? `<:${cachedReactionData.emoji.name}:${cachedReactionData.emoji.id}>` : cachedReactionData.emoji.name;
-            const roleColours = reactionSchema.ColourName.cache.get();
+            const oldReactionEmojis = cachedReactionData.emoji.id ? 
+            `<:${cachedReactionData.emoji.name}
+                :${cachedReactionData.emoji.id}>` : cachedReactionData.emoji.name;
+
+           
 
             try {
-                await cachedReactionData.fetch(oldReactionEmojis, roleColours);
-                
+                await cachedReactionData.fetch(oldReactionEmojis);
+                    
             } catch (error) {
                 console.error('ERROR FETCHING OLD MESSAGES:', error);
                 return;
             }
-        
-        });
+    
+    });
 
 
         /* DEBUGGING to see if the event 

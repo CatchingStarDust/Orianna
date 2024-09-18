@@ -1,12 +1,14 @@
 //Main hub that connects command creation.
 
-require('dotenv').config();
 
 // libraries the bot needs access to
 const { Client, GatewayIntentBits, Events, Partials, } = require('discord.js');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
+
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
 
 // if there is a new instance of the client being used (such as for events) it must be given intents
 // (the bot needs permissions to do things)
@@ -68,7 +70,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 // signals that Ori is connected to the Mongoose database
 (async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+        await mongoose.connect(process.env.MONGODB_URI,);
         console.log("Connected to the database");
 
         await client.login(process.env.TOKEN);

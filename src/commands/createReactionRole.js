@@ -114,7 +114,7 @@ module.exports = {
                         ColourName: colourName, }},
                     { new: true, upsert: true}
                 );
-                await ReactionPost.save(); 
+                await reactionPost.save(); 
 
             //DEBUGGING
                     console.log(data); 
