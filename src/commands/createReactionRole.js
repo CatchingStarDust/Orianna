@@ -100,7 +100,18 @@ module.exports = {
                 Role: role.id,
                 ColourName: colourName,
             });
+                //debugging
+                console.log('Saving reaction role data to the database:', {
+                    Guild: guild.id,
+                    MessageChannel: channel.id,
+                    Message: message.id,
+                    Emoji: emoji,
+                    Role: role.id,
+                    ColourName: colourName,
+                });
+                
                 await reactionPost.save();
+                console.log('Reaction role data saved successfully');
 
 
 

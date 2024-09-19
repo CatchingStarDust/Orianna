@@ -29,6 +29,12 @@ const client = new Client({
     ],
 });
 
+client.on(Events.MessageReactionAdd, async (reaction, user) => {
+    console.log('REACTION EVENT TRIGGERED'); 
+    
+    /**If it doesn't log this, the event listener might not be set up correctly.*/
+});
+
 
 client.commands = new Map();
 
