@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionsBitField } = require('discord.js');
-const reactionSchema = require('../schemas/roleColourData.js');
+const ReactionPost = require('../schemas/roleColourData.js');
+
 
 module.exports = {
     // the command along with the options that the admin will need to enter every time they want to add a reaction role to a message.
@@ -66,8 +67,8 @@ module.exports = {
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator))
             return await interaction.reply({ content: `You don't have permission to run that!`, ephemeral: true });
 
-        // looks in "reactionSchema" database and searches for a single value in each category that the admin is assigning to the message
-        const data = await reactionSchema.findOne({ 
+       
+        const data = await ReactionPost.findOne({ 
             Guild: guild.id, 
             Message: message.id, 
             Emoji: emoji, 
@@ -92,7 +93,7 @@ module.exports = {
             - attached to a role that exists in the server, 
             - and has to be assigned a unique name */
 
-            const reactionPost = new reactionSchema({
+            const newReaction = new ReactionPost({
                 Guild: guild.id,
                 MessageChannel: channel.id,
                 Message: message.id,
@@ -100,22 +101,8 @@ module.exports = {
                 Role: role.id,
                 ColourName: colourName,
             });
-                //debugging
-                console.log('Saving reaction role data to the database:', {
-                    Guild: guild.id,
-                    MessageChannel: channel.id,
-                    Message: message.id,
-                    Emoji: emoji,
-                    Role: role.id,
-                    ColourName: colourName,
-                });
-                
-                await reactionPost.save();
-                console.log('Reaction role data saved successfully');
-
-
-
-                await reactionSchema.findOneAndUpdate(
+          
+                await ReactionPost.findOneAndUpdate(
                     { Guild: guild.id, Message: message.id,},
                     { $set: {
                         MessageChannel: channel.id,
@@ -125,10 +112,12 @@ module.exports = {
                         ColourName: colourName, }},
                     { new: true, upsert: true}
                 );
-                await reactionPost.save(); 
+                await newReaction.save(); 
 
             //DEBUGGING
-                    console.log(data); 
+                    console.log(newReaction); 
+                    console.log('Saved Emoji:', emoji);  //  the emoji you know is saved
+                    console.log('Queried Emoji:', emoji);  // The emoji you are querying
                     
             //DEBUGGING
                     
@@ -150,7 +139,7 @@ module.exports = {
                 }
             
             // same thing as the code above, but for deleting reactions from posts
-                await reactionSchema.deleteMany({
+                await ReactionPost.deleteMany({
                     Guild: guild.id,
                     Message: message.id,
                     Emoji: emoji,
