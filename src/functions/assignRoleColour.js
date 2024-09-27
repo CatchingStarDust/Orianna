@@ -8,37 +8,40 @@ module.exports = (client) => {
     /* when someone reacts 
     to a post with 
     the assigned emojis*/
-    client.on(Events.MessageReactionAdd, async (reaction, user) => {
-    if (reaction.partial) {
-        try {
-            await reaction.fetch();  // Fetch the full reaction object if it’s partial
-                console.log('Fetched the reaction:', reaction);
-        } catch (error) {
-            console.error('Error fetching reaction:', error);
-            return;
-        }
-    }
-        
-  
-    const emoji = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
-    const messageId = reaction.message.id;
-    const guildId = reaction.message.guild.id;
 
-    const data = await ReactionPost.findOne({ 
-        Guild: guildId, 
-        Message: messageId, 
-        Emoji: emoji,
-        Role: role.id,
-        ColourName: ColourName
+    client.on(Events.MessageReactionAdd, async (reaction, user) => {
+
+    console.log('REACTION EVENT TRIGGERED');        
+    /**If it doesn't log this, the event listener might not be set up correctly.*/
+
+    if (reaction.partial) await reaction.fetch();
+    if (reaction.bot) return;
+        
+    const emoji = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
+    const message = reaction.message;
+    const guild = message.guild;
+
+    const reactionRole = await ReactionPost.findOne({
+      Guild: guild.id,
+      Message: message.id,
+      Emoji: emoji,
     });
 
-    if (!data) {
+    // Add null check for reactionRole
+    if (!reactionRole) {
         console.log('No matching data found for this reaction.');
         return;
     }
 
+    const userProfile = await UserProfile.findOne({ userId: userId });
 
-    const requiredColour = data.ColourName;
+    const colourName = reactionRole.ColourName;
+    const coloursOwned = userProfile.coloursOwned;
+
+    console.log(`COLOUR NAME ATTACHED TO ${emoji}: ${colourName}`);
+
+    
+    const requiredColour = reactionRole.ColourName;
     const userOwnsColour = userProfile.coloursOwned.includes(requiredColour);
     const targetChannelId = '1145845796005236916'
         
@@ -48,7 +51,7 @@ module.exports = (client) => {
     const targetChannel = guild.channels.cache.get(targetChannelId);
     const noColourUnlocked = new EmbedBuilder()
         .setColor("Blurple")
-        .setDescription(`<@${user.id}>, cannot equip <@&${data.Role}> because they have not unlocked the colour!`);
+        .setDescription(`<@${user.id}>, cannot equip <@&${reactionRole.Role}> because they have not unlocked the colour!`);
         
     if (targetChannel) {
         await targetChannel.send({ embeds: [noColourUnlocked] });
@@ -66,8 +69,8 @@ module.exports = (client) => {
                         return;
         }
         
-        const RolesAssignedToReactionPost = data.Role;
-        const member = reaction.message.guild.members.cache.get(user.id);
+        const RolesAssignedToReactionPost = reactionRole.Role;
+        const member = await guild.members.fetch(user.id);
         
         for (const currentRole of RolesAssignedToReactionPost) {
             if (member.roles.cache.has(currentRole)) {
@@ -76,15 +79,15 @@ module.exports = (client) => {
             }         
         }
         
-        await member.roles.add(data.Role);
-            console.log(`Role ${data.Role} added to user ${user.tag}`);
+        await member.roles.add(reactionRole.Role);
+            console.log(`Role ${reactionRole.Role} added to user ${user.tag}`);
         
         /*confirmation*/
         const targetChannel = guild.channels.cache.get(targetChannelId);
         
         const giveColourEmbed = new EmbedBuilder()
             .setColor("Blurple")
-            .setDescription(`<@${user.id}> has equipped <@&${data.Role}>! Looking good!`);
+            .setDescription(`<@${user.id}> has equipped <@&${reactionRole.Role}>! Looking good!`);
     
         if (targetChannel) {
             await targetChannel.send({ embeds: [giveColourEmbed] });
@@ -97,41 +100,51 @@ module.exports = (client) => {
 
     });
 
+
+// ----
+
+
     // REMOVE REACTIONS
     client.on(Events.MessageReactionRemove, async (reaction, user) => {
     const targetChannelId = '1145845796005236916'
 
-            if (!reaction.message.guildId) 
-                return;
+    if (!reaction.message.guildId) 
+        return;
 
-            if (user.bot) 
-                return;
+    if (user.bot) 
+         return;
 
-    const emojiId = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;  
-    const colourData = await ReactionPost.findOne({ 
-            Guild: reaction.message.guild.id, 
-            Message: reaction.message.id, 
-            Emoji: emojiId 
-        });
-
-
-            if (!colourData) return;
-
+    
+                
+    const emoji = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
+    const message = reaction.message;
     const guild = reaction.message.guild;
-    const userProfile = await UserProfile.findOne({ userId: user.id });
+        
+    const reactionRole = await ReactionPost.findOne({
+        Guild: guild.id,
+        Message: message.id,
+        Emoji: emoji,
+    });
+
+
+    if (!reactionRole) return;
+
+    
+    const member = await guild.members.fetch(user.id);
+    const userProfile = await UserProfile.findOne({ userId: userId });
 
         
 
         try {
-            await member.roles.remove(colourData.Role);
+            await member.roles.remove(reactionRole.Role);
 
-            if (!userProfile || !userProfile.coloursOwned.includes(colourData.ColourName)) {
+            if (!userProfile || !userProfile.coloursOwned.includes(reactionRole.ColourName)) {
                 return;   
         }
 
         const colourRemovalEmbed = new EmbedBuilder()
             .setColor("Blurple")
-            .setDescription(`<@${user.id}> has removed <@&${colourData.Role}>!`);
+            .setDescription(`<@${user.id}> has removed <@&${reactionRole.Role}>!`);
 
             
             const targetChannel = guild.channels.cache.get(targetChannelId);

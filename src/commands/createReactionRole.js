@@ -69,10 +69,11 @@ module.exports = {
 
        
         const data = await ReactionPost.findOne({ 
-            Guild: guild.id, 
-            Message: message.id, 
+            Guild: guild, 
+            Message: message, 
             Emoji: emoji, 
-            ColourName: colourName, });
+            ColourName: colourName, 
+        });
 
         let embed;  
 
@@ -94,9 +95,9 @@ module.exports = {
             - and has to be assigned a unique name */
 
             const newReaction = new ReactionPost({
-                Guild: guild.id,
-                MessageChannel: channel.id,
-                Message: message.id,
+                Guild: guild,
+                MessageChannel: channel,
+                Message: message,
                 Emoji: emoji,
                 Role: role.id,
                 ColourName: colourName,
@@ -105,8 +106,8 @@ module.exports = {
                 await ReactionPost.findOneAndUpdate(
                     { Guild: guild.id, Message: message.id,},
                     { $set: {
-                        MessageChannel: channel.id,
-                        Message: message.id,
+                        MessageChannel: channel,
+                        Message: message,
                         Emoji: emoji, 
                         Role: role.id, 
                         ColourName: colourName, }},

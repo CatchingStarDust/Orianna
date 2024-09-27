@@ -29,12 +29,6 @@ const client = new Client({
     ],
 });
 
-client.on(Events.MessageReactionAdd, async (reaction, user) => {
-    console.log('REACTION EVENT TRIGGERED'); 
-    
-    /**If it doesn't log this, the event listener might not be set up correctly.*/
-});
-
 
 client.commands = new Map();
 
@@ -71,6 +65,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await interaction.reply({ content: 'There was an error executing this command.', ephemeral: true });
     }
 });
+
+require('../src/functions/assignRoleColour.js')(client); // import reaction roles mechanic
 
 // signals that Ori is connected to the Mongoose database
 (async () => {
