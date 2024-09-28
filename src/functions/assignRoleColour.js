@@ -33,7 +33,7 @@ module.exports = (client) => {
         return;
     }
 
-    const userProfile = await UserProfile.findOne({ userId: userId });
+    const userProfile = await UserProfile.findOne({ userId: user.id });
 
     const colourName = reactionRole.ColourName;
     const coloursOwned = userProfile.coloursOwned;
@@ -131,7 +131,7 @@ module.exports = (client) => {
 
     
     const member = await guild.members.fetch(user.id);
-    const userProfile = await UserProfile.findOne({ userId: userId });
+    const userProfile = await UserProfile.findOne({ userId: user.id });
 
         
 
