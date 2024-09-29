@@ -80,7 +80,48 @@ module.exports = (client) => {
 
 
     /** REMOVE ROLES */
-    //client.on(Events.MessageReactionRemove, async (reaction, user) => {
+    client.on(Events.MessageReactionRemove, async (reaction, user) => {
+        if (reaction.partial) {
+            try {
+                await reaction.fetch();
+            } catch (error) {
+                console.error('Something went wrong when fetching the reaction: ', error);
+                return;
+            }
+        }
+    
+        const emoji = reaction.emoji.id ? `<:${reaction.emoji.name}:${reaction.emoji.id}>` : reaction.emoji.name;
+        const guild = reaction.message.guild;
+        const targetChannelId = '1145845796005236916';
+        const targetChannel = guild.channels.cache.get(targetChannelId);
+            
+        const ReactionPostData = await ReactionPost.findOne({ 
+            Guild: reaction.message.guild.id, 
+            Message: reaction.message.id, 
+            Emoji: emoji, 
+        });
+        
+            if (!ReactionPostData) {
+                console.log('No matching data found for this reaction.');
+                return;
+        }
+        
+        
+        const member = await guild.members.fetch(user.id);
+        const role = guild.roles.cache.get(ReactionPostData.Role);
+    
+        /** gives user the colour */
+        await member.roles.remove(role);
+    
+        const removeColourEmbed = new EmbedBuilder()
+            .setColor("Blurple")
+            .setDescription(`<@${user.id}> has removed <@&${ReactionPostData.Role}>!`);
+    
+            if (targetChannel) {
+                await targetChannel.send({ embeds: [removeColourEmbed] });
+            }
+            return;
 
-    //});
+    });
+
 }; 
