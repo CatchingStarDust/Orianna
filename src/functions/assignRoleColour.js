@@ -4,6 +4,11 @@ const ReactionPost = require('../schemas/roleColourData.js');
 
 module.exports = (client) => {
     client.on(Events.MessageReactionAdd, async (reaction, user) => {
+        
+        if(user.bot){
+            return;
+        }
+
     if (reaction.partial) {
         try {
             await reaction.fetch();

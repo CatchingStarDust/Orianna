@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const createNewProfile = require('../functions/createNewProfile');
 const weightedRandomSelect = require('../functions/weightedRandomSelect');
@@ -37,8 +37,7 @@ module.exports = {
             // Define the probabilities for each capsule type
             const capsuleWeights = [
                 { type: 'Basic Capsule', weight: 0.50 },
-                { type: 'Holiday Capsule', weight: 0.30 },
-                { type: 'Autumn Capsule', weight: 0.20 }
+                //{ type: 'Holiday Capsule', weight: 0.30 },
             ];
 
             // Select a capsule type based on the defined weights
@@ -53,27 +52,23 @@ module.exports = {
                         { new: true, upsert: true }
                     )}
                     break;
-                case 'Holiday Capsule': {
-                    await UserProfile.findOneAndUpdate(
-                        { userId: serverMember.userId },
-                        { $inc: { holidayCapsules: 1 } },
-                        { new: true, upsert: true }    
-                    )}
-                    break;
-                case 'Autumn Capsule': {
-                    await UserProfile.findOneAndUpdate(
-                        { userId: serverMember.userId },
-                        { $inc: { autumnCapsules: 1 } },
-                        { new: true, upsert: true }    
-                    )}
-                    break;
-        
+                // case 'Holiday Capsule': {
+                    //await UserProfile.findOneAndUpdate(
+                       // { userId: serverMember.userId },
+                       // { $inc: { holidayCapsules: 1 } },
+                       // { new: true, upsert: true }    
+                  // )}
+                    //break;
                     }
 
             // Save the updated user profile
             await serverMember.save();
 
-            await interaction.editReply({ content: `You have collected your daily reward and received a ${selectedCapsuleType}!` });
+            const dailyCapsuleResultEmbed = new EmbedBuilder()
+            .setColor("#ffe594")
+            .setDescription(`<@${interaction.user.id}> has collected their daily reward and received a ${selectedCapsuleType}!`);
+    
+            await interaction.editReply({ embeds: [dailyCapsuleResultEmbed] });
 
         } catch (error) {
             console.error(`Error: ${error}`);

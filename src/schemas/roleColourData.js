@@ -9,4 +9,6 @@ const reactionSchema = new Schema({
     ColourName: { type: String, required: true },
 });
 
-module.exports = model('ReactionPost', reactionSchema);
+const ReactionPost = model('ReactionPost', reactionSchema);
+
+module.exports = ReactionPost;
