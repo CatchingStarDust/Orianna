@@ -47,7 +47,7 @@ module.exports = {
             // Define the probabilities for each capsule type
             const capsuleWeights = [
                 { type: 'Basic Capsule', weight: 0.50 },
-                //{ type: 'Holiday Capsule', weight: 0.30 },
+                { type: 'Basic Capsule', weight: 0.30 },
             ];
 
 
