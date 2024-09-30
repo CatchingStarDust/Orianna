@@ -1,7 +1,17 @@
 const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const createNewProfile = require('../functions/createNewProfile');
-const weightedRandomSelect = require('../functions/weightedRandomSelect');
+const weightedRandomSelect = function weightedRandomSelect(weights) {
+    let sum = 0;
+    const r = Math.random();
+
+    for (let i = 0; i < weights.length; i++) {
+        sum += weights[i].weight;
+        if (r <= sum) {
+            return weights[i].type;
+        }
+    }
+};
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -40,6 +50,7 @@ module.exports = {
                 //{ type: 'Holiday Capsule', weight: 0.30 },
             ];
 
+
             // Select a capsule type based on the defined weights
             const selectedCapsuleType = weightedRandomSelect(capsuleWeights);     
 
@@ -76,3 +87,5 @@ module.exports = {
         }
     }
 };
+
+module.exports.weightedRandomSelect = weightedRandomSelect;

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const weightedRandomSelect = require('../functions/weightedRandomSelect');
+const { weightedRandomSelect } = require('./daily');
 
 
 module.exports = {
