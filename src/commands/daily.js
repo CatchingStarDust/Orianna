@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const createNewProfile = require('../functions/createNewProfile');
 const weightedRandomSelect = function weightedRandomSelect(weights) {
     let sum = 0;
     const r = Math.random();
@@ -12,6 +11,21 @@ const weightedRandomSelect = function weightedRandomSelect(weights) {
         }
     }
 };
+
+const createNewProfile = async (userId) => {
+    const newProfile = new UserProfile({
+        userId: userId,
+        lastDailyCollected: new Date(0), 
+        lastTimePosted: new Date(0),
+        capsulesOpened: 0, 
+        coloursOwned: [],  // Explicitly set new profiles with empty arrays
+        holidayCapsules: 0, 
+        autumnCapsules: 0 
+    });
+    await newProfile.save();
+};
+
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,10 +40,13 @@ module.exports = {
             // Find the user's profile in the database
             let serverMember = await UserProfile.findOne({ userId: interaction.user.id });
 
-            // If the profile does not exist, create a new one
+            // If the profile does not exist, create a new one and retrieve it again
             if (!serverMember) {
-                createNewProfile(interaction.user.id);
-            } 
+                await createNewProfile(interaction.user.id);  // Create a new profile
+                serverMember = await UserProfile.findOne({ userId: interaction.user.id });  // Fetch the created profile
+                await interaction.editReply(`New Profile created.`);
+            }
+            
 
             /* const now = new Date();
             const lastDailyCollected = serverMember.lastDailyCollected || new Date(0);
@@ -63,6 +80,13 @@ module.exports = {
                         { new: true, upsert: true }
                     )}
                     break;
+                case 'Basic Capsule': {
+                    await UserProfile.findOneAndUpdate(
+                        { userId: serverMember.userId },
+                        { $inc: { basicCapsules: 1 } },
+                        { new: true, upsert: true }
+                    )}
+                        break;
                 // case 'Holiday Capsule': {
                     //await UserProfile.findOneAndUpdate(
                        // { userId: serverMember.userId },
@@ -89,3 +113,5 @@ module.exports = {
 };
 
 module.exports.weightedRandomSelect = weightedRandomSelect;
+
+module.exports.createNewProfile = createNewProfile;

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const needServerEmbed = require('../embeds.js'); 
-const createNewProfile = require('../functions/createNewProfile');
+const { createNewProfile}  = require('./daily');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -24,10 +24,10 @@ module.exports = {
         // If the profile does not exist, create a new one
         let serverMember = await UserProfile.findOne({ userId: interaction.user.id });
 
-            if (!serverMember) {
-                    createNewProfile();
-                    await interaction.editReply(`New Profile created.`);
-                } 
+        if (!serverMember) {
+            await createNewProfile(interaction.user.id);  //userId is passed here
+            await interaction.editReply(`New Profile created.`);
+        }
                 
         // matches the colour name string to existing roles in the server
         // if it finds a match, it auto converts it into it's role id
