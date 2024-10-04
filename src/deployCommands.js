@@ -21,6 +21,10 @@ const commands = [
         description: "Open for a chance at one of the basic colours!",
     },
     {
+        name: 'open-autumn-capsule',
+        description: "Open for a chance at a autumn-themed colour!",
+    },
+    {
         name: 'react-role',
         description: "Create reaction messages to assign roles.",
         options: [

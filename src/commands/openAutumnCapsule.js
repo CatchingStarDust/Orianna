@@ -6,7 +6,7 @@ const { weightedRandomSelect } = require('./daily');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('open-basic-capsule')
-        .setDescription('Roll for a chance at one of the basic colours'),
+        .setDescription('Roll for a chance at one of the autumn colours'),
 
     async execute(interaction) {
 

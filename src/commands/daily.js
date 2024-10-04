@@ -76,14 +76,14 @@ module.exports = {
                 case 'Basic Capsule': {
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { basicCapsules: 1 } },
+                        { $inc: { basicCapsules: 5 } },
                         { new: true, upsert: true }
                     )}
                     break;
                 case 'Basic Capsule': {
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { autumnCapsules: 1 } },
+                        { $inc: { autumnCapsules: 5 } },
                         { new: true, upsert: true }
                     )}
                         break;
@@ -101,7 +101,7 @@ module.exports = {
 
             const dailyCapsuleResultEmbed = new EmbedBuilder()
             .setColor("#ffe594")
-            .setDescription(`<@${interaction.user.id}> has collected their daily reward and received a ${selectedCapsuleType}!`);
+            .setDescription(`<@${interaction.user.id}> has collected their daily reward and received 5 ${selectedCapsuleType}s!`);
     
             await interaction.editReply({ embeds: [dailyCapsuleResultEmbed] });
 
