@@ -11,7 +11,7 @@ const userProfileSchema = new Schema({
     lastDailyCollected: { type: Date },
     lastTimePosted: { type: Date },
     capsulesOpened: { type: Number, default: 0 },
-    coloursOwned: { type: [ String ],default: [] },
+    coloursOwned: { type: [ String ], default: [] },
     basicCapsules: { type: Number, default: 0  },
     holidayCapsules: { type: Number, default: 0  },
     autumnCapsules: { type:  Number, default: 0  },

@@ -55,7 +55,7 @@ module.exports = {
         );
 
      // Select a capsule type based on the defined weights
-     const selectedColourType = weightedRandomSelect(basicColourWeights);     
+     let selectedColourType = weightedRandomSelect(basicColourWeights);     
 
      // Update the appropriate capsule count in the user's profile
      switch(selectedColourType){
@@ -141,7 +141,11 @@ module.exports = {
      // Save the updated user profile
             await serverMember.save();
 
-            await interaction.editReply({ content: `You open the capsule and receive... ${selectedColourType}!` });
+            const basicCapsuleResultEmbed = new EmbedBuilder()
+            .setColor("Blurple")
+            .setDescription(`<@${user.id}> opens the capsule and receives... <@&${selectedColourType}>!`);
+
+            await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
 
             
 
