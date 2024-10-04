@@ -27,7 +27,7 @@ module.exports = {
         
     const basicColourWeights = [
         { type: 'jackOlanternOrange', weight: 0.015625 },
-        { type: 'scardeyCatBlack', weight: 0.015625 },
+        { type: 'scaredyCatBlack', weight: 0.015625 },
         { type: 'harvestBrown', weight: 0.015625 },
         { type: 'spiceRed', weight: 0.015625 },
         { type: 'nothing', weight: 0.9375 },
@@ -60,10 +60,10 @@ module.exports = {
                  { new: true, upsert: true }
              )}
              break;
-        case 'scardeyCatBlack': {
+        case 'scaredyCatBlack': {
              await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
-                { $push: { coloursOwned: 'scardeyCatBlack' }},
+                { $push: { coloursOwned: 'scaredyCatBlack' }},
                 { new: true, upsert: true }    
              )}
              break;

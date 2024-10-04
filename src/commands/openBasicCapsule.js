@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const { weightedRandomSelect } = require('./daily');
+const { weightedRandomSelect, colourRoleIds, } = require('./daily');
 
 
 module.exports = {

@@ -1,5 +1,6 @@
-const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
+
 const weightedRandomSelect = function weightedRandomSelect(weights) {
     let sum = 0;
     const r = Math.random();
@@ -25,7 +26,23 @@ const createNewProfile = async (userId) => {
     await newProfile.save();
 };
 
+const colourRoleIds = {
+    red: '945402694204551209',
+    orange: '945402816934076427',
+    yellow: '945402837297426454',
+    green: '945402839964999680',
+    blue: '945402841290399864',
+    purple: '945402841936314368',
+    pink: '945402842234110023',
+    seafoam: '945402842829692960',
+    grey: '945402843240747039',
+    slate: '945402843924402257',
 
+    scaredyCatBlack: '1291590521344622632',
+    jackOLanternOrange: '1285136690951749685',
+    harvestBrown: '1285131106881900605',
+    spiceRed: '1291590040622727168',
+};
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -46,27 +63,12 @@ module.exports = {
                 serverMember = await UserProfile.findOne({ userId: interaction.user.id });  // Fetch the created profile
                 await interaction.editReply(`New Profile created.`);
             }
-            
-
-            /* const now = new Date();
-            const lastDailyCollected = serverMember.lastDailyCollected || new Date(0);
-            const twentyFourHours = 24 * 60 * 60 * 1000;
-
-            // Check if the user has already collected their daily reward
-            if (now - lastDailyCollected < twentyFourHours) {
-                await interaction.editReply({ content: 'You have already collected your daily reward today!', ephemeral: true });
-                return;
-            }
-            
-            // Update the last daily collection time
-            serverMember.lastDailyCollected = now; */
 
             // Define the probabilities for each capsule type
             const capsuleWeights = [
                 { type: 'Basic Capsule', weight: 0.50 },
-                { type: 'Autumn Capsule', weight: 0.30 },
+                { type: 'Autumn Capsule', weight: 0.50 },
             ];
-
 
             // Select a capsule type based on the defined weights
             const selectedCapsuleType = weightedRandomSelect(capsuleWeights);     
@@ -80,28 +82,22 @@ module.exports = {
                         { new: true, upsert: true }
                     )}
                     break;
-                case 'Basic Capsule': {
+                case 'Autumn Capsule': {
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
                         { $inc: { autumnCapsules: 5 } },
                         { new: true, upsert: true }
                     )}
-                        break;
-                // case 'Holiday Capsule': {
-                    //await UserProfile.findOneAndUpdate(
-                       // { userId: serverMember.userId },
-                       // { $inc: { holidayCapsules: 1 } },
-                       // { new: true, upsert: true }    
-                  // )}
-                    //break;
-                    }
+                    break;
+            }
 
             // Save the updated user profile
             await serverMember.save();
 
+            // Correct reference to interaction.user
             const dailyCapsuleResultEmbed = new EmbedBuilder()
-            .setColor("#ffe594")
-            .setDescription(`<@${interaction.user.id}> has collected their daily reward and received 5 ${selectedCapsuleType}s!`);
+                .setColor("#ffe594")
+                .setDescription(`<@${interaction.user.id}> has collected their daily reward and received 5 ${selectedCapsuleType}s!`);
     
             await interaction.editReply({ embeds: [dailyCapsuleResultEmbed] });
 
@@ -113,5 +109,5 @@ module.exports = {
 };
 
 module.exports.weightedRandomSelect = weightedRandomSelect;
-
 module.exports.createNewProfile = createNewProfile;
+module.exports.colourRoleIds = colourRoleIds;
