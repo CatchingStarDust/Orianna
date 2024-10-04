@@ -1,6 +1,5 @@
 const { Client, GatewayIntentBits, Events, EmbedBuilder, Guild  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const weightedRandomSelect = require('../functions/weightedRandomSelect');
 
 // ori listens to every message sent in the server (she listens to each member ids messages separately) 
 // assign the author of the post to their ID in the userProfile database to ensure that any earned capsules go to whoever posted the message
