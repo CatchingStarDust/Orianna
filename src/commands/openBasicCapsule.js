@@ -151,8 +151,8 @@ module.exports = {
 
             
             } catch (error) {
-                console.error(`Error handling /daily: ${error}`);
-            await interaction.editReply('There was an error while processing your request.'); 
+                console.error(`Error handling /open-basic-capsule: ${error}`);
+            await interaction.editReply(`Error handling /open-basic-capsule: ${error}`); 
         }
 
      
