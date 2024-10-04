@@ -64,7 +64,7 @@ module.exports = {
             // Define the probabilities for each capsule type
             const capsuleWeights = [
                 { type: 'Basic Capsule', weight: 0.50 },
-                { type: 'Basic Capsule', weight: 0.30 },
+                { type: 'Autumn Capsule', weight: 0.30 },
             ];
 
 
@@ -83,7 +83,7 @@ module.exports = {
                 case 'Basic Capsule': {
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { basicCapsules: 1 } },
+                        { $inc: { autumnCapsules: 1 } },
                         { new: true, upsert: true }
                     )}
                         break;
