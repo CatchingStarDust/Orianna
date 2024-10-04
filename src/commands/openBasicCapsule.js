@@ -143,7 +143,7 @@ module.exports = {
 
             const basicCapsuleResultEmbed = new EmbedBuilder()
             .setColor("Blurple")
-            .setDescription(`<@${user.id}> opens the capsule and receives... <@&${selectedColourType}>!`);
+            .setDescription(`<@${interaction.user.id}> opens the capsule and receives... <@&${selectedColourType}>!`);
 
             await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
 
