@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const { weightedRandomSelect, colourRoleIds, } = require('./daily');
+const { weightedRandomSelect, } = require('./daily');
 
 
 module.exports = {
@@ -13,7 +13,6 @@ module.exports = {
         await interaction.deferReply(); 
 
             if (!interaction.inGuild()) {
-                await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true });
                 return;
         }
 
@@ -37,7 +36,24 @@ module.exports = {
         { type: 'grey', weight: 0.10},
         { type: 'slate', weight: 0.10},
 
-        ];
+    ];
+
+    
+    const colourRoleIds = {
+        red: '945402694204551209',
+        orange: '945402816934076427',
+        yellow: '945402837297426454',
+        green: '945402839964999680',
+        blue: '945402841290399864',
+        purple: '945402841936314368',
+        pink: '945402842234110023',
+        seafoam: '945402842829692960',
+        grey: '945402843240747039',
+        slate: '945402843924402257',
+        
+
+    };
+        
         
     //check if user has capsules to open
         if (serverMember.basicCapsules <= 0) {
@@ -55,7 +71,8 @@ module.exports = {
         );
 
      // Select a capsule type based on the defined weights
-     let selectedColourType = weightedRandomSelect(basicColourWeights);     
+     let selectedColourType = weightedRandomSelect(basicColourWeights);
+   
 
      // Update the appropriate capsule count in the user's profile
      switch(selectedColourType){
@@ -141,9 +158,15 @@ module.exports = {
      // Save the updated user profile
             await serverMember.save();
 
+            const colourID = colourRoleIds[selectedColourType];
+
+
+            console.log(`selectedColourType: ${selectedColourType}`);
+            console.log(`ColourID: ${colourID}`);
+    
             const basicCapsuleResultEmbed = new EmbedBuilder()
             .setColor("Blurple")
-            .setDescription(`<@${interaction.user.id}> opens the capsule and receives... <@&${selectedColourType}>!`);
+            .setDescription(`<@${interaction.user.id}> opens the capsule and receives... <@&${colourID}>!`);
 
             await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
 
@@ -151,7 +174,7 @@ module.exports = {
 
             
             } catch (error) {
-                console.error(`Error handling /open-basic-capsule: ${error}`);
+                console.error(`Err or handling /open-basic-capsule: ${error}`);
             await interaction.editReply(`Error handling /open-basic-capsule: ${error}`); 
         }
 
@@ -159,3 +182,4 @@ module.exports = {
 
     },
 }
+
