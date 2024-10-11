@@ -161,12 +161,12 @@ module.exports = {
             const colourID = colourRoleIds[selectedColourType];
 
 
-            console.log(`selectedColourType: ${selectedColourType}`);
-            console.log(`ColourID: ${colourID}`);
+    
     
             const basicCapsuleResultEmbed = new EmbedBuilder()
             .setColor("Blurple")
-            .setDescription(`<@${interaction.user.id}> opens the capsule and receives... <@&${colourID}>!`);
+                .setDescription(`<@${interaction.user.id}> opens the capsule and receives... <@&${colourID}>!`);
+
 
             await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
 
@@ -179,7 +179,7 @@ module.exports = {
         }
 
      
-
+       
     },
 }
 

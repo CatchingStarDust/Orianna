@@ -1,0 +1,3 @@
+C:\Users\Lucian\source\repos\Orianna\obj\Debug\Orianna.njsproj.AssemblyReference.cache
+C:\Users\Lucian\source\repos\Orianna\obj\Debug\Orianna.njsproj.CoreCompileInputs.cache
+C:\Users\Lucian\source\repos\Orianna\bin\Microsoft.NodejsTools.WebRole.dll
