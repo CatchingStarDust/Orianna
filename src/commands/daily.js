@@ -26,24 +26,6 @@ const createNewProfile = async (userId) => {
     await newProfile.save();
 };
 
-const colourRoleIds = {
-    red: '945402694204551209',
-    orange: '945402816934076427',
-    yellow: '945402837297426454',
-    green: '945402839964999680',
-    blue: '945402841290399864',
-    purple: '945402841936314368',
-    pink: '945402842234110023',
-    seafoam: '945402842829692960',
-    grey: '945402843240747039',
-    slate: '945402843924402257',
-
-    scaredyCatBlack: '1291590521344622632',
-    jackOLanternOrange: '1285136690951749685',
-    harvestBrown: '1285131106881900605',
-    spiceRed: '1291590040622727168',
-};
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('daily')
@@ -110,4 +92,3 @@ module.exports = {
 
 module.exports.weightedRandomSelect = weightedRandomSelect;
 module.exports.createNewProfile = createNewProfile;
-module.exports.colourRoleIds = colourRoleIds;

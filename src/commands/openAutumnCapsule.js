@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const { weightedRandomSelect } = require('./daily');
+const { weightedRandomSelect, } = require('./daily');
 
 
 module.exports = {
@@ -13,7 +13,6 @@ module.exports = {
         await interaction.deferReply(); 
 
             if (!interaction.inGuild()) {
-                await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true });
                 return;
         }
 
@@ -25,13 +24,15 @@ module.exports = {
         }
 
         
-    const basicColourWeights = [
-        { type: 'jackOlanternOrange', weight: 0.015625 },
-        { type: 'scaredyCatBlack', weight: 0.015625 },
-        { type: 'harvestBrown', weight: 0.015625 },
-        { type: 'spiceRed', weight: 0.015625 },
-        { type: 'nothing', weight: 0.9375 },
+    const autumnColourWeights = [
+        { type: 'scaredy-cat-black', weight: 0.20 },
+        { type: 'jack-o-lantern-orang', weight: 0.20 },
+        { type: 'harvest-brown', weight: 0.20 },
+        { type: 'spice-red', weight: 0.20 },
+        { type: 'nothing', weight: 0.20 },
+
     ];
+        
         
     //check if user has capsules to open
         if (serverMember.basicCapsules <= 0) {
@@ -49,50 +50,63 @@ module.exports = {
         );
 
      // Select a capsule type based on the defined weights
-     let selectedColourType = weightedRandomSelect(basicColourWeights);     
+     let selectedColourType = weightedRandomSelect(autumnColourWeights);
+   
 
      // Update the appropriate capsule count in the user's profile
      switch(selectedColourType){
-        case 'jackOlanternOrange': {
+        case 'scaredy-cat-black': {
              await UserProfile.findOneAndUpdate(
                  { userId: serverMember.userId },
-                 { $push: { coloursOwned: 'jackOlanternOrange' }},
+                 { $push: { coloursOwned: 'red' }},
                  { new: true, upsert: true }
              )}
              break;
-        case 'scaredyCatBlack': {
+        case 'jack-o-lantern-orange': {
              await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
-                { $push: { coloursOwned: 'scaredyCatBlack' }},
+                { $push: { coloursOwned: 'yellow' }},
                 { new: true, upsert: true }    
              )}
              break;
-        case 'harvestBrown': {
+        case 'harvest-brown': {
              await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
-                { $push: { coloursOwned: 'harvestBrown' }},
+                { $push: { coloursOwned: 'orange' }},
                 { new: true, upsert: true }   
              )}
              break;
 
-        case 'spiceRed': {
+        case 'spice-red': {
             await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
-                { $push: { coloursOwned: 'spiceRed' }},
+                { $push: { coloursOwned: 'green' }},
                 { new: true, upsert: true }   
             )}
             break;
             
-        case 'nothing': {}
+        case 'nothing': {
+            await UserProfile.findOneAndUpdate(
+                { userId: serverMember.userId },
+                { $push: { coloursOwned: 'blue' }},
+                { new: true, upsert: true }   
+            )}
             break;    
              }
 
      // Save the updated user profile
             await serverMember.save();
 
-            const basicCapsuleResultEmbed = new EmbedBuilder()
+    const ColourResult = await interaction.guild.roles.cache.find(role => role.name.toLowerCase() === selectedColourType.toLowerCase());
+
+            if (!ColourResult) {
+                return await interaction.editReply({ content: `Could not find a role named "${selectedColourType}" in this guild.`, ephemeral: true });
+            }
+    
+    const basicCapsuleResultEmbed = new EmbedBuilder()
             .setColor("Blurple")
-            .setDescription(`<@${user.id}> opens the capsule and receives... <@&${selectedColourType}>!`);
+                .setDescription(`<@${interaction.user.id}> opens the capsule and finds...|| ${ColourResult}! ||`);
+
 
             await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
 
@@ -100,11 +114,12 @@ module.exports = {
 
             
             } catch (error) {
-                console.error(`Error handling /open-basic-capsule: ${error}`);
+                console.error(`Err or handling /open-basic-capsule: ${error}`);
             await interaction.editReply(`Error handling /open-basic-capsule: ${error}`); 
         }
 
      
-
+       
     },
 }
+
