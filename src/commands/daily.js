@@ -48,27 +48,86 @@ module.exports = {
 
             // Define the probabilities for each capsule type
             const capsuleWeights = [
-                { type: 'Basic Capsule', weight: 0.50 },
-                { type: 'Autumn Capsule', weight: 0.50 },
+                { type: '5 Basic Capsule', weight: 0.20 },  // 20% chance
+                { type: '10 Basic Capsule', weight: 0.05 }, // 5% chance
+                { type: '15 Basic Capsule', weight: 0.10 }, // 10% chance
+                { type: '20 Basic Capsule', weight: 0.15 }, // 15% chance
+                { type: '5 Autumn Capsule', weight: 0.20 }, // 20% chance
+                { type: '10 Autumn Capsule', weight: 0.05 }, // 5% chance
+                { type: '15 Autumn Capsule', weight: 0.10 }, // 10% chance
+                { type: '20 Autumn Capsule', weight: 0.15 }, // 15% chance
             ];
+
+            //default value for capsuels
+            let capsuleAmount  = 5; 
 
             // Select a capsule type based on the defined weights
             const selectedCapsuleType = weightedRandomSelect(capsuleWeights);     
 
             // Update the appropriate capsule count in the user's profile
             switch(selectedCapsuleType){
-                case 'Basic Capsule': {
+                case '5 Basic Capsule': {
+                    capsuleAmount  = 5;
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { basicCapsules: 5 } },
+                        { $inc: { basicCapsules: capsuleAmount  } },
                         { new: true, upsert: true }
                     )}
                     break;
-                case 'Autumn Capsule': {
+                case '10 Basic Capsule': {
+                    capsuleAmount  = 10;
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { autumnCapsules: 5 } },
+                        { $inc: { basicCapsules: capsuleAmount  } },
                         { new: true, upsert: true }
+                    )}
+                    break;
+                case '15 Basic Capsule': {
+                    capsuleAmount = 15;
+                    await UserProfile.findOneAndUpdate(
+                        { userId: serverMember.userId },
+                        { $inc: { basicCapsules: capsuleAmount } },
+                        { new: true, upsert: true }
+                     )}
+                    break;
+                case '20 Basic Capsule': {
+                    capsuleAmount = 20;
+                    await UserProfile.findOneAndUpdate(
+                        { userId: serverMember.userId },
+                        { $inc: { basicCapsules: capsuleAmount } },
+                         { new: true, upsert: true }
+                     )}
+                    break;
+                case '5 Autumn Capsule': {
+                    capsuleAmount = 5;
+                    await UserProfile.findOneAndUpdate(
+                        { userId: serverMember.userId },
+                        { $inc: { autumnCapsules: capsuleAmount } },
+                        { new: true, upsert: true }
+                    )}
+                    break;
+                case '10 Autumn Capsule': {
+                    capsuleAmount = 10;
+                    await UserProfile.findOneAndUpdate(
+                        { userId: serverMember.userId },
+                        { $inc: { autumnCapsules: capsuleAmount } },
+                        { new: true, upsert: true }
+                    )}
+                    break;
+                case '15 Autumn Capsule': {
+                    capsuleAmount = 15;
+                    await UserProfile.findOneAndUpdate(
+                         { userId: serverMember.userId },
+                         { $inc: { autumnCapsules: capsuleAmount } },
+                         { new: true, upsert: true }
+                     )}
+                    break;
+                case '20 Autumn Capsule': {
+                    capsuleAmount = 20;
+                     await UserProfile.findOneAndUpdate(
+                          { userId: serverMember.userId },
+                          { $inc: { autumnCapsules: capsuleAmount } },
+                          { new: true, upsert: true }
                     )}
                     break;
             }
@@ -79,9 +138,14 @@ module.exports = {
             // Correct reference to interaction.user
             const dailyCapsuleResultEmbed = new EmbedBuilder()
                 .setColor("#ffe594")
-                .setDescription(`<@${interaction.user.id}> has collected their daily reward and received 5 ${selectedCapsuleType}s!`);
+                .setDescription(`<@${interaction.user.id}> has collected their daily reward and received ${capsuleAmount} ${selectedCapsuleType}s!`);
     
             await interaction.editReply({ embeds: [dailyCapsuleResultEmbed] });
+
+            /** if the user gets multiple capsules*/
+            switch(selectedCapsuleType) {
+
+            }
 
         } catch (error) {
             console.error(`Error: ${error}`);

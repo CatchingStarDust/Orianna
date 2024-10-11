@@ -22,7 +22,7 @@ const commands = [
     },
     {
         name: 'open-autumn-capsule',
-        description: "Open for a chance at a autumn-themed colour!",
+        description: "Open for a chance to get a cozy Autumn-themed colour!",
     },
     {
         name: 'react-role',

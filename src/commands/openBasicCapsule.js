@@ -71,7 +71,21 @@ module.exports = {
         );
 
      // Select a capsule type based on the defined weights
-     let selectedColourType = weightedRandomSelect(basicColourWeights);
+     const selectedColourType = weightedRandomSelect(basicColourWeights);
+     const ColourResult = await interaction.guild.roles.cache.find(role => role.name.toLowerCase() === selectedColourType.toLowerCase());
+
+      /*if someone already has the colour, 
+    it will just say that they already own it*/
+    const alreadyOwnsColour = serverMember.coloursOwned.includes(selectedColourType);
+    if (alreadyOwnsColour) {
+        const alreadyOwnsEmbed = new EmbedBuilder()
+            .setColor("Yellow")
+            .setTitle(" Open Capsule")
+            .setDescription(`<@${interaction.user.id}> opens the capsule and finds... ${ColourResult}!
+                \n...but you already own it, so it disappears.`);
+        
+        return await interaction.editReply({ embeds: [alreadyOwnsEmbed] });
+    }
    
 
      // Update the appropriate capsule count in the user's profile
@@ -158,15 +172,14 @@ module.exports = {
      // Save the updated user profile
             await serverMember.save();
 
-    const ColourResult = await interaction.guild.roles.cache.find(role => role.name.toLowerCase() === selectedColourType.toLowerCase());
-
             if (!ColourResult) {
                 return await interaction.editReply({ content: `Could not find a role named "${selectedColourType}" in this guild.`, ephemeral: true });
             }
     
     const basicCapsuleResultEmbed = new EmbedBuilder()
             .setColor("Blurple")
-                .setDescription(`<@${interaction.user.id}> opens the capsule and receives...|| ${ColourResult}! ||`);
+            .setTitle(" Open Capsule")
+            .setDescription(`<@${interaction.user.id}> opens the capsule and receives...|| ${ColourResult}! ||`);
 
 
             await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
