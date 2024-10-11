@@ -158,14 +158,15 @@ module.exports = {
      // Save the updated user profile
             await serverMember.save();
 
-            const colourID = colourRoleIds[selectedColourType];
+    const ColourResult = await interaction.guild.roles.cache.find(role => role.name.toLowerCase() === selectedColourType.toLowerCase());
 
-
+            if (!ColourResult) {
+                return await interaction.editReply({ content: `Could not find a role named "${selectedColourType}" in this guild.`, ephemeral: true });
+            }
     
-    
-            const basicCapsuleResultEmbed = new EmbedBuilder()
+    const basicCapsuleResultEmbed = new EmbedBuilder()
             .setColor("Blurple")
-                .setDescription(`<@${interaction.user.id}> opens the capsule and receives... <@&${colourID}>!`);
+                .setDescription(`<@${interaction.user.id}> opens the capsule and receives...|| ${ColourResult}! ||`);
 
 
             await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
