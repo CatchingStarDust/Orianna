@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const { weightedRandomSelect, } = require('./daily');
+const { weightedRandomSelect, } = require('./capsuleGet');
 
 
 module.exports = {
@@ -9,19 +9,18 @@ module.exports = {
         .setDescription('Roll for a chance at one of the basic colours'),
 
     async execute(interaction) {
-
         await interaction.deferReply(); 
 
-            if (!interaction.inGuild()) {
-                return;
-        }
+        if (!interaction.inGuild()) {
+            return;
+            }
 
-        let serverMember = await UserProfile.findOne({ userId: interaction.user.id });
+    let serverMember = await UserProfile.findOne({ userId: interaction.user.id });
 
-            if (!serverMember) {
-                createNewProfile();
-                await interaction.editReply(`New Profile created.`);
-        }
+        if (!serverMember) {
+            createNewProfile();
+            await interaction.editReply(`New Profile created.`);
+            }
 
         
     const basicColourWeights = [
@@ -37,22 +36,6 @@ module.exports = {
         { type: 'slate', weight: 0.10},
 
     ];
-
-    
-    const colourRoleIds = {
-        red: '945402694204551209',
-        orange: '945402816934076427',
-        yellow: '945402837297426454',
-        green: '945402839964999680',
-        blue: '945402841290399864',
-        purple: '945402841936314368',
-        pink: '945402842234110023',
-        seafoam: '945402842829692960',
-        grey: '945402843240747039',
-        slate: '945402843924402257',
-        
-
-    };
         
         
     //check if user has capsules to open
