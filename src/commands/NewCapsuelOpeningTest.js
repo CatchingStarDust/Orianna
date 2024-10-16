@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const { weightedRandomSelect, calculateWeights } = require('./functions/ColourWeightsRng.js');
 const { checkIfUserHasBasicCapsules, getServerMember, checkPityCounter } = require('../functions/checks');
-
+const {baseCategoryWeights, colourCategories} = require('../schemas/colourCategoriesAndWeights.js');
 
 /** the slash command itself */
 module.exports = {
