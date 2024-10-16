@@ -25,7 +25,7 @@ const createNewProfile = async (userId) => {
         lastDailyCollected: new Date(0), 
         lastTimePosted: new Date(0),
         capsulesOpened: 0, 
-        coloursOwned: [],  // Explicitly set new profiles with empty arrays
+        coloursOwned: [],  /** new profiles get an empty array */
         holidayCapsules: 0, 
         autumnCapsules: 0 
     });
@@ -136,11 +136,11 @@ module.exports = {
                     break;
             }
 
-            // Save the updated user profile
+            /** save the profile */
             serverMember.lastDailyCollected = new Date();
             await serverMember.save();
 
-            // Correct reference to interaction.user
+            
             const CapsuleGetEmbed = new EmbedBuilder()
                 .setColor("#ffe594")
                 .setTitle('CAPSULE GET!')
