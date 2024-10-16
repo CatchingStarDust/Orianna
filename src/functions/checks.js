@@ -10,6 +10,15 @@ const checkIfUserHasAutumnCapsules = async (serverMember, interaction) => {
     return true;
 };
 
+/** checks for basic capsules */
+const checkIfUserHasBasicCapsules = async (serverMember, interaction) => {
+    if (serverMember.basicCapsules <= 0) {
+        await interaction.editReply({ content: `You don't have any capsules to open!`, ephemeral: true });
+        return false;
+    }
+    return true;
+};
+
 /** assigns serverMember to the user profile check */
 const getServerMember = async (userId) => {
     const serverMember = await UserProfile.findOne({ userId: userId });
@@ -46,3 +55,4 @@ const checkPityCounter = async (serverMember) => {
 module.exports.checkIfUserHasAutumnCapsules = checkIfUserHasAutumnCapsules;
 module.exports.getServerMember = getServerMember;
 module.exports.checkPityCounter = checkPityCounter;
+module.exports.checkIfUserHasBasicCapsules = checkIfUserHasBasicCapsules;
