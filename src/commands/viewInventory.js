@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const needServerEmbed = require('../embeds.js'); 
-const { createNewProfile}  = require('./daily');
+const { createNewProfile}  = require('./capsuleGet');
 
 module.exports = {
     data: new SlashCommandBuilder()

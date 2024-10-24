@@ -9,8 +9,8 @@ const { REST, Routes,} = require('discord.js');
 // put in name and description for the command that you will see in Discord
 const commands = [
     {
-        name: 'daily',
-        description: 'Gives you your daily capsule',
+        name: 'get-capsule',
+        description: 'Gives you some capsules!',
     },
     {
         name: 'inventory',
