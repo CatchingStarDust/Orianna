@@ -1,15 +1,10 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const UserProfile = require('../schemas/UserProfile.js');
-const { getRemainingCooldownTime } = require('../functions/cooldownTimers.js');
+const UserProfile = require('../schemas/UserProfile');
 
 const weightedRandomSelect = function weightedRandomSelect(weights) {
-    // Get the total sum of all weights
-    const totalWeight = weights.reduce((sum, item) => sum + item.weight, 0);
-
-    // Generate a random number between 0 and totalWeight
-    const r = Math.random() * totalWeight;
-
     let sum = 0;
+    const r = Math.random();
+
     for (let i = 0; i < weights.length; i++) {
         sum += weights[i].weight;
         if (r <= sum) {
@@ -17,7 +12,6 @@ const weightedRandomSelect = function weightedRandomSelect(weights) {
         }
     }
 };
-
 
 const createNewProfile = async (userId) => {
     const newProfile = new UserProfile({
@@ -34,8 +28,8 @@ const createNewProfile = async (userId) => {
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('get-capsule')
-        .setDescription('Gives you a random capsule!'),
+        .setName('daily')
+        .setDescription('Gives you your daily reward, including a random capsule!'),
 
     async execute(interaction) {
 
@@ -52,15 +46,6 @@ module.exports = {
                 await interaction.editReply(`New Profile created.`);
             }
 
-            const remainingCooldown = getRemainingCooldownTime(serverMember.lastDailyCollected);
-
-            if (remainingCooldown) {
-                return interaction.editReply(
-                        `You need to wait ${remainingCooldown.hours} hours and ${remainingCooldown.minutes} minutes before you can get another capsule.`
-                );
-            }
-
-
             // Define the probabilities for each capsule type
             const capsuleWeights = [
                 { type: '5 Basic Capsule', weight: 0.20 },  // 20% chance
@@ -73,80 +58,94 @@ module.exports = {
                 { type: '20 Autumn Capsule', weight: 0.15 }, // 15% chance
             ];
 
+            //default value for capsuels
+            let capsuleAmount  = 5; 
+
             // Select a capsule type based on the defined weights
             const selectedCapsuleType = weightedRandomSelect(capsuleWeights);     
 
             // Update the appropriate capsule count in the user's profile
             switch(selectedCapsuleType){
                 case '5 Basic Capsule': {
+                    capsuleAmount  = 5;
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { basicCapsules: 5  } },
+                        { $inc: { basicCapsules: capsuleAmount  } },
                         { new: true, upsert: true }
                     )}
                     break;
                 case '10 Basic Capsule': {
+                    capsuleAmount  = 10;
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { basicCapsules: 10  } },
+                        { $inc: { basicCapsules: capsuleAmount  } },
                         { new: true, upsert: true }
                     )}
                     break;
                 case '15 Basic Capsule': {
+                    capsuleAmount = 15;
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { basicCapsules: 15 } },
+                        { $inc: { basicCapsules: capsuleAmount } },
                         { new: true, upsert: true }
                      )}
                     break;
                 case '20 Basic Capsule': {
+                    capsuleAmount = 20;
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { basicCapsules: 20 } },
+                        { $inc: { basicCapsules: capsuleAmount } },
                          { new: true, upsert: true }
                      )}
                     break;
                 case '5 Autumn Capsule': {
+                    capsuleAmount = 5;
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { autumnCapsules: 5 } },
+                        { $inc: { autumnCapsules: capsuleAmount } },
                         { new: true, upsert: true }
                     )}
                     break;
                 case '10 Autumn Capsule': {
+                    capsuleAmount = 10;
                     await UserProfile.findOneAndUpdate(
                         { userId: serverMember.userId },
-                        { $inc: { autumnCapsules: 10 } },
+                        { $inc: { autumnCapsules: capsuleAmount } },
                         { new: true, upsert: true }
                     )}
                     break;
                 case '15 Autumn Capsule': {
+                    capsuleAmount = 15;
                     await UserProfile.findOneAndUpdate(
                          { userId: serverMember.userId },
-                         { $inc: { autumnCapsules: 15 } },
+                         { $inc: { autumnCapsules: capsuleAmount } },
                          { new: true, upsert: true }
                      )}
                     break;
                 case '20 Autumn Capsule': {
+                    capsuleAmount = 20;
                      await UserProfile.findOneAndUpdate(
                           { userId: serverMember.userId },
-                          { $inc: { autumnCapsules: 20 } },
+                          { $inc: { autumnCapsules: capsuleAmount } },
                           { new: true, upsert: true }
                     )}
                     break;
             }
 
             // Save the updated user profile
-            serverMember.lastDailyCollected = new Date();
             await serverMember.save();
 
             // Correct reference to interaction.user
-            const CapsuleGetEmbed = new EmbedBuilder()
+            const dailyCapsuleResultEmbed = new EmbedBuilder()
                 .setColor("#ffe594")
-                .setTitle('CAPSULE GET!')
-                .setDescription(`<@${interaction.user.id}> found ${selectedCapsuleType}s!`);
+                .setDescription(`<@${interaction.user.id}> has collected their daily reward and received ${capsuleAmount} ${selectedCapsuleType}s!`);
     
-            await interaction.editReply({ embeds: [CapsuleGetEmbed] });
+            await interaction.editReply({ embeds: [dailyCapsuleResultEmbed] });
+
+            /** if the user gets multiple capsules*/
+            switch(selectedCapsuleType) {
+
+            }
 
         } catch (error) {
             console.error(`Error: ${error}`);
