@@ -29,6 +29,5 @@ const weightedRandomSelect = function weightedRandomSelect(weights) {
 
 module.exports = {
     weightedRandomSelect,
-    coloursAndWeights,
     newWeightedRandomSelect
 };
