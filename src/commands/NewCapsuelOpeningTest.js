@@ -28,17 +28,32 @@ module.exports = {
         /** make sure the user has basic capsules in their inventory */
         const hasBasicCapsule = await checkIfUserHasBasicCapsules(serverMember, interaction);
         if (!hasBasicCapsule) return;
-        
-        const weights = calculateWeights();
-        const colourResult = newWeightedRandomSelect(weights);
- 
-        /** the embed that shows the results of the capsule */
-        const basicCapsuleResultEmbed = new EmbedBuilder()
-        .setColor("Yellow")
-        .setTitle(" Open Capsule")
-        .setDescription(`<@${interaction.user.id}> opens the capsule and receives...|| ${colourResult}! ||`);
 
+        try {
+            await UserProfile.findOneAndUpdate(
+                { userId: interaction.user.id },
+                { $inc: { basicCapsules: -1 } }, 
+                { new: true, upsert: true },
+            );
+            
+            const collectiveColourWeight = coloursAndWeights;
+            const colourResult = newWeightedRandomSelect(collectiveColourWeight);
+     
+            await serverMember.save();
+    
+            /** the embed that shows the results of the capsule */
+            const basicCapsuleResultEmbed = new EmbedBuilder()
+            .setColor("Yellow")
+            .setTitle(" Open Capsule")
+            .setDescription(`<@${interaction.user.id}> opens the capsule and receives...|| ${colourResult}! ||`);
+    
+    
+            await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
+            
+        } catch (error) {
+            console.error(`Err or handling /open-basic-capsule: ${error}`);
+            await interaction.editReply(`Error handling /open-basic-capsule: ${error}`); 
+        }
 
-        await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
     }
 }
