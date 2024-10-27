@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const {newWeightedRandomSelect } = require('./functions/ColourWeightsRng.js');
+const {newWeightedRandomSelect } = require('./functions/colourWeightsRng.js');
 const { checkIfUserHasBasicCapsules, getServerMember, checkPityCounter } = require('../functions/checks');
 const {coloursAndWeights} = require('../schemas/colourCategoriesAndWeights.js');
 
@@ -49,7 +49,7 @@ module.exports = {
     
     
             await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
-            
+
         } catch (error) {
             console.error(`Err or handling /open-basic-capsule: ${error}`);
             await interaction.editReply(`Error handling /open-basic-capsule: ${error}`); 
