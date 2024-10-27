@@ -1,13 +1,13 @@
 const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const { weightedRandomSelect, calculateWeights } = require('./functions/ColourWeightsRng.js');
+const {newWeightedRandomSelect } = require('./functions/ColourWeightsRng.js');
 const { checkIfUserHasBasicCapsules, getServerMember, checkPityCounter } = require('../functions/checks');
-const {baseCategoryWeights, colourCategories} = require('../schemas/colourCategoriesAndWeights.js');
+const {coloursAndWeights} = require('../schemas/colourCategoriesAndWeights.js');
 
 /** the slash command itself */
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('new-open-basic-capsule-BETA')
+    .setName('new-open-capsule-BETA')
     .setDescription('TESTING NEW GACHA SYSTEM'),
 
     async execute(interaction) {
@@ -30,7 +30,7 @@ module.exports = {
         if (!hasBasicCapsule) return;
         
         const weights = calculateWeights();
-        const colourResult = weightedRandomSelect(weights);
+        const colourResult = newWeightedRandomSelect(weights);
  
         /** the embed that shows the results of the capsule */
         const basicCapsuleResultEmbed = new EmbedBuilder()
