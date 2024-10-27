@@ -13,6 +13,10 @@ const commands = [
         description: 'Gives you some capsules!',
     },
     {
+        name: 'new-open-capsule-BETA',
+        description: 'BETA: open a single capsule that contains all colours in it!',
+    },
+    {
         name: 'inventory',
         description: "Check your inventory",
     },
