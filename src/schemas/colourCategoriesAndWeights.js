@@ -26,4 +26,4 @@ const coloursAndWeights = [
 ];
 
 
-module.exports.baseCategoryWeights = coloursAndWeights;
+module.exports.coloursAndWeights = coloursAndWeights;
