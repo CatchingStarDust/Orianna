@@ -11,7 +11,7 @@ module.exports = {
     .setDescription('TESTING NEW GACHA SYSTEM'),
 
     async execute(interaction) {
-        interaction.deferReply();
+       await interaction.deferReply();
 
         if (!interaction.inGuild()) {
             return;
