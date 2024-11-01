@@ -18,7 +18,7 @@ const coloursAndWeights = [
     { color: 'spice-red', weight: 0.001953125 },
     { color: 'jack-o-lantern-orange', weight: 0.001953125 },
     { color: '-brown', weight: 0.001953125 },
-    // pastel colors (1/512 each)
+    // pastel (1/512 each)
     { color: 'pastel-blue', weight: 0.001953125 },
     { color: 'pastel-purple', weight: 0.001953125 },
     { color: 'pastel-peach', weight: 0.001953125 },
