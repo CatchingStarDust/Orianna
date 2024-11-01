@@ -7,7 +7,7 @@ const {coloursAndWeights} = require('../schemas/colourCategoriesAndWeights.js');
 /** the slash command itself */
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('new-open-capsule-BETA')
+    .setName('new-open-capsule-beta')
     .setDescription('TESTING NEW GACHA SYSTEM'),
 
     async execute(interaction) {
@@ -51,7 +51,7 @@ module.exports = {
             await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
 
         } catch (error) {
-            console.error(`Err or handling /open-basic-capsule: ${error}`);
+            console.error(`Err or handling /open-basic-capsule-beta: ${error}`);
             await interaction.editReply(`Error handling /open-basic-capsule: ${error}`); 
         }
 

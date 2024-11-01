@@ -13,7 +13,7 @@ const commands = [
         description: 'Gives you some capsules!',
     },
     {
-        name: 'new-open-capsule-BETA',
+        name: 'new-open-capsule-beta',
         description: 'BETA: open a single capsule that contains all colours in it!',
     },
     {
