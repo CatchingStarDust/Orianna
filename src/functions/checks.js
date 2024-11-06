@@ -56,5 +56,3 @@ module.exports.checkIfUserHasAutumnCapsules = checkIfUserHasAutumnCapsules;
 module.exports.getServerMember = getServerMember;
 module.exports.checkPityCounter = checkPityCounter;
 module.exports.checkIfUserHasBasicCapsules = checkIfUserHasBasicCapsules;
-module.exports.alreadyOwnsColour = alreadyOwnsColour;
-module.exports.alreadyOwnsEmbed = alreadyOwnsEmbed;

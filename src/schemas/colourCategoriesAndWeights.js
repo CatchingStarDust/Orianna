@@ -1,7 +1,7 @@
 
 /**the weights without any bonuses */
 // the weight of each color
-const coloursAndWeights = [
+const coloursAndWeightsList = [
     // basic  (90% total, 0.09 each)
     { color: 'red', weight: 0.09 },
     { color: 'orange', weight: 0.09 },
@@ -25,4 +25,4 @@ const coloursAndWeights = [
     { color: 'pastel-pink', weight: 0.001953125 },
 ];
 
-module.exports.coloursAndWeights = coloursAndWeights;
+module.exports.coloursAndWeightsList = coloursAndWeightsList;

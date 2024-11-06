@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const { newWeightedRandomSelect } = require('../functions/colourWeightsRng.js');
 const { checkIfUserHasBasicCapsules, getServerMember, checkPityCounter } = require('../functions/checks');
-const {coloursAndWeights} = require('../schemas/colourCategoriesAndWeights.js');
+const {coloursAndWeightsList} = require('../schemas/colourCategoriesAndWeights.js');
 
 /** the slash command itself */
 module.exports = {
@@ -35,20 +35,27 @@ module.exports = {
                 { $inc: { basicCapsules: -1 } }, 
                 { new: true, upsert: true },
         );
-            
-        const collectiveColourWeight = coloursAndWeights;
+        
+        const collectiveColourWeight = coloursAndWeightsList;
         const colourResult = newWeightedRandomSelect(collectiveColourWeight);
+        const RoleColourText = await interaction.guild.roles.cache.find(role => role.name.toLowerCase() === colourResult.toLowerCase());
 
         /** checks if the user already has the colour they won */
-        const alreadyOwnsColour = serverMember.coloursOwned.includes(selectedColourType);
+        const alreadyOwnsColour = serverMember.coloursOwned.includes(colourResult);
 
             if (alreadyOwnsColour) {
             const alreadyOwnsEmbed = new EmbedBuilder()
                 .setColor("Orange")
                 .setTitle(" Open Capsule")
-                .setDescription(`### ✩₊˚.⋆♱⋆⁺₊✧⁺‧₊˚ ཐི⋆⋆ཋྀ⋆⁺₊✧⁺‧₊˚♱✩₊˚.⋆ 
-                    \n<@${interaction.user.id}> opens the capsule and finds... ${colourResult}!
-                    \n...but you already own it, so it disappears.`);
+                .setDescription(
+                    `\n### ✩₊˚.⋆♱⋆⁺₊✧⁺‧₊˚ ཐི⋆🕸️⋆ཋྀ⋆⁺₊✧⁺‧₊˚♱✩₊˚.⋆ 
+                    \n<@${interaction.user.id}> has opened a **Autumn Capsule!**
+                    \n╰┈➤ You have ${serverMember.autumnCapsules} left.
+                    \n### You look inside of the capsule and find...
+                    \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗
+                    \n   ୨═════₊˚.⋆˚${RoleColourText}˚⋆.˚₊═════୧
+                    \n ....but you already own it, so it disappears.
+                    \n╚══════════ ≪ ୨🕷୧ ≫ ══════════╝`
             
             return await interaction.editReply({ embeds: [alreadyOwnsEmbed] });
         }
@@ -59,9 +66,15 @@ module.exports = {
         const basicCapsuleResultEmbed = new EmbedBuilder()
             .setColor("Yellow")
             .setTitle(" Open Capsule")
-            .setDescription(`### ✩₊˚.⋆♱⋆⁺₊✧⁺‧₊˚ ཐི⋆⋆ཋྀ⋆⁺₊✧⁺‧₊˚♱✩₊˚.⋆ 
-                \n<@${interaction.user.id}> opens the capsule and finds... || ${colourResult}! ||
-        `);
+            .setDescription(
+                    `\n### ✩₊˚.⋆♱⋆⁺₊✧⁺‧₊˚ ཐི⋆🕸️⋆ཋྀ⋆⁺₊✧⁺‧₊˚♱✩₊˚.⋆ 
+                    \n<@${interaction.user.id}> has opened a **Autumn Capsule!**
+                    \n╰┈➤ You have ${serverMember.autumnCapsules} left.
+                    \n### You look inside of the capsule and find...
+                    \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗
+                    \n Click:  ||୨═════₊˚.⋆˚${RoleColourText}˚⋆.˚₊═════୧||
+                    \n╚══════════ ≪ ୨🕷୧ ≫ ══════════╝`
+        );
     
     
         await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
