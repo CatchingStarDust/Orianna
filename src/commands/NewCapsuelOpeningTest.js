@@ -34,21 +34,37 @@ module.exports = {
                 { userId: interaction.user.id },
                 { $inc: { basicCapsules: -1 } }, 
                 { new: true, upsert: true },
-            );
+        );
             
-            const collectiveColourWeight = coloursAndWeights;
-            const colourResult = newWeightedRandomSelect(collectiveColourWeight);
+        const collectiveColourWeight = coloursAndWeights;
+        const colourResult = newWeightedRandomSelect(collectiveColourWeight);
+
+        /** checks if the user already has the colour they won */
+        const alreadyOwnsColour = serverMember.coloursOwned.includes(selectedColourType);
+
+            if (alreadyOwnsColour) {
+            const alreadyOwnsEmbed = new EmbedBuilder()
+                .setColor("Orange")
+                .setTitle(" Open Capsule")
+                .setDescription(`### ✩₊˚.⋆♱⋆⁺₊✧⁺‧₊˚ ཐི⋆⋆ཋྀ⋆⁺₊✧⁺‧₊˚♱✩₊˚.⋆ 
+                    \n<@${interaction.user.id}> opens the capsule and finds... ${colourResult}!
+                    \n...but you already own it, so it disappears.`);
+            
+            return await interaction.editReply({ embeds: [alreadyOwnsEmbed] });
+        }
      
-            await serverMember.save();
+        await serverMember.save();
     
-            /** the embed that shows the results of the capsule */
-            const basicCapsuleResultEmbed = new EmbedBuilder()
+        /** the embed that shows the results of the capsule */
+        const basicCapsuleResultEmbed = new EmbedBuilder()
             .setColor("Yellow")
             .setTitle(" Open Capsule")
-            .setDescription(`<@${interaction.user.id}> opens the capsule and receives...|| ${colourResult}! ||`);
+            .setDescription(`### ✩₊˚.⋆♱⋆⁺₊✧⁺‧₊˚ ཐི⋆⋆ཋྀ⋆⁺₊✧⁺‧₊˚♱✩₊˚.⋆ 
+                \n<@${interaction.user.id}> opens the capsule and finds... || ${colourResult}! ||
+        `);
     
     
-            await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
+        await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
 
         } catch (error) {
             console.error(`Err or handling /open-basic-capsule-beta: ${error}`);

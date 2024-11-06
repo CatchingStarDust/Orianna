@@ -25,5 +25,4 @@ const coloursAndWeights = [
     { color: 'pastel-pink', weight: 0.001953125 },
 ];
 
-
 module.exports.coloursAndWeights = coloursAndWeights;
