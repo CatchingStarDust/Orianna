@@ -48,15 +48,15 @@ module.exports = {
                 .setColor("Orange")
                 .setTitle(" Open Capsule")
                 .setDescription(
-                    `\n### ✩₊˚.⋆♱⋆⁺₊✧⁺‧₊˚ ཐི⋆🕸️⋆ཋྀ⋆⁺₊✧⁺‧₊˚♱✩₊˚.⋆ 
+                    `\n### ✩₊˚.⋆⋆⁺₊✧⁺‧₊˚ ཐི⋆⋆ཋྀ⋆⁺₊✧⁺‧₊˚✩₊˚.⋆ 
                     \n<@${interaction.user.id}> has opened a **Autumn Capsule!**
-                    \n╰┈➤ You have ${serverMember.autumnCapsules} left.
+                    \n╰┈➤ You have ${serverMember.basicCapsules} left.
                     \n### You look inside of the capsule and find...
                     \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗
                     \n   ୨═════₊˚.⋆˚${RoleColourText}˚⋆.˚₊═════୧
                     \n ....but you already own it, so it disappears.
                     \n╚══════════ ≪ ୨🕷୧ ≫ ══════════╝`
-            
+            );
             return await interaction.editReply({ embeds: [alreadyOwnsEmbed] });
         }
      
@@ -67,9 +67,9 @@ module.exports = {
             .setColor("Yellow")
             .setTitle(" Open Capsule")
             .setDescription(
-                    `\n### ✩₊˚.⋆♱⋆⁺₊✧⁺‧₊˚ ཐི⋆🕸️⋆ཋྀ⋆⁺₊✧⁺‧₊˚♱✩₊˚.⋆ 
+                    `\n### ✩₊˚.⋆⋆⁺₊✧⁺‧₊˚ ཐི⋆⋆ཋྀ⋆⁺₊✧⁺‧₊˚✩₊˚.⋆ 
                     \n<@${interaction.user.id}> has opened a **Autumn Capsule!**
-                    \n╰┈➤ You have ${serverMember.autumnCapsules} left.
+                    \n╰┈➤ You have ${serverMember.basicCapsules} left.
                     \n### You look inside of the capsule and find...
                     \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗
                     \n Click:  ||୨═════₊˚.⋆˚${RoleColourText}˚⋆.˚₊═════୧||
