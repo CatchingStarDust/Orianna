@@ -133,7 +133,7 @@ module.exports = {
                     .setTitle(" Open Capsule")
                     .setDescription(
                         `\n### ✩₊˚.⋆♱⋆⁺₊✧⁺‧₊˚ ཐི⋆🕸️⋆ཋྀ⋆⁺₊✧⁺‧₊˚♱✩₊˚.⋆ 
-                        \n<@${interaction.user.id}> has opened a **Autumn Capsule!**
+                        \n<@${interaction.user.id}> has opened a  Capsule!
                         \n╰┈➤ You have ${serverMember.autumnCapsules} left.
                         \n### You look inside of the capsule and find...
                         \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗
@@ -152,7 +152,7 @@ module.exports = {
                 .setTitle(" Open Capsule")
                 .setDescription(
                     `\n### ✩₊˚.⋆♱⋆⁺₊✧⁺‧₊˚ ཐི⋆🕸️⋆ཋྀ⋆⁺₊✧⁺‧₊˚♱✩₊˚.⋆ 
-                    \n<@${interaction.user.id}> has opened a **Autumn Capsule!**
+                    \n<@${interaction.user.id}> has opened a  Capsule!
                     \n╰┈➤ You have ${serverMember.autumnCapsules} left.
                     \n### You look inside of the capsule and find...
                     \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗

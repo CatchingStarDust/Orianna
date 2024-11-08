@@ -39,9 +39,7 @@ module.exports = {
         //the inventory menu contents
         const currentInventoryMessage = ` You have the following in your inventory:
             - **Colours owned**: ${roles.join(', ') || 'None'}
-            - **Basic Capsules**: ${serverMember.basicCapsules }
-            - **Holiday Capsules**: ${serverMember.holidayCapsules}
-            - **Autumn Capsules**: ${serverMember.autumnCapsules} `;
+            - **Basic Capsules**: ${serverMember.basicCapsules }`;
 
         // turn the contents into an embed and display the resulting embed
             currentInventoryMessageEmbed = new EmbedBuilder()

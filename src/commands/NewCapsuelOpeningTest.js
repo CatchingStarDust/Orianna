@@ -53,13 +53,18 @@ module.exports = {
                     \n╰┈➤ You have ${serverMember.basicCapsules} left.
                     \n### You look inside of the capsule and find...
                     \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗
-                    \n   ୨═════₊˚.⋆˚${RoleColourText}˚⋆.˚₊═════୧
+                    \n         ୨═════₊˚.⋆˚${RoleColourText}˚⋆.˚₊═════୧
                     \n ....but you already own it, so it disappears.
                     \n╚══════════ ≪ ୨🕷୧ ≫ ══════════╝`
             );
             return await interaction.editReply({ embeds: [alreadyOwnsEmbed] });
         }
      
+        await UserProfile.findOneAndUpdate(
+            { userId: serverMember.userId },
+            { $push: { coloursOwned: colourResult }},
+            { new: true, upsert: true }
+          ) // docs say to use ).exec(), but it seems optional
         await serverMember.save();
     
         /** the embed that shows the results of the capsule */
@@ -68,7 +73,7 @@ module.exports = {
             .setTitle(" Open Capsule")
             .setDescription(
                     `\n### ✩₊˚.⋆⋆⁺₊✧⁺‧₊˚ ཐི⋆⋆ཋྀ⋆⁺₊✧⁺‧₊˚✩₊˚.⋆ 
-                    \n<@${interaction.user.id}> has opened a **Autumn Capsule!**
+                    \n<@${interaction.user.id}> has opened a Autumn Capsule!
                     \n╰┈➤ You have ${serverMember.basicCapsules} left.
                     \n### You look inside of the capsule and find...
                     \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗

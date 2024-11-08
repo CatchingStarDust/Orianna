@@ -48,14 +48,11 @@ module.exports = {
 
             // Define the probabilities for each capsule type
             const capsuleWeights = [
-                { type: '5 Basic Capsule', weight: 0.20 },  // 20% chance
-                { type: '10 Basic Capsule', weight: 0.05 }, // 5% chance
+                { type: '5 Basic Capsule', weight: 0.50 },  // 50% chance
+                { type: '10 Basic Capsule', weight: 0.15 }, // 15% chance
                 { type: '15 Basic Capsule', weight: 0.10 }, // 10% chance
-                { type: '20 Basic Capsule', weight: 0.15 }, // 15% chance
-                { type: '5 Autumn Capsule', weight: 0.20 }, // 20% chance
-                { type: '10 Autumn Capsule', weight: 0.05 }, // 5% chance
-                { type: '15 Autumn Capsule', weight: 0.10 }, // 10% chance
-                { type: '20 Autumn Capsule', weight: 0.15 }, // 15% chance
+                { type: '20 Basic Capsule', weight: 0.05 }  // 5% chance
+
             ];
 
             //default value for capsuels
@@ -97,38 +94,6 @@ module.exports = {
                         { $inc: { basicCapsules: capsuleAmount } },
                          { new: true, upsert: true }
                      )}
-                    break;
-                case '5 Autumn Capsule': {
-                    capsuleAmount = 5;
-                    await UserProfile.findOneAndUpdate(
-                        { userId: serverMember.userId },
-                        { $inc: { autumnCapsules: capsuleAmount } },
-                        { new: true, upsert: true }
-                    )}
-                    break;
-                case '10 Autumn Capsule': {
-                    capsuleAmount = 10;
-                    await UserProfile.findOneAndUpdate(
-                        { userId: serverMember.userId },
-                        { $inc: { autumnCapsules: capsuleAmount } },
-                        { new: true, upsert: true }
-                    )}
-                    break;
-                case '15 Autumn Capsule': {
-                    capsuleAmount = 15;
-                    await UserProfile.findOneAndUpdate(
-                         { userId: serverMember.userId },
-                         { $inc: { autumnCapsules: capsuleAmount } },
-                         { new: true, upsert: true }
-                     )}
-                    break;
-                case '20 Autumn Capsule': {
-                    capsuleAmount = 20;
-                     await UserProfile.findOneAndUpdate(
-                          { userId: serverMember.userId },
-                          { $inc: { autumnCapsules: capsuleAmount } },
-                          { new: true, upsert: true }
-                    )}
                     break;
             }
 
