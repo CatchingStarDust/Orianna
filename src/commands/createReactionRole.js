@@ -91,7 +91,8 @@ const reactionRoleCommands = async (interaction) => {
                 return await interaction.reply({ content: `You already have this reaction using ${emoji} on this message`, ephemeral: true });
             }
 
-            const role = options.getRole('role');
+            try {
+                const role = options.getRole('role');
             await saveReactionRoleToDataBase(guild.id, channel.id, message.id, emoji, role.id, colourName);
 
             // Add reaction to the message
@@ -104,6 +105,10 @@ const reactionRoleCommands = async (interaction) => {
 
             await interaction.reply({ embeds: [embed], ephemeral: true });
             break;
+            } catch (error) {
+                console.error(`Error: ${error}`);
+                await interaction.editReply({ content: `There was an error: ${error.message}`, ephemeral: true });
+                }
 
         case 'remove':
             if (!data) {

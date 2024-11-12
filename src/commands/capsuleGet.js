@@ -32,10 +32,9 @@ module.exports = {
         .setDescription('Gives you your daily reward, including a random capsule!'),
 
     async execute(interaction) {
-
-        await interaction.deferReply();
-
         try {
+            await interaction.deferReply();
+
             // Find the user's profile in the database
             let serverMember = await UserProfile.findOne({ userId: interaction.user.id });
 
@@ -56,49 +55,33 @@ module.exports = {
             ];
 
             //default value for capsuels
-            let capsuleAmount  = 5; 
+            let capsuleAmount = 0;
 
             // Select a capsule type based on the defined weights
-            const selectedCapsuleType = weightedRandomSelect(capsuleWeights);     
+            const selectedCapsuleType = weightedRandomSelect(capsuleWeights);    
 
-            // Update the appropriate capsule count in the user's profile
-            switch(selectedCapsuleType){
-                case '5 Basic Capsule': {
-                    capsuleAmount  = 5;
-                    await UserProfile.findOneAndUpdate(
-                        { userId: serverMember.userId },
-                        { $inc: { basicCapsules: capsuleAmount  } },
-                        { new: true, upsert: true }
-                    )}
+
+            switch (selectedCapsuleType) {
+                case '5 Basic Capsule':
+                    capsuleAmount = 5;
                     break;
-                case '10 Basic Capsule': {
-                    capsuleAmount  = 10;
-                    await UserProfile.findOneAndUpdate(
-                        { userId: serverMember.userId },
-                        { $inc: { basicCapsules: capsuleAmount  } },
-                        { new: true, upsert: true }
-                    )}
+                case '10 Basic Capsule':
+                    capsuleAmount = 10;
                     break;
-                case '15 Basic Capsule': {
+                case '15 Basic Capsule':
                     capsuleAmount = 15;
-                    await UserProfile.findOneAndUpdate(
-                        { userId: serverMember.userId },
-                        { $inc: { basicCapsules: capsuleAmount } },
-                        { new: true, upsert: true }
-                     )}
                     break;
-                case '20 Basic Capsule': {
+                case '20 Basic Capsule':
                     capsuleAmount = 20;
-                    await UserProfile.findOneAndUpdate(
-                        { userId: serverMember.userId },
-                        { $inc: { basicCapsules: capsuleAmount } },
-                         { new: true, upsert: true }
-                     )}
                     break;
             }
 
-            // Save the updated user profile
-            await serverMember.save();
+            // Update the appropriate capsule count in the user's profile
+            await UserProfile.findOneAndUpdate(
+                { userId: serverMember.userId },
+                { $inc: { basicCapsules: capsuleAmount } },
+                { new: true, upsert: true }
+            );
 
             // Correct reference to interaction.user
             const dailyCapsuleResultEmbed = new EmbedBuilder()
@@ -106,11 +89,6 @@ module.exports = {
                 .setDescription(`<@${interaction.user.id}> has collected their daily reward and received ${capsuleAmount} ${selectedCapsuleType}s!`);
     
             await interaction.editReply({ embeds: [dailyCapsuleResultEmbed] });
-
-            /** if the user gets multiple capsules*/
-            switch(selectedCapsuleType) {
-
-            }
 
         } catch (error) {
             console.error(`Error: ${error}`);

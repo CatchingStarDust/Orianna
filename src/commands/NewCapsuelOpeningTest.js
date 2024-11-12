@@ -21,7 +21,7 @@ module.exports = {
         let serverMember = await UserProfile.findOne({ userId: interaction.user.id });
 
         if (!serverMember) {
-            createNewProfile();
+            await createNewProfile();
             await interaction.editReply(`New Profile created.`);
         }
 
@@ -49,7 +49,7 @@ module.exports = {
                 .setTitle(" Open Capsule")
                 .setDescription(
                     `\n### ✩₊˚.⋆⋆⁺₊✧⁺‧₊˚ ཐི⋆⋆ཋྀ⋆⁺₊✧⁺‧₊˚✩₊˚.⋆ 
-                    \n<@${interaction.user.id}> has opened a **Autumn Capsule!**
+                    \n<@${interaction.user.id}> has opened a Capsule!
                     \n╰┈➤ You have ${serverMember.basicCapsules} left.
                     \n### You look inside of the capsule and find...
                     \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗
@@ -73,7 +73,7 @@ module.exports = {
             .setTitle(" Open Capsule")
             .setDescription(
                     `\n### ✩₊˚.⋆⋆⁺₊✧⁺‧₊˚ ཐི⋆⋆ཋྀ⋆⁺₊✧⁺‧₊˚✩₊˚.⋆ 
-                    \n<@${interaction.user.id}> has opened a Autumn Capsule!
+                    \n<@${interaction.user.id}> has opened a Capsule!
                     \n╰┈➤ You have ${serverMember.basicCapsules} left.
                     \n### You look inside of the capsule and find...
                     \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗
@@ -85,7 +85,7 @@ module.exports = {
         await interaction.editReply({ embeds: [basicCapsuleResultEmbed] });
 
         } catch (error) {
-            console.error(`Err or handling /open-basic-capsule-beta: ${error}`);
+            console.error(`Error handling /open-basic-capsule-beta: ${error}`);
             await interaction.editReply(`Error handling /open-basic-capsule: ${error}`); 
         }
 
