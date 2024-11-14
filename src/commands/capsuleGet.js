@@ -1,17 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-
-const weightedRandomSelect = function weightedRandomSelect(weights) {
-    let sum = 0;
-    const r = Math.random();
-
-    for (let i = 0; i < weights.length; i++) {
-        sum += weights[i].weight;
-        if (r <= sum) {
-            return weights[i].type;
-        }
-    }
-};
+const newWeightedRandomSelect = require('../functions/ColourWeightsRng.js');
 
 const createNewProfile = async (userId) => {
     const newProfile = new UserProfile({
@@ -20,20 +9,22 @@ const createNewProfile = async (userId) => {
         lastTimePosted: new Date(0),
         capsulesOpened: 0, 
         coloursOwned: [],  // Explicitly set new profiles with empty arrays
-        holidayCapsules: 0, 
-        autumnCapsules: 0 
+        basicCapsules: 0,
     });
     await newProfile.save();
 };
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('daily')
+        .setName('get-capsule')
         .setDescription('Gives you your daily reward, including a random capsule!'),
 
     async execute(interaction) {
+
+        await interaction.deferReply();
+        
         try {
-            await interaction.deferReply();
+
 
             // Find the user's profile in the database
             let serverMember = await UserProfile.findOne({ userId: interaction.user.id });
@@ -48,8 +39,8 @@ module.exports = {
             // Define the probabilities for each capsule type
             const capsuleWeights = [
                 { type: '5 Basic Capsule', weight: 0.50 },  // 50% chance
-                { type: '10 Basic Capsule', weight: 0.15 }, // 15% chance
-                { type: '15 Basic Capsule', weight: 0.10 }, // 10% chance
+                { type: '10 Basic Capsule', weight: 0.25 }, // 25% chance
+                { type: '15 Basic Capsule', weight: 0.20 }, // 20% chance
                 { type: '20 Basic Capsule', weight: 0.05 }  // 5% chance
 
             ];
@@ -58,7 +49,7 @@ module.exports = {
             let capsuleAmount = 0;
 
             // Select a capsule type based on the defined weights
-            const selectedCapsuleType = weightedRandomSelect(capsuleWeights);    
+            const selectedCapsuleType = newWeightedRandomSelect(capsuleWeights);    
 
 
             switch (selectedCapsuleType) {
@@ -96,6 +87,3 @@ module.exports = {
         }
     }
 };
-
-module.exports.weightedRandomSelect = weightedRandomSelect;
-module.exports.createNewProfile = createNewProfile;

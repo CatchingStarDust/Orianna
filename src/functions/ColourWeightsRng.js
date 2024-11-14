@@ -27,7 +27,5 @@ const weightedRandomSelect = function weightedRandomSelect(weights) {
     }
 };
 
-module.exports = {
-    weightedRandomSelect,
-    newWeightedRandomSelect,
-};
+module.exports.newWeightedRandomSelect = newWeightedRandomSelect;
+module.exports.weightedRandomSelect = weightedRandomSelect;
