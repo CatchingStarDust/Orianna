@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const newWeightedRandomSelect = require('../functions/ColourWeightsRng.js');
+const newWeightedRandomSelect = require('../functions/colourWeightsRng.js');
 
 const createNewProfile = async (userId) => {
     const newProfile = new UserProfile({
