@@ -1,14 +1,14 @@
 const { SlashCommandBuilder, EmbedBuilder  } = require('discord.js');
-const UserProfile = require('../schemas/UserProfile');
-const { newWeightedRandomSelect } = require('../functions/colourWeightsRng.js');
-const { checkIfUserHasBasicCapsules, getServerMember, checkPityCounter } = require('../functions/checks');
+const UserProfile = require('../schemas/UserProfile.js');
+const { WeightedRandomSelectTenPull } = require('../functions/colourWeightsRng.js');
+const { checkIfUserHasBasicCapsules, getServerMember, checkPityCounter } = require('../functions/checks.js');
 const {coloursAndWeightsList} = require('../schemas/colourCategoriesAndWeights.js');
 
 /** the slash command itself */
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('new-open-capsule-beta')
-    .setDescription('TESTING NEW GACHA SYSTEM'),
+    .setName('open-ten-capsules')
+    .setDescription('Open capsule and get a colour'),
 
     async execute(interaction) {
        await interaction.deferReply();
@@ -27,21 +27,29 @@ module.exports = {
 
         /** make sure the user has basic capsules in their inventory */
         const hasBasicCapsule = await checkIfUserHasBasicCapsules(serverMember, interaction);
-        if (!hasBasicCapsule) return;
+        if (!hasBasicCapsule || serverMember.basicCapsules < 10) {
+            await interaction.editReply({ content: "You need at least 10 capsules to open" });
+            return;
+        }
 
         try {
             await UserProfile.findOneAndUpdate(
                 { userId: interaction.user.id },
-                { $inc: { basicCapsules: -1 } }, 
+                { $inc: { basicCapsules: -10 } }, 
                 { new: true, upsert: true },
         );
         
         const collectiveColourWeight = coloursAndWeightsList;
-        const colourResult = newWeightedRandomSelect(collectiveColourWeight);
-        const RoleColourText = await interaction.guild.roles.cache.find(role => role.name.toLowerCase() === colourResult.toLowerCase());
+        const colourResult = Array.from({ length: 10 }, () => { return WeightedRandomSelectTenPull(collectiveColourWeight) });
+
+        const RoleColourText = colourResult.map(colorName => {
+            const role = interaction.guild.roles.cache.find(r => r.name.toLowerCase() === colorName.toLowerCase());
+                return role ? `<@&${role.id}>` : colorName;
+        });
 
         /** checks if the user already has the colour they won */
-        const alreadyOwnsColour = serverMember.coloursOwned.includes(colourResult);
+        const alreadyOwnsColour = colourResult.every(color => serverMember.coloursOwned.includes(color));
+
 
             if (alreadyOwnsColour) {
             const alreadyOwnsEmbed = new EmbedBuilder()
@@ -53,8 +61,8 @@ module.exports = {
                     \n╰┈➤ You have ${serverMember.basicCapsules} left.
                     \n### You look inside of the capsule and find...
                     \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗
-                    \n         ୨═════₊˚.⋆˚${RoleColourText}˚⋆.˚₊═════୧
-                    \n ....but you already own it, so it disappears.
+                    \n         ୨═════₊˚.⋆˚${RoleColourText.join(', ')}˚⋆.˚₊═════୧
+                    \n ....but you already own them, so they disappear.
                     \n╚══════════ ≪ ୨🕷୧ ≫ ══════════╝`
             );
             return await interaction.editReply({ embeds: [alreadyOwnsEmbed] });
@@ -77,7 +85,7 @@ module.exports = {
                     \n╰┈➤ You have ${serverMember.basicCapsules} left.
                     \n### You look inside of the capsule and find...
                     \n╔══════════ ≪ ୨🕷୧ ≫ ══════════╗
-                    \n Click:  ||୨═════₊˚.⋆˚${RoleColourText}˚⋆.˚₊═════୧||
+                    \n Click:  ||୨═════₊˚.⋆˚${RoleColourText.join(', ')}˚⋆.˚₊═════୧||
                     \n╚══════════ ≪ ୨🕷୧ ≫ ══════════╝`
         );
     

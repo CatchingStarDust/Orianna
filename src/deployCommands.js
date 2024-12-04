@@ -13,20 +13,16 @@ const commands = [
         description: 'Gives you some capsules!',
     },
     {
-        name: 'new-open-capsule-beta',
-        description: 'BETA: open a single capsule that contains all colours in it!',
+        name: 'open-capsule',
+        description: 'open a capsule for a chance to get get a colour',
+    },
+    {
+        name: 'open-ten-capsules',
+        description: 'Open ten capsules at once',
     },
     {
         name: 'inventory',
         description: "Check your inventory",
-    },
-    {
-        name: 'open-basic-capsule',
-        description: "Open for a chance at one of the basic colours!",
-    },
-    {
-        name: 'open-autumn-capsule',
-        description: "Open for a chance to get a cozy Autumn-themed colour!",
     },
     {
         name: 'react-role',

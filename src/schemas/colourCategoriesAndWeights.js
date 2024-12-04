@@ -1,8 +1,6 @@
-
-/**the weights without any bonuses */
-// the weight of each color
+// Adjusted weights for each color
 const coloursAndWeightsList = [
-    // basic  (90% total, 0.09 each)
+    // Basic (90% total, )
     { color: 'red', weight: 0.09 },
     { color: 'orange', weight: 0.09 },
     { color: 'yellow', weight: 0.09 },
@@ -13,16 +11,25 @@ const coloursAndWeightsList = [
     { color: 'seafoam', weight: 0.09 },
     { color: 'grey', weight: 0.09 },
     { color: 'slate', weight: 0.09 },
-    // autumn  (1/512 each)
+
+    // Autumn (4 colors, each 1/512 )
     { color: 'scaredy-cat-black', weight: 0.001953125 },
     { color: 'spice-red', weight: 0.001953125 },
     { color: 'jack-o-lantern-orange', weight: 0.001953125 },
-    { color: '-brown', weight: 0.001953125 },
-    // pastel (1/512 each)
+    { color: 'brown', weight: 0.001953125 },
+
+    // Pastel (4 colors, each 1/512 )
     { color: 'pastel-blue', weight: 0.001953125 },
     { color: 'pastel-purple', weight: 0.001953125 },
     { color: 'pastel-peach', weight: 0.001953125 },
     { color: 'pastel-pink', weight: 0.001953125 },
+
+    // Holiday (5 colors, each 1/512 )
+    { color: 'mistletoe-green', weight: 0.001953125 },
+    { color: 'ribbon-red', weight: 0.001953125 },
+    { color: 'tree-star-yellow', weight: 0.001953125 },
+    { color: 'snowflake-white', weight: 0.001953125 },
+    { color: 'nerot-blue', weight: 0.001953125 },
 ];
 
 module.exports.coloursAndWeightsList = coloursAndWeightsList;

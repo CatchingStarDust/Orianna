@@ -1,6 +1,9 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
-const newWeightedRandomSelect = require('../functions/colourWeightsRng.js');
+const { weightedRandomSelectItem } = require('../functions/colourWeightsRng.js');
+const { getRemainingCooldownTime } = require('../functions/cooldownTimers.js');
+
+
 
 const createNewProfile = async (userId) => {
     const newProfile = new UserProfile({
@@ -35,6 +38,15 @@ module.exports = {
                 serverMember = await UserProfile.findOne({ userId: interaction.user.id });  // Fetch the created profile
                 await interaction.editReply(`New Profile created.`);
             }
+            
+            const remainingCooldown = getRemainingCooldownTime(serverMember.lastDailyCollected);
+                if (remainingCooldown) {
+                    const { hours, minutes } = remainingCooldown;
+                    await interaction.editReply({ 
+                        content: `You still have ${hours} hours and ${minutes} minutes remaining before you can claim another capsule.` 
+                    });
+                    return;
+            }
 
             // Define the probabilities for each capsule type
             const capsuleWeights = [
@@ -49,7 +61,7 @@ module.exports = {
             let capsuleAmount = 0;
 
             // Select a capsule type based on the defined weights
-            const selectedCapsuleType = newWeightedRandomSelect(capsuleWeights);    
+            const selectedCapsuleType = weightedRandomSelectItem(capsuleWeights);    
 
 
             switch (selectedCapsuleType) {
@@ -70,14 +82,18 @@ module.exports = {
             // Update the appropriate capsule count in the user's profile
             await UserProfile.findOneAndUpdate(
                 { userId: serverMember.userId },
-                { $inc: { basicCapsules: capsuleAmount } },
-                { new: true, upsert: true }
+                { 
+                    $inc: { basicCapsules: capsuleAmount },
+                    $set: { lastDailyCollected: new Date() }
+                },
+                { new: true, upsert: true },
+                
             );
 
             // Correct reference to interaction.user
             const dailyCapsuleResultEmbed = new EmbedBuilder()
                 .setColor("#ffe594")
-                .setDescription(`<@${interaction.user.id}> has collected their daily reward and received ${capsuleAmount} ${selectedCapsuleType}s!`);
+                .setDescription(`<@${interaction.user.id}> has received ${selectedCapsuleType}s!`);
     
             await interaction.editReply({ embeds: [dailyCapsuleResultEmbed] });
 
