@@ -17,7 +17,7 @@ const coloursAndWeightsList = [
     { color: 'scaredy-cat-black', weight: 0.00588235294117647 },
     { color: 'spice-red', weight: 0.00588235294117647 },
     { color: 'jack-o-lantern-orange', weight: 0.00588235294117647 },
-    { color: 'brown', weight: 0.00588235294117647 },
+    { color: 'harvest-brown', weight: 0.00588235294117647 },
 
     // Pastel (4 colors)
     { color: 'pastel-blue', weight: 0.00588235294117647 },
