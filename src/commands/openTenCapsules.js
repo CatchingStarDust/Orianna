@@ -42,16 +42,16 @@ module.exports = {
         const collectiveColourWeight = coloursAndWeightsList;
         const colourResult = Array.from({ length: 10 }, () => { return WeightedRandomSelectTenPull(collectiveColourWeight) });
 
+        const newColours = colourResult.filter(color => !serverMember.coloursOwned.includes(color));
+
+
         const RoleColourText = colourResult.map(colorName => {
             const role = interaction.guild.roles.cache.find(r => r.name.toLowerCase() === colorName.toLowerCase());
                 return role ? `<@&${role.id}>` : colorName;
         });
 
         /** checks if the user already has the colour they won */
-        const alreadyOwnsColour = colourResult.every(color => serverMember.coloursOwned.includes(color));
-
-
-            if (alreadyOwnsColour) {
+            if (newColours.length === 0)  {
             const alreadyOwnsEmbed = new EmbedBuilder()
                 .setColor("Orange")
                 .setTitle(" Open Capsule")
@@ -70,7 +70,7 @@ module.exports = {
      
         await UserProfile.findOneAndUpdate(
             { userId: serverMember.userId },
-            { $push: { coloursOwned: colourResult }},
+            { $push: { coloursOwned: { $each: newColours } } },
             { new: true, upsert: true }
           ) // docs say to use ).exec(), but it seems optional
         await serverMember.save();
