@@ -36,8 +36,13 @@ module.exports = {
             return role ? `<@&${role.id}>` : colorName;
         });
 
+        // display the total number of colours owned
+        const totalItems = serverMember.coloursOwned.length;
+
         //the inventory menu contents
-        const currentInventoryMessage = ` You have the following in your inventory:
+        const currentInventoryMessage = 
+        ` Total colours: ${totalItems}
+        \n You have the following in your inventory:
             - **Colours owned**: ${roles.join(', ') || 'None'}
             - **Basic Capsules**: ${serverMember.basicCapsules }`;
 
