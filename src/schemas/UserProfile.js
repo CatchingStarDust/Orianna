@@ -8,13 +8,12 @@ const { Schema, model } = require('mongoose');
 
 const userProfileSchema = new Schema({
     userId: { type: String, required: true, unique: true },
+    globalName: { type: String, default: null },
     lastDailyCollected: { type: Date },
     lastTimePosted: { type: Date },
     capsulesOpened: { type: Number, default: 0 },
     coloursOwned: { type: [ String ], default: [] },
     basicCapsules: { type: Number, default: 0  },
-    holidayCapsules: { type: Number, default: 0  },
-    autumnCapsules: { type:  Number, default: 0  },
 }, {
     timestamps: true
 });
