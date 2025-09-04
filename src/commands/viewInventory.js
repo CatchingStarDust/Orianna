@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const needServerEmbed = require('../embeds.js'); 
 const { createNewProfile}  = require('./capsuleGet');
+const { updateUserNames}  = require('../schemas/updateUserNames');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -45,6 +46,9 @@ module.exports = {
         \n You have the following in your inventory:
             - **Colours owned**: ${roles.join(', ') || 'None'}
             - **Basic Capsules**: ${serverMember.basicCapsules }`;
+
+        // update display name
+            await updateUserNames();    
 
         // turn the contents into an embed and display the resulting embed
             currentInventoryMessageEmbed = new EmbedBuilder()

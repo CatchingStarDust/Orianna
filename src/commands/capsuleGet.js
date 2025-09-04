@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const { weightedRandomSelectItem } = require('../functions/colourWeightsRng.js');
 const { getRemainingCooldownTime } = require('../functions/cooldownTimers.js');
-
+const { updateUserNames}  = require('../schemas/updateUserNames');
 
 
 const createNewProfile = async (userId) => {

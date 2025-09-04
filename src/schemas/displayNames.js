@@ -1,9 +1,8 @@
 const UserProfile = require('../schemas/UserProfile');
 
-//grab discord id from whoever ran the command
+//grab discord id and display name from whoever ran the command
 
-
-async function updateUserNames(interaction) = {
+async function updateUserNames(interaction) {
     const discordId = interaction.user.id;
     const serverMemberUsername = interaction.user.username ?? null;
     const serverMemberDisplayName = interaction.user.globalName ?? null;
@@ -29,3 +28,5 @@ async function updateUserNames(interaction) = {
     );
 
 }
+
+module.exports.updateUserNames = updateUserNames;
