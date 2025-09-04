@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const UserProfile = require('../schemas/UserProfile');
 const needServerEmbed = require('../embeds.js'); 
 const { createNewProfile}  = require('./capsuleGet');
-const { updateUserNames}  = require('../schemas/updateUserNames');
+const { updateUserNames}  = require('../schemas/displayNames');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -48,7 +48,7 @@ module.exports = {
             - **Basic Capsules**: ${serverMember.basicCapsules }`;
 
         // update display name
-            await updateUserNames();    
+            await updateUserNames(interaction);    
 
         // turn the contents into an embed and display the resulting embed
             currentInventoryMessageEmbed = new EmbedBuilder()
