@@ -72,7 +72,7 @@ module.exports = {
             { userId: serverMember.userId },
             { $push: { coloursOwned: { $each: newColours } } },
             { new: true, upsert: true }
-          ) // docs say to use ).exec(), but it seems optional
+          ) // docs say to use ).exec(), but it seems optional HELLO
     
         /** the embed that shows the results of the capsule */
         const basicCapsuleResultEmbed = new EmbedBuilder()
